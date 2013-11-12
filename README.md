@@ -1,6 +1,6 @@
 # Orc.Sort
 
-This library has a few efficient sorting Algorithms.
+This library contains various sorting Algorithms.
 
 
 ## TimSort
@@ -27,7 +27,7 @@ These sorting algorithms are more for academic purposes. There are a lot of diff
 
 Similar to TopologicalSort, except the order in which dependency lists are added to the sort algorithm is important.
 
-Example
+*Example:*
 
 	DependencyLists:
 	- (1) A, C
@@ -40,12 +40,19 @@ However the priority topological sort will return "A, B, C" because "A" appeared
 
 Please see the unit tests for more examples.
 
+**NOTE:**
+
+The dependency structure is expressed by the ordering of the elements in a list. In the previous example "A, C" means "A comes before C".
+
+If we had "A, B, C, D", this would mean "A comes before B, which comes before C, which comes before D" or in other words "D depends on C, which depends on B, which depends on A".
+
+
 
 ## TemplateSort
 
 This sort algorithm will sort a list based on the values of another list.
 
-Example:
+*Example:*
 
     ListToSort = C, B, B, L, N, P, C, A, D, E, B, E
     TemplateList = A, B, C, D
@@ -54,4 +61,4 @@ Example:
     
     Result = A, B, B, B, C, C, D, L, N, P, E, E
 
-If there are items in the list to be sorted that are not in the template list, then simply get appended to the end of the result in the order they are found.
+If there are items in the list to be sorted that are not in the template list, they simply get appended to the end of the result in the order they are found.
