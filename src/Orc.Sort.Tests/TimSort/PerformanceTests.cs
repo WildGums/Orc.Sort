@@ -1,46 +1,26 @@
-﻿#region Header
-// --------------------------------------------------------------------------------------
-// TimSortTests.TimSortTests.cs
-// --------------------------------------------------------------------------------------
-// 
-// 
-//
-// Copyright (c) 2011 Sepura Plc 
-//
-// Sepura Confidential
-//
-// Created: 9/22/2011 9:18:00 AM : SEPURA/krajewskim on SEPURA1051 
-// 
-// --------------------------------------------------------------------------------------
-#endregion
+﻿using System;
+using NUnit.Framework;
+using System.Linq;
+using System.Collections.Generic;
+using Performance;
 
-namespace Orc.Sort.Tests.TimSort
+namespace TimSort.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading;
+	[TestFixture]
+	public class PerformanceTests
+	{
+	    private const int maxMem = int.MaxValue/64;
+        const int maxSize = maxMem / sizeof(int);
+		const int seed = 1234;
 
-    using NUnit.Framework;
+		public static int Compare(int a, int b)
+		{
+			// Thread.Sleep(0); // make compare function slow
+			return a.CompareTo(b);
+		}
 
-    using Orc.Sort.TimSort;
-
-    [TestFixture]
-    public class PerformanceTests
-    {
-        const int maxSize = 100000;
-        const int seed = 1234;
-
-        public static int Compare(int a, int b)
-        {
-            // Thread.Sleep(TimeSpan.FromTicks(5)); // make compare function slow
-            return a.CompareTo(b);
-        }
-
-//The following tests cannot pass in Silverlight 
-//because they require elevated trust
-#if (!SILVERLIGHT)
         [Test]
-        public void RandomTests()
+        public void RandomTests_NativeInt32()
         {
             Console.WriteLine("<<< Random data >>>");
 
@@ -52,172 +32,187 @@ namespace Orc.Sort.Tests.TimSort
             for (int i = 0; i < maxSize; i++) a[i] = b[i] = r.Next();
 
             Console.WriteLine("Sorting...");
-            PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
-            PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
+            PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b), maxSize);
+            PerformanceTimer.Debug("timsort", 1, () => a.TimSort(), maxSize);
 
             Console.WriteLine("Testing...");
             for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
         }
 
         [Test]
-        public void SortedTests()
+        public void RandomTests_NativeGuid()
         {
-            Console.WriteLine("<<< Generally ascending data >>>");
+            Console.WriteLine("<<< Random data >>>");
 
+            var length = maxMem/16;
             var r = new Random(seed);
-            int[] a = new int[maxSize];
-            int[] b = new int[maxSize];
-            int value = int.MinValue;
+            Guid[] a = new Guid[length];
+            Guid[] b = new Guid[length];
 
             Console.WriteLine("Preparing...");
-            for (int i = 0; i < maxSize; i++)
-            {
-                value = 
-                    r.Next(100) < 80 
-                    ? value + r.Next(100) 
-                    : value - r.Next(100);
-                a[i] = b[i] = value;
-            }
+            for (int i = 0; i < length; i++) a[i] = b[i] = Guid.NewGuid();
 
             Console.WriteLine("Sorting...");
-            PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
-            PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
+            PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b), maxSize);
+            PerformanceTimer.Debug("timsort", 1, () => a.TimSort(), maxSize);
 
             Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
-        }
-    
-        [Test]
-        public void ReversedTests()
-        {
-            Console.WriteLine("<<< Generally descending data >>>");
-
-            var r = new Random(seed);
-            int[] a = new int[maxSize];
-            int[] b = new int[maxSize];
-            int value = int.MaxValue;
-
-            Console.WriteLine("Preparing...");
-            for (int i = 0; i < maxSize; i++)
-            {
-                value = 
-                    r.Next(100) < 80 
-                    ? value - r.Next(100) 
-                    : value + r.Next(100);
-                a[i] = b[i] = value;
-            }
-
-            Console.WriteLine("Sorting...");
-            PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
-            PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
-
-            Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+            for (int i = 0; i < length; i++) Assert.AreEqual(a[i], b[i]);
         }
 
-        [Test]
-        public void RandomTests_List()
-        {
-            Console.WriteLine("<<< Random data (buffered List<T>) >>>");
+		[Test]
+		public void RandomTests()
+		{
+			Console.WriteLine("<<< Random data >>>");
 
-            var r = new Random(seed);
-            var a = new List<int>(maxSize);
-            int[] b = new int[maxSize];
+			var r = new Random(seed);
+			int[] a = new int[maxSize];
+			int[] b = new int[maxSize];
 
-            Console.WriteLine("Preparing...");
-            for (int i = 0; i < maxSize; i++) b[i] = r.Next();
-            a.AddRange(b);
+			Console.WriteLine("Preparing...");
+			for (int i = 0; i < maxSize; i++) a[i] = b[i] = r.Next();
 
-            Console.WriteLine("Sorting...");
-            PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
-            PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
+			Console.WriteLine("Sorting...");
+			PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
+			PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
 
-            Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
-        }
-        
-        [Test]
-        public void SortedTests_List()
-        {
-            Console.WriteLine("<<< Generally ascending data (buffered List<T>) >>>");
+			Console.WriteLine("Testing...");
+			for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+		}
 
-            var r = new Random(seed);
-            var a = new List<int>(maxSize);
-            int[] b = new int[maxSize];
-            int value = int.MinValue;
+		[Test]
+		public void SortedTests()
+		{
+			Console.WriteLine("<<< Generally ascending data >>>");
 
-            Console.WriteLine("Preparing...");
-            for (int i = 0; i < maxSize; i++)
-            {
-                value = 
-                    r.Next(100) < 80 
-                    ? value + r.Next(100) 
-                    : value - r.Next(100);
-                b[i] = value;
-            }
-            a.AddRange(b);
+			var r = new Random(seed);
+			int[] a = new int[maxSize];
+			int[] b = new int[maxSize];
+			int value = int.MinValue;
 
-            Console.WriteLine("Sorting...");
-            PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
-            PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
+			Console.WriteLine("Preparing...");
+			for (int i = 0; i < maxSize; i++)
+			{
+				value = 
+					r.Next(100) < 80 
+					? value + r.Next(100) 
+					: value - r.Next(100);
+				a[i] = b[i] = value;
+			}
 
-            Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
-        }
-        
-        [Test]
-        public void ReversedTests_List()
-        {
-            Console.WriteLine("<<< Generally descending data (buffered List<T>) >>>");
+			Console.WriteLine("Sorting...");
+			PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
+			PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
 
-            var r = new Random(seed);
-            var a = new List<int>(maxSize);
-            int[] b = new int[maxSize];
-            int value = int.MaxValue;
+			Console.WriteLine("Testing...");
+			for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+		}
 
-            Console.WriteLine("Preparing...");
-            for (int i = 0; i < maxSize; i++)
-            {
-                value = 
-                    r.Next(100) < 80 
-                    ? value - r.Next(100) 
-                    : value + r.Next(100);
-                b[i] = value;
-            }
-            a.AddRange(b);
+		[Test]
+		public void ReversedTests()
+		{
+			Console.WriteLine("<<< Generally descending data >>>");
 
-            Console.WriteLine("Sorting...");
-            PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
-            PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
+			var r = new Random(seed);
+			int[] a = new int[maxSize];
+			int[] b = new int[maxSize];
+			int value = int.MaxValue;
 
-            Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
-        }
-        
-        [Test]
-        public void RandomTests_ListWithMergeBack()
-        {
-            Console.WriteLine("<<< Random data (buffered vs non-buffered List<T>) >>>");
+			Console.WriteLine("Preparing...");
+			for (int i = 0; i < maxSize; i++)
+			{
+				value = 
+					r.Next(100) < 80 
+					? value - r.Next(100) 
+					: value + r.Next(100);
+				a[i] = b[i] = value;
+			}
 
-            var r = new Random(seed);
-            var a = new List<int>(maxSize);
-            var b = new List<int>(maxSize);
+			Console.WriteLine("Sorting...");
+			PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
+			PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
 
-            Console.WriteLine("Preparing...");
-            for (int i = 0; i < maxSize; i++)
-            {
-                var value = r.Next();
-                a.Add(value);
-                b.Add(value);
-            }
+			Console.WriteLine("Testing...");
+			for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+		}
 
-            Console.WriteLine("Sorting...");
-            PerformanceTimer.Debug("timsort (non-buffered)", 1, () => a.TimSort(Compare, false), maxSize);
-            PerformanceTimer.Debug("timsort (buffered)", 1, () => b.TimSort(Compare, true), maxSize);
+		[Test]
+		public void RandomTests_List()
+		{
+			Console.WriteLine("<<< Random data (buffered List<T>) >>>");
 
-            Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
-        }
-#endif
-    }
+			var r = new Random(seed);
+			var a = new List<int>(maxSize);
+			int[] b = new int[maxSize];
+
+			Console.WriteLine("Preparing...");
+			for (int i = 0; i < maxSize; i++) b[i] = r.Next();
+			a.AddRange(b);
+
+			Console.WriteLine("Sorting...");
+			PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
+			PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
+
+			Console.WriteLine("Testing...");
+			for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+		}
+
+		[Test]
+		public void SortedTests_List()
+		{
+			Console.WriteLine("<<< Generally ascending data (buffered List<T>) >>>");
+
+			var r = new Random(seed);
+			var a = new List<int>(maxSize);
+			int[] b = new int[maxSize];
+			int value = int.MinValue;
+
+			Console.WriteLine("Preparing...");
+			for (int i = 0; i < maxSize; i++)
+			{
+				value = 
+					r.Next(100) < 80 
+					? value + r.Next(100) 
+					: value - r.Next(100);
+				b[i] = value;
+			}
+			a.AddRange(b);
+
+			Console.WriteLine("Sorting...");
+			PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
+			PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
+
+			Console.WriteLine("Testing...");
+			for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+		}
+
+		[Test]
+		public void ReversedTests_List()
+		{
+			Console.WriteLine("<<< Generally descending data (buffered List<T>) >>>");
+
+			var r = new Random(seed);
+			var a = new List<int>(maxSize);
+			int[] b = new int[maxSize];
+			int value = int.MaxValue;
+
+			Console.WriteLine("Preparing...");
+			for (int i = 0; i < maxSize; i++)
+			{
+				value = 
+					r.Next(100) < 80 
+					? value - r.Next(100) 
+					: value + r.Next(100);
+				b[i] = value;
+			}
+			a.AddRange(b);
+
+			Console.WriteLine("Sorting...");
+			PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
+			PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
+
+			Console.WriteLine("Testing...");
+			for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+		}
+	}
 }
