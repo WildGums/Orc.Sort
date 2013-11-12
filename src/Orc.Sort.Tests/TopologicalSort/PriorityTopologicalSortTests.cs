@@ -14,7 +14,7 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "Blue", "Orange", "Green" };
+            var list1 = new List<string> { "A", "B", "C", };
 
             // Act
             bool result = lw.CanSort(list1);
@@ -28,7 +28,7 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "Blue", "Orange", "Green" };
+            var list1 = new List<string> { "A", "B", "C", };
             var list2 = new List<string>();
 
             // Act
@@ -44,7 +44,7 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "Blue", "Orange", "Green" };
+            var list1 = new List<string> { "A", "B", "C", };
 
             // Act
             lw.SubLists.Add(list1);
@@ -59,7 +59,7 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "Blue", "Orange", "Green", "Orange" };
+            var list1 = new List<string> { "A", "B", "C", "A", };
 
             // Act
             bool result = lw.CanSort(list1);
@@ -73,8 +73,8 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "Blue", "Orange", "Green" };
-            var list2 = new List<string> { "Blue", "Gray"};
+            var list1 = new List<string> { "A", "B", "C", };
+            var list2 = new List<string> { "A", "D",      };
 
             // Act
             lw.SubLists.Add(list1);
@@ -89,9 +89,9 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "Blue", "Gray" };
-            var list2 = new List<string> { "Blue", "Orange", "Green" };
-            var list3 = new List<string> { "Green", "Blue" };
+            var list1 = new List<string> { "A", "B",      };
+            var list2 = new List<string> { "A", "C", "D", };
+            var list3 = new List<string> { "D", "A",      };
 
             // Act
             lw.SubLists.Add(list1);
@@ -107,8 +107,8 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "Blue", "Orange", "Green" };
-            var list2 = new List<string> { "Green", "Blue" };
+            var list1 = new List<string> { "A", "B", "C", };
+            var list2 = new List<string> { "C", "A",      };
 
             // Act
             lw.SubLists.Add(list1);
@@ -123,18 +123,18 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "Green", "Blue", "Yellow" };
-            var list2 = new List<string> { "Blue", "Orange", "Red" };
+
+            var sort0 = new List<string> { "A", "B", "C", "D", "E", };
+            var list1 = new List<string> { "A", "B", "C",           };
+            var list2 = new List<string> {      "B",      "D", "E", };
 
             // Act
             lw.SubLists.Add(list1);
             lw.SubLists.Add(list2);
             var result = lw.Sort();
 
-            var correct = new List<string> { "Green", "Blue", "Yellow", "Orange", "Red" };
-
             // Assert
-            Assert.AreEqual(correct, result );
+            Assert.AreEqual(sort0, result );
         }
 
         [Test]
@@ -142,17 +142,17 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "Purple", "Yellow" };
-            var list2 = new List<string> { "Black", "Purple" };
-            var list3 = new List<string> { "Blue", "Yellow", "Black" };
+            var list1 = new List<string> { "A", "B" };
+            var list2 = new List<string> { "C", "A" };
+            var list3 = new List<string> { "D", "B", "C" };
 
             // Act
             lw.SubLists.Add(list1);
             lw.SubLists.Add(list2);
             bool result = lw.CanSort(list3);
 
-            // Due to list1 and list2, Black is before Yellow (Black->Purple->Yellow).
-            // list3 therefore introduces a conflict (Yellow before Black).
+            // Due to list1 and list2, C is before B (C <- A <- B).
+            // list3 therefore introduces a conflict (C -> B).
 
             // Assert
             Assert.False(result);
@@ -163,26 +163,27 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list0 = new List<string> { "Beige" };
-            var list1 = new List<string> { "Yellow", "Orange", "Gray"};
-            var list2 = new List<string> { "Purple", "Yellow", "Green", "Red" };
-            var list3 = new List<string> { "Orange", "Red", "Cyan" };
-            var list4 = new List<string> { "Yellow", "Brown", "Cyan" };
-            var list5 = new List<string> { "Gold", "Silver", "Bronze" };
+
+            var sorted = new List<string> { "A", "E", "B", "C", "D", "F", "G", "I", "H", "J", "K", "L", };
+
+            var list11 = new List<string> { "A",                                                        };
+            var list21 = new List<string> {           "B", "C", "D",                                    };
+            var list22 = new List<string> {      "E", "B",           "F", "G",                          };
+            var list23 = new List<string> {                "C",           "G",      "H",                };
+            var list24 = new List<string> {           "B",                     "I", "H",                };
+            var list31 = new List<string> {                                              "J", "K", "L", };
 
             // Act
-            lw.SubLists.Add(list0);
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
-            lw.SubLists.Add(list3);
-            lw.SubLists.Add(list4);
-            lw.SubLists.Add(list5);
+            lw.SubLists.Add(list11);
+            lw.SubLists.Add(list21);
+            lw.SubLists.Add(list22);
+            lw.SubLists.Add(list23);
+            lw.SubLists.Add(list24);
+            lw.SubLists.Add(list31);
             var result = lw.Sort();
 
-            var correct = new List<string> { "Beige", "Purple", "Yellow", "Orange", "Gray", "Green", "Red", "Brown", "Cyan", "Gold", "Silver" , "Bronze"};
-
             // Assert
-            Assert.AreEqual(correct, result);
+            Assert.AreEqual(sorted, result);
         }
 
         [Test]
@@ -190,22 +191,16 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list0 = new List<string> { "Beige" };
-            var list1 = new List<string> { "Yellow", "Orange", "Gray" };
-            var list2 = new List<string> { "Purple", "Yellow", "Green", "Red" };
-            var list3 = new List<string> { "Orange", "Red", "Cyan" };
-            var list4 = new List<string> { "Gold", "Silver", "Bronze" };
-            var list5 = new List<string> { "Yellow", "Brown", "Cyan" };
+
+            var sort0 = new List<string> { "A", "E", "B", "C", "D", "F", "G", "L", "H", "I", "J", "K", };
+
+            var list0 = new List<string> { "A",                                                        };
+            var list1 = new List<string> {           "B", "C", "D",                                    };
+            var list2 = new List<string> {      "E", "B",           "F", "G",                          };
+            var list3 = new List<string> {                "C",           "G",      "H",                };
+            var list4 = new List<string> {                                              "I", "J", "K", };
+            var list5 = new List<string> {           "B",                     "L", "H",                };
             
-
-            // Beige
-            //                Yellow, Orange, Gray
-            //        Purple, Yellow               Green, Red,
-            //                        Orange,             Red,       Cyan
-            //                                                            Gold, Silver, Bronze
-            //                Yellow,                         Brown, Cyan
-
-
             // Act
             lw.SubLists.Add(list0);
             lw.SubLists.Add(list1);
@@ -215,10 +210,8 @@
             lw.SubLists.Add(list5);
             var result = lw.Sort();
 
-            var correct = new List<string> { "Beige", "Purple", "Yellow", "Orange", "Gray", "Green", "Red", "Brown", "Cyan", "Gold", "Silver", "Bronze" };
-
             // Assert
-            Assert.AreEqual(correct, result);
+            Assert.AreEqual(sort0, result);
         }
 
         [Test]
@@ -226,34 +219,27 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list0 = new List<string> { "Beige" };
-            var list1 = new List<string> { "Yellow", "Orange", "Gray" };
-            var list2 = new List<string> { "Yellow", "Brown", "Cyan" };
-            var list3 = new List<string> { "Gold", "Silver", "Bronze" };
-            var list4 = new List<string> { "Purple", "Yellow", "Green", "Red", "Black" };
-            var list5 = new List<string> { "Orange", "Red", "Cyan", "Aqua" };
+
+            var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "K", "L", "F", "G", "H", "I", "M", "N", };
+
+            var list11 = new List<string> { "A",                                                                  };
+            var list21 = new List<string> {           "B", "C", "D",                                              };
+            var list22 = new List<string> {           "B",           "E",           "F",                          };
+            var list31 = new List<string> {                                              "G", "H", "I",           };
+            var list23 = new List<string> {      "J", "B",                "K", "L",                     "M",      };
+            var list24 = new List<string> {                "C",                "L", "F",                     "N", };
            
-
-            // Beige
-            //               Yellow, Orange, Gray
-            //               Yellow,               Borwn,             Cyan
-            //                                                              Gold, Silver, Bronze
-            //       Purple, Yellow,                     Green, Red                               Black
-            //                       Orange,                    Red,  Cyan                               Aqua
-
             // Act
-            lw.SubLists.Add(list0);
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
-            lw.SubLists.Add(list3);
-            lw.SubLists.Add(list4);
-            lw.SubLists.Add(list5);
+            lw.SubLists.Add(list11);
+            lw.SubLists.Add(list21);
+            lw.SubLists.Add(list22);
+            lw.SubLists.Add(list31);
+            lw.SubLists.Add(list23);
+            lw.SubLists.Add(list24);
             var result = lw.Sort();
 
-            var correct = new List<string> { "Beige", "Purple", "Yellow", "Orange", "Gray" ,"Brown", "Green", "Red", "Cyan", "Gold", "Silver", "Bronze", "Black", "Aqua" };
-
             // Assert
-            Assert.AreEqual(correct, result);
+            Assert.AreEqual(sorted, result);
         }
 
         [Test]
@@ -261,31 +247,25 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list0 = new List<string> { "Beige", "Black" };
-            var list1 = new List<string> { "Orange", "Gray" };
-            var list2 = new List<string> { "Yellow", "Gold" };
-            var list3 = new List<string> { "Gold", "Red" };
-            var list4 = new List<string> { "Red", "Black" };
 
-            // Beige,                   Black
-            //                                 Orange, Gray
-            //       Yellow, Gold
-            //               Gold, Red,
-            //                     Red, Black
+            var sorted = new List<string> { "A", "E", "F", "G", "B", "C", "D", };
 
+            var list11 = new List<string> { "A",                "B",           };
+            var list21 = new List<string> {                          "C", "D", };
+            var list12 = new List<string> {      "E", "F",                     };
+            var list13 = new List<string> {           "F", "G",                };
+            var list14 = new List<string> {                "G", "B",           };
 
             // Act
-            lw.SubLists.Add(list0);
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
-            lw.SubLists.Add(list3);
-            lw.SubLists.Add(list4);
+            lw.SubLists.Add(list11);
+            lw.SubLists.Add(list21);
+            lw.SubLists.Add(list12);
+            lw.SubLists.Add(list13);
+            lw.SubLists.Add(list14);
             var result = lw.Sort();
 
-            var correct = new List<string> { "Beige", "Yellow", "Gold", "Red", "Black", "Orange", "Gray", };
-
             // Assert
-            Assert.AreEqual(correct, result);
+            Assert.AreEqual(sorted, result);
         }
 
         [Test]
@@ -293,34 +273,27 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list0 = new List<string> { "Beige", "Black" };
-            var list1 = new List<string> { "Orange", "Gray" };
-            var list2 = new List<string> { "Yellow", "Gold" };
-            var list3 = new List<string> { "Gold", "Red" };
-            var list4 = new List<string> { "Orange", "Black" };
-            var list5= new List<string> { "Red", "Black" };
 
-            // Beige,                           Black
-            //       Orange,                          Gray
-            //               Yellow, Gold
-            //                       Gold, Red,
-            //      Orange,                     Black  
-            //                             Red, Black
+            var sorted = new List<string> { "A", "C", "E", "F", "G", "B", "D", };
 
-
+            var list11 = new List<string> { "A",                     "B",      };
+            var list12 = new List<string> {      "C",                     "D", };
+            var list13 = new List<string> {           "E", "F",                };
+            var list14 = new List<string> {                "F", "G",           };
+            var list15 = new List<string> {      "C",                "B",      };
+            var list16 = new List<string> {                     "G", "B",      };
+            
             // Act
-            lw.SubLists.Add(list0);
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
-            lw.SubLists.Add(list3);
-            lw.SubLists.Add(list4);
-            lw.SubLists.Add(list5);
+            lw.SubLists.Add(list11);
+            lw.SubLists.Add(list12);
+            lw.SubLists.Add(list13);
+            lw.SubLists.Add(list14);
+            lw.SubLists.Add(list15);
+            lw.SubLists.Add(list16);
             var result = lw.Sort();
-
-            var correct = new List<string> { "Beige", "Orange", "Yellow", "Gold", "Red", "Black", "Gray", };
-
+            
             // Assert
-            Assert.AreEqual(correct, result);
+            Assert.AreEqual(sorted, result);
         }
 
         [Test]
@@ -328,22 +301,47 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list0 = new List<string> { "Blue" };
-            var list1 = new List<string> { "Gold" };
-            var list2 = new List<string> { "Orange", "Yellow", "Blue" };
-            var list3 = new List<string> { "Brown", "Blue" };
+
+            var sorted = new List<string> { "C", "D", "E", "A", "B", };
+
+            var list11 = new List<string> {                "A",      };
+            var list21 = new List<string> {                     "B", };
+            var list12 = new List<string> { "C", "D",      "A",      };
+            var list13 = new List<string> {           "E", "A",      };
 
             // Act
-            lw.SubLists.Add(list0);
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
-            lw.SubLists.Add(list3);
+            lw.SubLists.Add(list11);
+            lw.SubLists.Add(list21);
+            lw.SubLists.Add(list12);
+            lw.SubLists.Add(list13);
             var result = lw.Sort();
 
-            var correct = new List<string> { "Orange", "Yellow", "Brown", "Blue", "Gold" };
+            // Assert
+            Assert.AreEqual(sorted, result);
+        }
+
+        [Test]
+        public void CanWeave_CollectionOfLists_ReturnsCorrectSequence8()
+        {
+            // Arrange
+            var lw = new PriorityTopologicalSort<string>();
+
+            var sorted = new List<string> { "A", "B", "C", "D", "E", };
+
+            var list11 = new List<string> { "A",                     };
+            var list12 = new List<string> { "A", "B",                };
+            var list13 = new List<string> { "A", "B", "C",           };
+            var list14 = new List<string> {      "B", "C", "D", "E", };
+
+            // Act
+            lw.SubLists.Add(list11);
+            lw.SubLists.Add(list12);
+            lw.SubLists.Add(list13);
+            lw.SubLists.Add(list14);
+            var result = lw.Sort();
 
             // Assert
-            Assert.AreEqual(correct, result);
+            Assert.AreEqual(sorted, result);
         }
 
         [Test]
@@ -351,26 +349,27 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "Blue" };
-            var list2 = new List<string> { "Bronze", "Yellow", "Purple" };
-            var list3 = new List<string> { "Black", "Orange" };
-            var list4 = new List<string> { "Red", "Blue", "Gold" };
-            var list5 = new List<string> { "Silver", "Blue" };
-            var list6 = new List<string> { "Bronze", "Blue" };
+
+            var sorted = new List<string> { "B", "G", "I", "A", "C", "D", "E", "F", "H", };
+
+            var list11 = new List<string> {                "A",                          };
+            var list12 = new List<string> { "B",                "C", "D",                };
+            var list13 = new List<string> {                               "E", "F",      };
+            var list14 = new List<string> {      "G",      "A",                     "H", };
+            var list15 = new List<string> {           "I", "A",                          };
+            var list16 = new List<string> { "B",           "A",                          };
 
             // Act
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
-            lw.SubLists.Add(list3);
-            lw.SubLists.Add(list4);
-            lw.SubLists.Add(list5);
-            lw.SubLists.Add(list6);
+            lw.SubLists.Add(list11);
+            lw.SubLists.Add(list12);
+            lw.SubLists.Add(list13);
+            lw.SubLists.Add(list14);
+            lw.SubLists.Add(list15);
+            lw.SubLists.Add(list16);
             var result = lw.Sort();
 
-            var correct = new List<string> { "Bronze", "Red", "Silver", "Blue", "Yellow", "Purple", "Black", "Orange", "Gold" };
-
             // Assert
-            Assert.AreEqual(correct, result);
+            Assert.AreEqual(sorted, result);
         }
 
         [Test]
@@ -378,22 +377,23 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "Purple" };
-            var list2 = new List<string> { "Green" };
-            var list3 = new List<string> { "Orange", "Purple"};
-            var list4 = new List<string> { "Green", "Purple" };
+
+            var sorted = new List<string> { "B", "C", "A", };
+
+            var list11 = new List<string> {           "A", };
+            var list12 = new List<string> { "B",           };
+            var list13 = new List<string> {      "C", "A", };
+            var list14 = new List<string> { "B",      "A", };
 
             // Act
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
-            lw.SubLists.Add(list3);
-            lw.SubLists.Add(list4);
+            lw.SubLists.Add(list11);
+            lw.SubLists.Add(list12);
+            lw.SubLists.Add(list13);
+            lw.SubLists.Add(list14);
             var result = lw.Sort();
 
-            var correct = new List<string> { "Green", "Orange", "Purple"};
-
             // Assert
-            Assert.AreEqual(correct, result);
+            Assert.AreEqual(sorted, result);
         }
 
         [Test]
@@ -401,22 +401,22 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list0 = new List<string> { "Yellow" };
-            var list1 = new List<string> { "Blue", "Black", "Orange" };
-            var list2 = new List<string> { "Red", "Yellow" };
-            var list3 = new List<string> { "Black", "Bronze", "Yellow" };
+
+            var sorted = new List<string> { "B", "C", "E", "F", "A", "D", };
+            var list11 = new List<string> {                     "A",      };
+            var list12 = new List<string> { "B", "C",                "D", };
+            var list13 = new List<string> {           "E",      "A",      };
+            var list14 = new List<string> {      "C",      "F", "A" };
 
             // Act
-            lw.SubLists.Add(list0);
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
-            lw.SubLists.Add(list3);
+            lw.SubLists.Add(list11);
+            lw.SubLists.Add(list12);
+            lw.SubLists.Add(list13);
+            lw.SubLists.Add(list14);
             var result = lw.Sort();
 
-            var correct = new List<string> { "Blue", "Black", "Red", "Bronze", "Yellow", "Orange" };
-
             // Assert
-            Assert.AreEqual(correct, result);
+            Assert.AreEqual(sorted, result);
         }
 
 
@@ -425,56 +425,68 @@
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list0 = new List<string> { "Beige" };
-            var list1 = new List<string> { "Yellow", "Orange", "Gray" };
-            var list2 = new List<string> { "Yellow", "Brown", "Cyan" };
-            var list3 = new List<string> { "Gold", "Silver", "Bronze" };
-            var list4 = new List<string> { "Purple", "Yellow", "Green", "Red", "Black" };
-            var list5 = new List<string> { "Orange", "Red", "Cyan", "Aqua" };
-            var list6 = new List<string> { "Problem", "Green" };
-            var list7 = new List<string> { "Problem2", "Problem" };
 
-            lw.SubLists.Add(list0);
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
-            lw.SubLists.Add(list3);
-            lw.SubLists.Add(list4);
-            lw.SubLists.Add(list5);
-            lw.SubLists.Add(list6);
-            lw.SubLists.Add(list7);
+            var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "Q", "P", "K", "L", "F", "G", "H", "I", "M", "N", "O", };
+
+            var list11 = new List<string> { "A",                                                                                 };
+            var list21 = new List<string> {           "B", "C", "D",                                                             };
+            var list22 = new List<string> {           "B",           "E",                     "F",                               };
+            var list23 = new List<string> {                                                        "G", "H", "I",                };
+            var list24 = new List<string> {      "J", "B",                          "K", "L",                     "M",           };
+            var list25 = new List<string> {                "C",                          "L", "F",                     "N",      };
+            var list31 = new List<string> {                                                                                 "O", };
+            var list26 = new List<string> {                                    "P", "K",                                         };
+            var list27 = new List<string> {                               "Q", "P",                                              };
+
+            lw.SubLists.Add(list11);
+            lw.SubLists.Add(list21);
+            lw.SubLists.Add(list22);
+            lw.SubLists.Add(list23);
+            lw.SubLists.Add(list24);
+            lw.SubLists.Add(list25);
+            lw.SubLists.Add(list31);
+            lw.SubLists.Add(list26);
+            lw.SubLists.Add(list27);
             var result = lw.Sort();
-            var correct = new List<string> { "Beige", "Purple", "Yellow", "Orange", "Gray", "Brown", "Problem2", "Problem", "Green", "Red", "Cyan", "Gold", "Silver", "Bronze", "Black", "Aqua" };
+
             // Assert
-            Assert.AreEqual(correct, result);
+            Assert.AreEqual(sorted, result);
         }
         [Test]
         public void CanWeave_CollectionOfLists_ReturnsCorrectSequence_M2()
         {
             // Arrange
             var lw = new PriorityTopologicalSort<string>();
-            var list0 = new List<string> { "Beige" };
-            var list1 = new List<string> { "Yellow", "Orange", "Gray" };
-            var list2 = new List<string> { "Yellow", "Brown", "Cyan" };
-            var list3 = new List<string> { "Gold", "Silver", "Bronze" };
-            var list4 = new List<string> { "Purple", "Yellow", "Green", "Red", "Black" };
-            var list5 = new List<string> { "Orange", "Red", "Cyan", "Aqua" };
-            var list6 = new List<string> { "Additional", "Problem", "Green" };
-            var list7 = new List<string> { "Problem2", "Problem" };
-            var list8 = new List<string> { "Additional2", "Problem2" };
 
-            lw.SubLists.Add(list0);
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
-            lw.SubLists.Add(list3);
-            lw.SubLists.Add(list4);
-            lw.SubLists.Add(list5);
-            lw.SubLists.Add(list6);
-            lw.SubLists.Add(list7);
-            lw.SubLists.Add(list8);
+
+            
+            var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "P", "S", "R", "Q", "K", "L", "F", "G", "H", "I", "M", "N", "O", };
+
+            var list11 = new List<string> { "A",                                                                                           };
+            var list21 = new List<string> {           "B", "C", "D",                                                                       };
+            var list22 = new List<string> {           "B",           "E",                               "F",                               };
+            var list23 = new List<string> {                                                                  "G", "H", "I",                };
+            var list24 = new List<string> {      "J", "B",                                    "K", "L",                     "M",           };
+            var list25 = new List<string> {                "C",                                    "L", "F",                     "N",      };
+            var list31 = new List<string> {                                                                                           "O", };
+            var list26 = new List<string> {                               "P",           "Q", "K",                                         };
+            var list27 = new List<string> {                                         "R", "Q",                                              };
+            var list28 = new List<string> {                                    "S", "R",                                                   };
+            
+            lw.SubLists.Add(list11);
+            lw.SubLists.Add(list21);
+            lw.SubLists.Add(list22);
+            lw.SubLists.Add(list23);
+            lw.SubLists.Add(list24);
+            lw.SubLists.Add(list25);
+            lw.SubLists.Add(list31);
+            lw.SubLists.Add(list26);
+            lw.SubLists.Add(list27);
+            lw.SubLists.Add(list28);
             var result = lw.Sort();
-            var correct = new List<string> { "Beige", "Purple", "Yellow", "Orange", "Gray", "Brown", "Additional", "Additional2", "Problem2", "Problem", "Green", "Red", "Cyan", "Gold", "Silver", "Bronze", "Black", "Aqua" };
+
             // Assert
-            Assert.AreEqual(correct, result);
+            Assert.AreEqual(sorted, result);
         }
     }
 }
