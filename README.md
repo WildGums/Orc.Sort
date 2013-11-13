@@ -23,9 +23,17 @@ These sorting algorithms are more for academic purposes. There are a lot of diff
 
 ## TopologicalSort
 
+Information on Topological Sort can be found here: http://en.wikipedia.org/wiki/Topological_sorting
+
+**NOTE:**
+
+As shown in the example on the wikipedia page, it is important to realise a DAG may have multiple valid solutions.
+
+
 ## PriorityTopologicalSort
 
 Similar to TopologicalSort, except the order in which dependency lists are added to the sort algorithm is important.
+
 
 *Example:*
 
