@@ -27,12 +27,12 @@ namespace Orc.Sort.TopologicalSort
         /// <summary>
         /// The edges from each node.
         /// </summary>
-        private List<SortedSet<int>> edgesFrom;
+        private List<HashSet<int>> edgesFrom;
 
         /// <summary>
         /// The edges into each node.
         /// </summary>
-        private List<SortedSet<int>> edgesInto;
+        private List<HashSet<int>> edgesInto;
 
         /// <summary>
         /// The nodes dictionary. Maps nodes to IDs.
@@ -43,11 +43,6 @@ namespace Orc.Sort.TopologicalSort
         /// The nodes list. Maps IDs to their nodes.
         /// </summary>
         private List<T> nodesList;
-
-        /// <summary>
-        /// The nodes next.
-        /// </summary>
-        private SortedSet<int> nodesNext;
 
         /// <summary>
         /// The nodes path.
@@ -64,6 +59,8 @@ namespace Orc.Sort.TopologicalSort
         public PriorityTopologicalSort()
         {
             SubGroups = new List<IEnumerable<T>>();
+            UsesPriority = true;
+            UsesTracking = false;
         }
 
         public PriorityTopologicalSort(IEnumerable<IEnumerable<T>> subGroups) : this()
@@ -80,6 +77,16 @@ namespace Orc.Sort.TopologicalSort
         ///     The order of the items in the sub group is important and will preserved in the final merged list.
         /// </summary>
         public IEnumerable<IEnumerable<T>> SubGroups { get; private set; }
+
+        /// <summary>
+        /// Does the sorter use group add order priority?
+        /// </summary>
+        public Boolean UsesPriority { get; private set; }
+
+        /// <summary>
+        /// Does the sorter use graph component tracking?
+        /// </summary>
+        public Boolean UsesTracking { get; private set; }
 
         #endregion
 
@@ -206,10 +213,8 @@ namespace Orc.Sort.TopologicalSort
             nodesList = new List<T>();
             nodesPath = new List<T>();
 
-            nodesNext = new SortedSet<int>();
-
-            edgesFrom = new List<SortedSet<int>>();
-            edgesInto = new List<SortedSet<int>>();
+            edgesFrom = new List<HashSet<int>>();
+            edgesInto = new List<HashSet<int>>();
 
             foreach (var yarn in SubGroups)
             {
@@ -222,8 +227,8 @@ namespace Orc.Sort.TopologicalSort
                     {
                         nodesDict.Add(node, nodesDict.Count);
                         nodesList.Add(node);
-                        edgesFrom.Add(new SortedSet<int>());
-                        edgesInto.Add(new SortedSet<int>());
+                        edgesFrom.Add(new HashSet<int>());
+                        edgesInto.Add(new HashSet<int>());
                     }
 
                     next = nodesDict[node];
@@ -244,11 +249,32 @@ namespace Orc.Sort.TopologicalSort
         /// </summary>
         private void Walk()
         {
+            ISet<int> nodesNext;
+
+            if (UsesPriority)
+            {
+                nodesNext = new SortedSet<int>();
+            }
+            else
+            {
+                nodesNext = new HashSet<int>();
+            }
+            
             nodesNext.UnionWith(Enumerable.Range(0, nodesDict.Count).Where(node => edgesInto[node].Count == 0));
 
             while (nodesNext.Count > 0)
             {
-                int next = nodesNext.Max;
+                int next = -1;
+
+                if (UsesPriority)
+                {
+                    next = nodesNext.Max();
+                }
+                else
+                {
+                    next = nodesNext.First();
+                }
+
                 nodesPath.Add(nodesList[next]);
                 nodesNext.Remove(next);
 
