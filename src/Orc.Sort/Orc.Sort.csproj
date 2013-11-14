@@ -84,7 +84,9 @@
     <Compile Include="TimSort\TimSort.cs" />
     <Compile Include="TimSort\TimSortBase.cs" />
     <Compile Include="TimSort\TimSortExtender.cs" />
+    <Compile Include="TopologicalSort\CollectionExtensions.cs" />
     <Compile Include="TopologicalSort\PriorityTopologicalSort.cs" />
+    <Compile Include="TopologicalSort\TopologicalSort.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

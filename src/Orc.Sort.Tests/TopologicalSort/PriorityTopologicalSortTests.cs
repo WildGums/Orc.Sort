@@ -10,410 +10,410 @@
     public class PriorityTopologicalSortTests
     {
         [Test]
-        public void CanWeave_FirstListToBeIncluded_ReturnsTrue()
+        public void CanSort_FirstSequenceToBeIncluded_ReturnsTrue()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "A", "B", "C", };
+            var tp = new PriorityTopologicalSort<string>();
+            var seq1 = new List<string> { "A", "B", "C", };
 
             // Act
-            bool result = lw.CanSort(list1);
+            bool result = tp.CanSort(seq1);
 
             // Assert
             Assert.True(result);
         }
 
         [Test]
-        public void CanWeave_EmptyList_ReturnsTrue()
+        public void CanSort_EmptySequence_ReturnsTrue()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "A", "B", "C", };
-            var list2 = new List<string>();
+            var tp = new PriorityTopologicalSort<string>();
+            var seq1 = new List<string> { "A", "B", "C", };
+            var seq2 = new List<string>();
 
             // Act
-            lw.Add(list1);
-            bool result = lw.CanSort(list2);
+            tp.Add(seq1);
+            bool result = tp.CanSort(seq2);
 
             // Assert
             Assert.True(result);
         }
 
         [Test]
-        public void CanWeave_NullList_ReturnsFalse()
+        public void CanSort_NullSequence_ReturnsFalse()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "A", "B", "C", };
+            var tp = new PriorityTopologicalSort<string>();
+            var seq1 = new List<string> { "A", "B", "C", };
 
             // Act
-            lw.Add(list1);
-            bool result = lw.CanSort(null);
+            tp.Add(seq1);
+            bool result = tp.CanSort(null);
 
             // Assert
             Assert.False(result);
         }
 
         [Test]
-        public void CanWeave_LoopInListIsNOTWeaveable_ReturnsFalse()
+        public void CanSort_LoopInSequenceIsNOTWeaveable_ReturnsFalse()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "A", "B", "C", "A", };
+            var tp = new PriorityTopologicalSort<string>();
+            var seq1 = new List<string> { "A", "B", "C", "A", };
 
             // Act
-            bool result = lw.CanSort(list1);
+            bool result = tp.CanSort(seq1);
 
             // Assert
             Assert.False(result);
         }
 
         [Test]
-        public void CanWeave_SecondListIsWeaveable_ReturnsTrue()
+        public void CanSort_SecondSequenceIsWeaveable_ReturnsTrue()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "A", "B", "C", };
-            var list2 = new List<string> { "A", "D",      };
+            var tp = new PriorityTopologicalSort<string>();
+            var seq1 = new List<string> { "A", "B", "C", };
+            var seq2 = new List<string> { "A", "D",      };
 
             // Act
-            lw.Add(list1);
-            bool result = lw.CanSort(list2);
+            tp.Add(seq1);
+            bool result = tp.CanSort(seq2);
 
             // Assert
             Assert.True(result);
         }
 
         [Test]
-        public void CanWeave_ThirdListIsNOTWeaveable_ReturnsFalse()
+        public void CanSort_ThirdSequenceIsNOTWeaveable_ReturnsFalse()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "A", "B",      };
-            var list2 = new List<string> { "A", "C", "D", };
-            var list3 = new List<string> { "D", "A",      };
+            var tp = new PriorityTopologicalSort<string>();
+            var seq1 = new List<string> { "A", "B",      };
+            var seq2 = new List<string> { "A", "C", "D", };
+            var seq3 = new List<string> { "D", "A",      };
 
             // Act
-            lw.Add(list1);
-            lw.Add(list2);
-            bool result = lw.CanSort(list3);
+            tp.Add(seq1);
+            tp.Add(seq2);
+            bool result = tp.CanSort(seq3);
 
             // Assert
             Assert.False(result);
         }
 
         [Test]
-        public void CanWeave_SecondListIsNOTWeaveable_ReturnsFalse()
+        public void CanSort_SecondSequenceIsNOTWeaveable_ReturnsFalse()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "A", "B", "C", };
-            var list2 = new List<string> { "C", "A",      };
+            var tp = new PriorityTopologicalSort<string>();
+            var seq1 = new List<string> { "A", "B", "C", };
+            var seq2 = new List<string> { "C", "A",      };
 
             // Act
-            lw.Add(list1);
-            bool result = lw.CanSort(list2);
+            tp.Add(seq1);
+            bool result = tp.CanSort(seq2);
 
             // Assert
             Assert.False(result);
         }
 
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequence()
+        public void CanSort_IndirectLoop_ReturnsFalse_RdW()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
+            var seq1 = new List<string> { "A", "B" };
+            var seq2 = new List<string> { "C", "A" };
+            var seq3 = new List<string> { "D", "B", "C" };
+
+            // Act
+            tp.Add(seq1);
+            tp.Add(seq2);
+            bool result = tp.CanSort(seq3);
+
+            // Due to seq1 and seq2, C is before B (C <- A <- B).
+            // seq3 therefore introduces a conflict (C -> B).
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Test]
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence()
+        {
+            // Arrange
+            var tp = new PriorityTopologicalSort<string>();
 
             var sort0 = new List<string> { "A", "B", "C", "D", "E", };
-            var list1 = new List<string> { "A", "B", "C",           };
-            var list2 = new List<string> {      "B",      "D", "E", };
+            var seq1 = new List<string> { "A", "B", "C",           };
+            var seq2 = new List<string> {      "B",      "D", "E", };
 
             // Act
-            lw.Add(list1);
-            lw.Add(list2);
-            var result = lw.Sort();
+            tp.Add(seq1);
+            tp.Add(seq2);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sort0, result );
         }
 
         [Test]
-        public void CanWeave_IndirectLoop_ReturnsFalse_RdW()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence2()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
-            var list1 = new List<string> { "A", "B" };
-            var list2 = new List<string> { "C", "A" };
-            var list3 = new List<string> { "D", "B", "C" };
-
-            // Act
-            lw.Add(list1);
-            lw.Add(list2);
-            bool result = lw.CanSort(list3);
-
-            // Due to list1 and list2, C is before B (C <- A <- B).
-            // list3 therefore introduces a conflict (C -> B).
-
-            // Assert
-            Assert.False(result);
-        }
-
-        [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequence2()
-        {
-            // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
             var sorted = new List<string> { "A", "E", "B", "C", "D", "F", "G", "I", "H", "J", "K", "L", };
 
-            var list11 = new List<string> { "A",                                                        };
-            var list21 = new List<string> {           "B", "C", "D",                                    };
-            var list22 = new List<string> {      "E", "B",           "F", "G",                          };
-            var list23 = new List<string> {                "C",           "G",      "H",                };
-            var list24 = new List<string> {           "B",                     "I", "H",                };
-            var list31 = new List<string> {                                              "J", "K", "L", };
+            var seq11 = new List<string> { "A",                                                        };
+            var seq21 = new List<string> {           "B", "C", "D",                                    };
+            var seq22 = new List<string> {      "E", "B",           "F", "G",                          };
+            var seq23 = new List<string> {                "C",           "G",      "H",                };
+            var seq24 = new List<string> {           "B",                     "I", "H",                };
+            var seq31 = new List<string> {                                              "J", "K", "L", };
 
             // Act
-            lw.Add(list11);
-            lw.Add(list21);
-            lw.Add(list22);
-            lw.Add(list23);
-            lw.Add(list24);
-            lw.Add(list31);
-            var result = lw.Sort();
+            tp.Add(seq11);
+            tp.Add(seq21);
+            tp.Add(seq22);
+            tp.Add(seq23);
+            tp.Add(seq24);
+            tp.Add(seq31);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sorted, result);
         }
 
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequence3()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence3()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
             var sort0 = new List<string> { "A", "E", "B", "C", "D", "F", "G", "L", "H", "I", "J", "K", };
 
-            var list0 = new List<string> { "A",                                                        };
-            var list1 = new List<string> {           "B", "C", "D",                                    };
-            var list2 = new List<string> {      "E", "B",           "F", "G",                          };
-            var list3 = new List<string> {                "C",           "G",      "H",                };
-            var list4 = new List<string> {                                              "I", "J", "K", };
-            var list5 = new List<string> {           "B",                     "L", "H",                };
+            var seq0 = new List<string> { "A",                                                        };
+            var seq1 = new List<string> {           "B", "C", "D",                                    };
+            var seq2 = new List<string> {      "E", "B",           "F", "G",                          };
+            var seq3 = new List<string> {                "C",           "G",      "H",                };
+            var seq4 = new List<string> {                                              "I", "J", "K", };
+            var seq5 = new List<string> {           "B",                     "L", "H",                };
             
             // Act
-            lw.Add(list0);
-            lw.Add(list1);
-            lw.Add(list2);
-            lw.Add(list3);
-            lw.Add(list4);
-            lw.Add(list5);
-            var result = lw.Sort();
+            tp.Add(seq0);
+            tp.Add(seq1);
+            tp.Add(seq2);
+            tp.Add(seq3);
+            tp.Add(seq4);
+            tp.Add(seq5);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sort0, result);
         }
 
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequence4()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence4()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
             var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "K", "L", "F", "G", "H", "I", "M", "N", };
 
-            var list11 = new List<string> { "A",                                                                  };
-            var list21 = new List<string> {           "B", "C", "D",                                              };
-            var list22 = new List<string> {           "B",           "E",           "F",                          };
-            var list31 = new List<string> {                                              "G", "H", "I",           };
-            var list23 = new List<string> {      "J", "B",                "K", "L",                     "M",      };
-            var list24 = new List<string> {                "C",                "L", "F",                     "N", };
+            var seq11 = new List<string> { "A",                                                                  };
+            var seq21 = new List<string> {           "B", "C", "D",                                              };
+            var seq22 = new List<string> {           "B",           "E",           "F",                          };
+            var seq31 = new List<string> {                                              "G", "H", "I",           };
+            var seq23 = new List<string> {      "J", "B",                "K", "L",                     "M",      };
+            var seq24 = new List<string> {                "C",                "L", "F",                     "N", };
            
             // Act
-            lw.Add(list11);
-            lw.Add(list21);
-            lw.Add(list22);
-            lw.Add(list31);
-            lw.Add(list23);
-            lw.Add(list24);
-            var result = lw.Sort();
+            tp.Add(seq11);
+            tp.Add(seq21);
+            tp.Add(seq22);
+            tp.Add(seq31);
+            tp.Add(seq23);
+            tp.Add(seq24);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sorted, result);
         }
 
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequence5()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence5()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
             var sorted = new List<string> { "A", "E", "F", "G", "B", "C", "D", };
 
-            var list11 = new List<string> { "A",                "B",           };
-            var list21 = new List<string> {                          "C", "D", };
-            var list12 = new List<string> {      "E", "F",                     };
-            var list13 = new List<string> {           "F", "G",                };
-            var list14 = new List<string> {                "G", "B",           };
+            var seq11 = new List<string> { "A",                "B",           };
+            var seq21 = new List<string> {                          "C", "D", };
+            var seq12 = new List<string> {      "E", "F",                     };
+            var seq13 = new List<string> {           "F", "G",                };
+            var seq14 = new List<string> {                "G", "B",           };
 
             // Act
-            lw.Add(list11);
-            lw.Add(list21);
-            lw.Add(list12);
-            lw.Add(list13);
-            lw.Add(list14);
-            var result = lw.Sort();
+            tp.Add(seq11);
+            tp.Add(seq21);
+            tp.Add(seq12);
+            tp.Add(seq13);
+            tp.Add(seq14);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sorted, result);
         }
 
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequence6()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence6()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
             var sorted = new List<string> { "A", "C", "E", "F", "G", "B", "D", };
 
-            var list11 = new List<string> { "A",                     "B",      };
-            var list12 = new List<string> {      "C",                     "D", };
-            var list13 = new List<string> {           "E", "F",                };
-            var list14 = new List<string> {                "F", "G",           };
-            var list15 = new List<string> {      "C",                "B",      };
-            var list16 = new List<string> {                     "G", "B",      };
+            var seq11 = new List<string> { "A",                     "B",      };
+            var seq12 = new List<string> {      "C",                     "D", };
+            var seq13 = new List<string> {           "E", "F",                };
+            var seq14 = new List<string> {                "F", "G",           };
+            var seq15 = new List<string> {      "C",                "B",      };
+            var seq16 = new List<string> {                     "G", "B",      };
             
             // Act
-            lw.Add(list11);
-            lw.Add(list12);
-            lw.Add(list13);
-            lw.Add(list14);
-            lw.Add(list15);
-            lw.Add(list16);
-            var result = lw.Sort();
+            tp.Add(seq11);
+            tp.Add(seq12);
+            tp.Add(seq13);
+            tp.Add(seq14);
+            tp.Add(seq15);
+            tp.Add(seq16);
+            var result = tp.Sort();
             
             // Assert
             Assert.AreEqual(sorted, result);
         }
 
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequence7()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence7()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
             var sorted = new List<string> { "C", "D", "E", "A", "B", };
 
-            var list11 = new List<string> {                "A",      };
-            var list21 = new List<string> {                     "B", };
-            var list12 = new List<string> { "C", "D",      "A",      };
-            var list13 = new List<string> {           "E", "A",      };
+            var seq11 = new List<string> {                "A",      };
+            var seq21 = new List<string> {                     "B", };
+            var seq12 = new List<string> { "C", "D",      "A",      };
+            var seq13 = new List<string> {           "E", "A",      };
 
             // Act
-            lw.Add(list11);
-            lw.Add(list21);
-            lw.Add(list12);
-            lw.Add(list13);
-            var result = lw.Sort();
+            tp.Add(seq11);
+            tp.Add(seq21);
+            tp.Add(seq12);
+            tp.Add(seq13);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sorted, result);
         }
 
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequence8()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence8()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
             var sorted = new List<string> { "A", "B", "C", "D", "E", };
 
-            var list11 = new List<string> { "A",                     };
-            var list12 = new List<string> { "A", "B",                };
-            var list13 = new List<string> { "A", "B", "C",           };
-            var list14 = new List<string> {      "B", "C", "D", "E", };
+            var seq11 = new List<string> { "A",                     };
+            var seq12 = new List<string> { "A", "B",                };
+            var seq13 = new List<string> { "A", "B", "C",           };
+            var seq14 = new List<string> {      "B", "C", "D", "E", };
 
             // Act
-            lw.Add(list11);
-            lw.Add(list12);
-            lw.Add(list13);
-            lw.Add(list14);
-            var result = lw.Sort();
+            tp.Add(seq11);
+            tp.Add(seq12);
+            tp.Add(seq13);
+            tp.Add(seq14);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sorted, result);
         }
 
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequenceRdW()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequenceRdW()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
             var sorted = new List<string> { "B", "G", "I", "A", "C", "D", "E", "F", "H", };
 
-            var list11 = new List<string> {                "A",                          };
-            var list12 = new List<string> { "B",                "C", "D",                };
-            var list13 = new List<string> {                               "E", "F",      };
-            var list14 = new List<string> {      "G",      "A",                     "H", };
-            var list15 = new List<string> {           "I", "A",                          };
-            var list16 = new List<string> { "B",           "A",                          };
+            var seq11 = new List<string> {                "A",                          };
+            var seq12 = new List<string> { "B",                "C", "D",                };
+            var seq13 = new List<string> {                               "E", "F",      };
+            var seq14 = new List<string> {      "G",      "A",                     "H", };
+            var seq15 = new List<string> {           "I", "A",                          };
+            var seq16 = new List<string> { "B",           "A",                          };
 
             // Act
-            lw.Add(list11);
-            lw.Add(list12);
-            lw.Add(list13);
-            lw.Add(list14);
-            lw.Add(list15);
-            lw.Add(list16);
-            var result = lw.Sort();
+            tp.Add(seq11);
+            tp.Add(seq12);
+            tp.Add(seq13);
+            tp.Add(seq14);
+            tp.Add(seq15);
+            tp.Add(seq16);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sorted, result);
         }
 
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequenceRdW2()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequenceRdW2()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
             var sorted = new List<string> { "B", "C", "A", };
 
-            var list11 = new List<string> {           "A", };
-            var list12 = new List<string> { "B",           };
-            var list13 = new List<string> {      "C", "A", };
-            var list14 = new List<string> { "B",      "A", };
+            var seq11 = new List<string> {           "A", };
+            var seq12 = new List<string> { "B",           };
+            var seq13 = new List<string> {      "C", "A", };
+            var seq14 = new List<string> { "B",      "A", };
 
             // Act
-            lw.Add(list11);
-            lw.Add(list12);
-            lw.Add(list13);
-            lw.Add(list14);
-            var result = lw.Sort();
+            tp.Add(seq11);
+            tp.Add(seq12);
+            tp.Add(seq13);
+            tp.Add(seq14);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sorted, result);
         }
 
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequenceRdW3()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequenceRdW3()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
             var sorted = new List<string> { "B", "C", "E", "F", "A", "D", };
-            var list11 = new List<string> {                     "A",      };
-            var list12 = new List<string> { "B", "C",                "D", };
-            var list13 = new List<string> {           "E",      "A",      };
-            var list14 = new List<string> {      "C",      "F", "A" };
+            var seq11 = new List<string> {                     "A",      };
+            var seq12 = new List<string> { "B", "C",                "D", };
+            var seq13 = new List<string> {           "E",      "A",      };
+            var seq14 = new List<string> {      "C",      "F", "A" };
 
             // Act
-            lw.Add(list11);
-            lw.Add(list12);
-            lw.Add(list13);
-            lw.Add(list14);
-            var result = lw.Sort();
+            tp.Add(seq11);
+            tp.Add(seq12);
+            tp.Add(seq13);
+            tp.Add(seq14);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sorted, result);
@@ -421,69 +421,69 @@
 
 
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequence_M1()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence_M1()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
             var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "Q", "P", "K", "L", "F", "G", "H", "I", "M", "N", "O", };
 
-            var list11 = new List<string> { "A",                                                                                 };
-            var list21 = new List<string> {           "B", "C", "D",                                                             };
-            var list22 = new List<string> {           "B",           "E",                     "F",                               };
-            var list23 = new List<string> {                                                        "G", "H", "I",                };
-            var list24 = new List<string> {      "J", "B",                          "K", "L",                     "M",           };
-            var list25 = new List<string> {                "C",                          "L", "F",                     "N",      };
-            var list31 = new List<string> {                                                                                 "O", };
-            var list26 = new List<string> {                                    "P", "K",                                         };
-            var list27 = new List<string> {                               "Q", "P",                                              };
+            var seq11 = new List<string> { "A",                                                                                 };
+            var seq21 = new List<string> {           "B", "C", "D",                                                             };
+            var seq22 = new List<string> {           "B",           "E",                     "F",                               };
+            var seq23 = new List<string> {                                                        "G", "H", "I",                };
+            var seq24 = new List<string> {      "J", "B",                          "K", "L",                     "M",           };
+            var seq25 = new List<string> {                "C",                          "L", "F",                     "N",      };
+            var seq31 = new List<string> {                                                                                 "O", };
+            var seq26 = new List<string> {                                    "P", "K",                                         };
+            var seq27 = new List<string> {                               "Q", "P",                                              };
 
-            lw.Add(list11);
-            lw.Add(list21);
-            lw.Add(list22);
-            lw.Add(list23);
-            lw.Add(list24);
-            lw.Add(list25);
-            lw.Add(list31);
-            lw.Add(list26);
-            lw.Add(list27);
-            var result = lw.Sort();
+            tp.Add(seq11);
+            tp.Add(seq21);
+            tp.Add(seq22);
+            tp.Add(seq23);
+            tp.Add(seq24);
+            tp.Add(seq25);
+            tp.Add(seq31);
+            tp.Add(seq26);
+            tp.Add(seq27);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sorted, result);
         }
         [Test]
-        public void CanWeave_CollectionOfLists_ReturnsCorrectSequence_M2()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence_M2()
         {
             // Arrange
-            var lw = new PriorityTopologicalSort<string>();
+            var tp = new PriorityTopologicalSort<string>();
 
 
             
             var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "P", "S", "R", "Q", "K", "L", "F", "G", "H", "I", "M", "N", "O", };
 
-            var list11 = new List<string> { "A",                                                                                           };
-            var list21 = new List<string> {           "B", "C", "D",                                                                       };
-            var list22 = new List<string> {           "B",           "E",                               "F",                               };
-            var list23 = new List<string> {                                                                  "G", "H", "I",                };
-            var list24 = new List<string> {      "J", "B",                                    "K", "L",                     "M",           };
-            var list25 = new List<string> {                "C",                                    "L", "F",                     "N",      };
-            var list31 = new List<string> {                                                                                           "O", };
-            var list26 = new List<string> {                               "P",           "Q", "K",                                         };
-            var list27 = new List<string> {                                         "R", "Q",                                              };
-            var list28 = new List<string> {                                    "S", "R",                                                   };
+            var seq11 = new List<string> { "A",                                                                                           };
+            var seq21 = new List<string> {           "B", "C", "D",                                                                       };
+            var seq22 = new List<string> {           "B",           "E",                               "F",                               };
+            var seq23 = new List<string> {                                                                  "G", "H", "I",                };
+            var seq24 = new List<string> {      "J", "B",                                    "K", "L",                     "M",           };
+            var seq25 = new List<string> {                "C",                                    "L", "F",                     "N",      };
+            var seq31 = new List<string> {                                                                                           "O", };
+            var seq26 = new List<string> {                               "P",           "Q", "K",                                         };
+            var seq27 = new List<string> {                                         "R", "Q",                                              };
+            var seq28 = new List<string> {                                    "S", "R",                                                   };
             
-            lw.Add(list11);
-            lw.Add(list21);
-            lw.Add(list22);
-            lw.Add(list23);
-            lw.Add(list24);
-            lw.Add(list25);
-            lw.Add(list31);
-            lw.Add(list26);
-            lw.Add(list27);
-            lw.Add(list28);
-            var result = lw.Sort();
+            tp.Add(seq11);
+            tp.Add(seq21);
+            tp.Add(seq22);
+            tp.Add(seq23);
+            tp.Add(seq24);
+            tp.Add(seq25);
+            tp.Add(seq31);
+            tp.Add(seq26);
+            tp.Add(seq27);
+            tp.Add(seq28);
+            var result = tp.Sort();
 
             // Assert
             Assert.AreEqual(sorted, result);
