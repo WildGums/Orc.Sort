@@ -11,6 +11,7 @@ namespace Orc.Sort.TopologicalSort
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
 
     /// <summary>
@@ -24,22 +25,22 @@ namespace Orc.Sort.TopologicalSort
         #region Fields
 
         /// <summary>
-        /// The edges from.
+        /// The edges from each node.
         /// </summary>
         private List<SortedSet<int>> edgesFrom;
 
         /// <summary>
-        /// The edges into.
+        /// The edges into each node.
         /// </summary>
         private List<SortedSet<int>> edgesInto;
 
         /// <summary>
-        /// The nodes dictionary.
+        /// The nodes dictionary. Maps nodes to IDs.
         /// </summary>
         private Dictionary<T, int> nodesDict;
 
         /// <summary>
-        /// The nodes list.
+        /// The nodes list. Maps IDs to their nodes.
         /// </summary>
         private List<T> nodesList;
 
@@ -62,7 +63,12 @@ namespace Orc.Sort.TopologicalSort
         /// </summary>
         public PriorityTopologicalSort()
         {
-            SubLists = new List<IList<T>>();
+            SubGroups = new List<IEnumerable<T>>();
+        }
+
+        public PriorityTopologicalSort(IEnumerable<IEnumerable<T>> subGroups) : this()
+        {
+            AddRange(subGroups);
         }
 
         #endregion
@@ -70,34 +76,55 @@ namespace Orc.Sort.TopologicalSort
         #region Properties
 
         /// <summary>
-        ///     Gets or sets the sub lists.
-        ///     The order of the items in the sub list is important and will preserved in the final merged list
+        ///     Gets or sets the sub groups.
+        ///     The order of the items in the sub group is important and will preserved in the final merged list.
         /// </summary>
-        public List<IList<T>> SubLists { get; set; }
+        public IEnumerable<IEnumerable<T>> SubGroups { get; private set; }
 
         #endregion
 
         #region Methods
 
         /// <summary>
+        /// The add.
+        /// </summary>
+        /// <param name="newGroup">
+        /// The new group.
+        /// </param>
+        public void Add(IEnumerable<T> newGroup)
+        {
+            (SubGroups as List<IEnumerable<T>>).Add(newGroup);
+        }
+
+        /// <summary>
+        /// The add range.
+        /// </summary>
+        /// <param name="newGroups">
+        /// The new groups.
+        /// </param>
+        public void AddRange(IEnumerable<IEnumerable<T>> newGroups)
+        {
+            (SubGroups as List<IEnumerable<T>>).AddRange(newGroups);
+        }
+
+        /// <summary>
         /// The can sort.
         /// </summary>
-        /// <param name="subList">
+        /// <param name="subGroup">
         /// The sub list.
         /// </param>
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public bool CanSort(IList<T> subList)
+        public bool CanSort(IList<T> subGroup)
         {
-            if (subList == null)
+            if (subGroup == null)
             {
                 return false;
             }
 
             var topSort = new PriorityTopologicalSort<T>();
-            topSort.SubLists = new List<IList<T>>(SubLists);
-            topSort.SubLists.Add(subList);
+            topSort.SubGroups = SubGroups.ConcatWith(subGroup);
 
             var result = topSort.Sort();
 
@@ -133,10 +160,10 @@ namespace Orc.Sort.TopologicalSort
         {
             var conflictLists = new List<IList<T>>();
 
-            for (var i = 1; i < SubLists.Count; i++)
+            for (var i = 1; i < SubGroups.Count(); i++)
             {
                 var topSort = new PriorityTopologicalSort<T>();
-                topSort.SubLists = SubLists.Take(i).ToList();
+                topSort.SubGroups = SubGroups.Take(i).ToList();
 
                 var sortedList = topSort.Sort();
 
@@ -145,12 +172,12 @@ namespace Orc.Sort.TopologicalSort
                     continue;
                 }
 
-                var subList = SubLists.Take(i).Reverse().ToList();
+                var subList = SubGroups.Take(i).Reverse().ToList();
 
                 for (var j = 1; j < subList.Count; j++)
                 {
                     topSort = new PriorityTopologicalSort<T>();
-                    topSort.SubLists = SubLists.Take(j).ToList();
+                    topSort.SubGroups = SubGroups.Take(j).ToList();
 
                     sortedList = topSort.Sort();
 
@@ -184,15 +211,13 @@ namespace Orc.Sort.TopologicalSort
             edgesFrom = new List<SortedSet<int>>();
             edgesInto = new List<SortedSet<int>>();
 
-            foreach (var yarn in SubLists)
+            foreach (var yarn in SubGroups)
             {
-                int next = 0;
-                int prev = 0;
-
-                for (int i = 0; i < yarn.Count; i++)
+                int next = -1;
+                int prev = -1;
+                
+                foreach (var node in yarn)
                 {
-                    T node = yarn[i];
-
                     if (!nodesDict.ContainsKey(node))
                     {
                         nodesDict.Add(node, nodesDict.Count);
@@ -203,7 +228,7 @@ namespace Orc.Sort.TopologicalSort
 
                     next = nodesDict[node];
 
-                    if (i > 0)
+                    if (prev >= 0)
                     {
                         edgesFrom[next].Add(prev);
                         edgesInto[prev].Add(next);
@@ -243,4 +268,18 @@ namespace Orc.Sort.TopologicalSort
 
         #endregion
     }
+
+    public static class Extensions
+    {
+        public static ReadOnlyCollection<T> AsReadOnly<T>(this IList<T> list)
+        {
+            return new ReadOnlyCollection<T>(list);
+        }
+
+        public static IEnumerable<T> ConcatWith<T>(this IEnumerable<T> coll, T elem)
+        {
+            return coll.Concat(new[] { elem });
+        }
+    }
 }
+

@@ -32,7 +32,7 @@
             var list2 = new List<string>();
 
             // Act
-            lw.SubLists.Add(list1);
+            lw.Add(list1);
             bool result = lw.CanSort(list2);
 
             // Assert
@@ -47,7 +47,7 @@
             var list1 = new List<string> { "A", "B", "C", };
 
             // Act
-            lw.SubLists.Add(list1);
+            lw.Add(list1);
             bool result = lw.CanSort(null);
 
             // Assert
@@ -77,7 +77,7 @@
             var list2 = new List<string> { "A", "D",      };
 
             // Act
-            lw.SubLists.Add(list1);
+            lw.Add(list1);
             bool result = lw.CanSort(list2);
 
             // Assert
@@ -94,8 +94,8 @@
             var list3 = new List<string> { "D", "A",      };
 
             // Act
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
+            lw.Add(list1);
+            lw.Add(list2);
             bool result = lw.CanSort(list3);
 
             // Assert
@@ -111,7 +111,7 @@
             var list2 = new List<string> { "C", "A",      };
 
             // Act
-            lw.SubLists.Add(list1);
+            lw.Add(list1);
             bool result = lw.CanSort(list2);
 
             // Assert
@@ -129,8 +129,8 @@
             var list2 = new List<string> {      "B",      "D", "E", };
 
             // Act
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
+            lw.Add(list1);
+            lw.Add(list2);
             var result = lw.Sort();
 
             // Assert
@@ -147,8 +147,8 @@
             var list3 = new List<string> { "D", "B", "C" };
 
             // Act
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
+            lw.Add(list1);
+            lw.Add(list2);
             bool result = lw.CanSort(list3);
 
             // Due to list1 and list2, C is before B (C <- A <- B).
@@ -174,12 +174,12 @@
             var list31 = new List<string> {                                              "J", "K", "L", };
 
             // Act
-            lw.SubLists.Add(list11);
-            lw.SubLists.Add(list21);
-            lw.SubLists.Add(list22);
-            lw.SubLists.Add(list23);
-            lw.SubLists.Add(list24);
-            lw.SubLists.Add(list31);
+            lw.Add(list11);
+            lw.Add(list21);
+            lw.Add(list22);
+            lw.Add(list23);
+            lw.Add(list24);
+            lw.Add(list31);
             var result = lw.Sort();
 
             // Assert
@@ -202,12 +202,12 @@
             var list5 = new List<string> {           "B",                     "L", "H",                };
             
             // Act
-            lw.SubLists.Add(list0);
-            lw.SubLists.Add(list1);
-            lw.SubLists.Add(list2);
-            lw.SubLists.Add(list3);
-            lw.SubLists.Add(list4);
-            lw.SubLists.Add(list5);
+            lw.Add(list0);
+            lw.Add(list1);
+            lw.Add(list2);
+            lw.Add(list3);
+            lw.Add(list4);
+            lw.Add(list5);
             var result = lw.Sort();
 
             // Assert
@@ -230,12 +230,12 @@
             var list24 = new List<string> {                "C",                "L", "F",                     "N", };
            
             // Act
-            lw.SubLists.Add(list11);
-            lw.SubLists.Add(list21);
-            lw.SubLists.Add(list22);
-            lw.SubLists.Add(list31);
-            lw.SubLists.Add(list23);
-            lw.SubLists.Add(list24);
+            lw.Add(list11);
+            lw.Add(list21);
+            lw.Add(list22);
+            lw.Add(list31);
+            lw.Add(list23);
+            lw.Add(list24);
             var result = lw.Sort();
 
             // Assert
@@ -257,11 +257,11 @@
             var list14 = new List<string> {                "G", "B",           };
 
             // Act
-            lw.SubLists.Add(list11);
-            lw.SubLists.Add(list21);
-            lw.SubLists.Add(list12);
-            lw.SubLists.Add(list13);
-            lw.SubLists.Add(list14);
+            lw.Add(list11);
+            lw.Add(list21);
+            lw.Add(list12);
+            lw.Add(list13);
+            lw.Add(list14);
             var result = lw.Sort();
 
             // Assert
@@ -284,12 +284,12 @@
             var list16 = new List<string> {                     "G", "B",      };
             
             // Act
-            lw.SubLists.Add(list11);
-            lw.SubLists.Add(list12);
-            lw.SubLists.Add(list13);
-            lw.SubLists.Add(list14);
-            lw.SubLists.Add(list15);
-            lw.SubLists.Add(list16);
+            lw.Add(list11);
+            lw.Add(list12);
+            lw.Add(list13);
+            lw.Add(list14);
+            lw.Add(list15);
+            lw.Add(list16);
             var result = lw.Sort();
             
             // Assert
@@ -310,10 +310,10 @@
             var list13 = new List<string> {           "E", "A",      };
 
             // Act
-            lw.SubLists.Add(list11);
-            lw.SubLists.Add(list21);
-            lw.SubLists.Add(list12);
-            lw.SubLists.Add(list13);
+            lw.Add(list11);
+            lw.Add(list21);
+            lw.Add(list12);
+            lw.Add(list13);
             var result = lw.Sort();
 
             // Assert
@@ -334,10 +334,10 @@
             var list14 = new List<string> {      "B", "C", "D", "E", };
 
             // Act
-            lw.SubLists.Add(list11);
-            lw.SubLists.Add(list12);
-            lw.SubLists.Add(list13);
-            lw.SubLists.Add(list14);
+            lw.Add(list11);
+            lw.Add(list12);
+            lw.Add(list13);
+            lw.Add(list14);
             var result = lw.Sort();
 
             // Assert
@@ -360,12 +360,12 @@
             var list16 = new List<string> { "B",           "A",                          };
 
             // Act
-            lw.SubLists.Add(list11);
-            lw.SubLists.Add(list12);
-            lw.SubLists.Add(list13);
-            lw.SubLists.Add(list14);
-            lw.SubLists.Add(list15);
-            lw.SubLists.Add(list16);
+            lw.Add(list11);
+            lw.Add(list12);
+            lw.Add(list13);
+            lw.Add(list14);
+            lw.Add(list15);
+            lw.Add(list16);
             var result = lw.Sort();
 
             // Assert
@@ -386,10 +386,10 @@
             var list14 = new List<string> { "B",      "A", };
 
             // Act
-            lw.SubLists.Add(list11);
-            lw.SubLists.Add(list12);
-            lw.SubLists.Add(list13);
-            lw.SubLists.Add(list14);
+            lw.Add(list11);
+            lw.Add(list12);
+            lw.Add(list13);
+            lw.Add(list14);
             var result = lw.Sort();
 
             // Assert
@@ -409,10 +409,10 @@
             var list14 = new List<string> {      "C",      "F", "A" };
 
             // Act
-            lw.SubLists.Add(list11);
-            lw.SubLists.Add(list12);
-            lw.SubLists.Add(list13);
-            lw.SubLists.Add(list14);
+            lw.Add(list11);
+            lw.Add(list12);
+            lw.Add(list13);
+            lw.Add(list14);
             var result = lw.Sort();
 
             // Assert
@@ -438,15 +438,15 @@
             var list26 = new List<string> {                                    "P", "K",                                         };
             var list27 = new List<string> {                               "Q", "P",                                              };
 
-            lw.SubLists.Add(list11);
-            lw.SubLists.Add(list21);
-            lw.SubLists.Add(list22);
-            lw.SubLists.Add(list23);
-            lw.SubLists.Add(list24);
-            lw.SubLists.Add(list25);
-            lw.SubLists.Add(list31);
-            lw.SubLists.Add(list26);
-            lw.SubLists.Add(list27);
+            lw.Add(list11);
+            lw.Add(list21);
+            lw.Add(list22);
+            lw.Add(list23);
+            lw.Add(list24);
+            lw.Add(list25);
+            lw.Add(list31);
+            lw.Add(list26);
+            lw.Add(list27);
             var result = lw.Sort();
 
             // Assert
@@ -473,16 +473,16 @@
             var list27 = new List<string> {                                         "R", "Q",                                              };
             var list28 = new List<string> {                                    "S", "R",                                                   };
             
-            lw.SubLists.Add(list11);
-            lw.SubLists.Add(list21);
-            lw.SubLists.Add(list22);
-            lw.SubLists.Add(list23);
-            lw.SubLists.Add(list24);
-            lw.SubLists.Add(list25);
-            lw.SubLists.Add(list31);
-            lw.SubLists.Add(list26);
-            lw.SubLists.Add(list27);
-            lw.SubLists.Add(list28);
+            lw.Add(list11);
+            lw.Add(list21);
+            lw.Add(list22);
+            lw.Add(list23);
+            lw.Add(list24);
+            lw.Add(list25);
+            lw.Add(list31);
+            lw.Add(list26);
+            lw.Add(list27);
+            lw.Add(list28);
             var result = lw.Sort();
 
             // Assert
