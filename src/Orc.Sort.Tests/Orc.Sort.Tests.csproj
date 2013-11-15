@@ -62,8 +62,6 @@
     <Compile Include="TemplateSort\TemplateSortTests.cs" />
     <Compile Include="TimSort\PerformanceTests.cs" />
     <Compile Include="TimSort\PerformanceTimer.cs" />
-    <Compile Include="TopologicalSort\PriorityTopologicalSortTests.cs" />
-    <Compile Include="TopologicalSort\TopologicalSortTestExtensions.cs" />
     <Compile Include="TopologicalSort\TopologicalSortTests.cs" />
   </ItemGroup>
   <ItemGroup />
