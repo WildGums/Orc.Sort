@@ -70,3 +70,7 @@ This sort algorithm will sort a list based on the values of another list.
     Result = A, B, B, B, C, C, D, L, N, P, E, E
 
 If there are items in the list to be sorted that are not in the template list, they simply get appended to the end of the result in the order they are found.
+
+## Roadmap
+
+- Add randomising of collection (total opposite to sorting :)
