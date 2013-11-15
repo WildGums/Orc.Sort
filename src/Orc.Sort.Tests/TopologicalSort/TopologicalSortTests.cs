@@ -10,9 +10,9 @@
 
     [TestFixture(false)]
     [TestFixture(true)]
-    public class PriorityTopologicalSortTests
+    public class TopologicalSortTests
     {
-        public PriorityTopologicalSortTests(bool usesPriority)
+        public TopologicalSortTests(bool usesPriority)
         {
             UsesPriority = usesPriority;
         }
