@@ -56,11 +56,11 @@ namespace Orc.Sort.TopologicalSort
         /// <summary>
         /// Initializes a new instance of the <see cref="PriorityTopologicalSort{T}"/> class.
         /// </summary>
-        public TopologicalSort()
+        public TopologicalSort(bool usesPriority=false, bool usesTracking=false)
         {
             Sequences = new List<IEnumerable<T>>();
-            UsesPriority = false;
-            UsesTracking = false;
+            UsesPriority = usesPriority;
+            UsesTracking = usesTracking;
         }
 
         public TopologicalSort(IEnumerable<IEnumerable<T>> sequences)
@@ -219,30 +219,44 @@ namespace Orc.Sort.TopologicalSort
 
             foreach (var sequence in Sequences)
             {
-                int next = -1;
-                int prev = -1;
-
-                foreach (var node in sequence)
+                if (sequence.Count() == 0)
                 {
-                    if (!nodesDict.ContainsKey(node))
-                    {
-                        nodesDict.Add(node, nodesDict.Count);
-                        nodesList.Add(node);
-                        edgesFrom.Add(new HashSet<int>());
-                        edgesInto.Add(new HashSet<int>());
-                    }
+                    continue;
+                }
 
-                    next = nodesDict[node];
+                int next = 0;
+                int prev = NodeKey(sequence.First());
 
-                    if (prev >= 0)
-                    {
-                        edgesFrom[next].Add(prev);
-                        edgesInto[prev].Add(next);
-                    }
+                foreach (var node in sequence.Skip(1))
+                {
+                    next = NodeKey(node);
+
+                    edgesFrom[next].Add(prev);
+                    edgesInto[prev].Add(next);
 
                     prev = next;
                 }
             }
+        }
+
+        /// <summary>
+        /// The node key.
+        /// </summary>
+        private int NodeKey(T node)
+        {
+            int key;
+
+            if (!nodesDict.TryGetValue(node, out key))
+            {
+                key = nodesDict.Count;
+
+                nodesDict.Add(node, key);
+                nodesList.Add(node);
+                edgesFrom.Add(new HashSet<int>());
+                edgesInto.Add(new HashSet<int>());
+            }
+
+            return key;
         }
 
         /// <summary>

@@ -1,19 +1,29 @@
 ﻿namespace Orc.Sort.Tests.TopologicalSort
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using NUnit.Framework;
 
     using Orc.Sort.TopologicalSort;
 
-    [TestFixture]
+    [TestFixture(false)]
+    [TestFixture(true)]
     public class PriorityTopologicalSortTests
     {
+        public PriorityTopologicalSortTests(bool usesPriority)
+        {
+            UsesPriority = usesPriority;
+        }
+
+        public bool UsesPriority { get; protected set; }
+
         [Test]
         public void CanSort_FirstSequenceToBeIncluded_ReturnsTrue()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
             var seq1 = new List<string> { "A", "B", "C", };
 
             // Act
@@ -27,7 +37,7 @@
         public void CanSort_EmptySequence_ReturnsTrue()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
             var seq1 = new List<string> { "A", "B", "C", };
             var seq2 = new List<string>();
 
@@ -43,7 +53,7 @@
         public void CanSort_NullSequence_ReturnsFalse()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
             var seq1 = new List<string> { "A", "B", "C", };
 
             // Act
@@ -58,7 +68,7 @@
         public void CanSort_LoopInSequenceIsNOTWeaveable_ReturnsFalse()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
             var seq1 = new List<string> { "A", "B", "C", "A", };
 
             // Act
@@ -72,7 +82,7 @@
         public void CanSort_SecondSequenceIsWeaveable_ReturnsTrue()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
             var seq1 = new List<string> { "A", "B", "C", };
             var seq2 = new List<string> { "A", "D",      };
 
@@ -88,7 +98,7 @@
         public void CanSort_ThirdSequenceIsNOTWeaveable_ReturnsFalse()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
             var seq1 = new List<string> { "A", "B",      };
             var seq2 = new List<string> { "A", "C", "D", };
             var seq3 = new List<string> { "D", "A",      };
@@ -106,7 +116,7 @@
         public void CanSort_SecondSequenceIsNOTWeaveable_ReturnsFalse()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
             var seq1 = new List<string> { "A", "B", "C", };
             var seq2 = new List<string> { "C", "A",      };
 
@@ -122,7 +132,7 @@
         public void CanSort_IndirectLoop_ReturnsFalse_RdW()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
             var seq1 = new List<string> { "A", "B" };
             var seq2 = new List<string> { "C", "A" };
             var seq3 = new List<string> { "D", "B", "C" };
@@ -143,26 +153,26 @@
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
-            var sort0 = new List<string> { "A", "B", "C", "D", "E", };
-            var seq1 = new List<string> { "A", "B", "C",           };
-            var seq2 = new List<string> {      "B",      "D", "E", };
+            var sorted = new List<string> { "A", "B", "C", "D", "E", };
+            var seq11 = new List<string> { "A", "B", "C",           };
+            var seq12 = new List<string> {      "B",      "D", "E", };
 
             // Act
-            tp.Add(seq1);
-            tp.Add(seq2);
+            tp.Add(seq11);
+            tp.Add(seq12);
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sort0, result );
+            AssertOrdering(sorted, result, tp.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence2()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
             var sorted = new List<string> { "A", "E", "B", "C", "D", "F", "G", "I", "H", "J", "K", "L", };
 
@@ -183,42 +193,42 @@
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sorted, result);
+            AssertOrdering(sorted, result, tp.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence3()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
-            var sort0 = new List<string> { "A", "E", "B", "C", "D", "F", "G", "L", "H", "I", "J", "K", };
+            var sorted = new List<string> { "A", "E", "B", "C", "D", "F", "G", "L", "H", "I", "J", "K", };
 
-            var seq0 = new List<string> { "A",                                                        };
-            var seq1 = new List<string> {           "B", "C", "D",                                    };
-            var seq2 = new List<string> {      "E", "B",           "F", "G",                          };
-            var seq3 = new List<string> {                "C",           "G",      "H",                };
-            var seq4 = new List<string> {                                              "I", "J", "K", };
-            var seq5 = new List<string> {           "B",                     "L", "H",                };
+            var seq11 = new List<string> { "A",                                                        };
+            var seq21 = new List<string> {           "B", "C", "D",                                    };
+            var seq22 = new List<string> {      "E", "B",           "F", "G",                          };
+            var seq23 = new List<string> {                "C",           "G",      "H",                };
+            var seq31 = new List<string> {                                              "I", "J", "K", };
+            var seq24 = new List<string> {           "B",                     "L", "H",                };
             
             // Act
-            tp.Add(seq0);
-            tp.Add(seq1);
-            tp.Add(seq2);
-            tp.Add(seq3);
-            tp.Add(seq4);
-            tp.Add(seq5);
+            tp.Add(seq11);
+            tp.Add(seq21);
+            tp.Add(seq22);
+            tp.Add(seq23);
+            tp.Add(seq31);
+            tp.Add(seq24);
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sort0, result);
+            AssertOrdering(sorted, result, tp.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence4()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
             var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "K", "L", "F", "G", "H", "I", "M", "N", };
 
@@ -239,14 +249,14 @@
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sorted, result);
+            AssertOrdering(sorted, result, tp.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence5()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
             var sorted = new List<string> { "A", "E", "F", "G", "B", "C", "D", };
 
@@ -265,14 +275,14 @@
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sorted, result);
+            AssertOrdering(sorted, result, tp.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence6()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
             var sorted = new List<string> { "A", "C", "E", "F", "G", "B", "D", };
 
@@ -293,14 +303,14 @@
             var result = tp.Sort();
             
             // Assert
-            Assert.AreEqual(sorted, result);
+            AssertOrdering(sorted, result, tp.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence7()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
             var sorted = new List<string> { "C", "D", "E", "A", "B", };
 
@@ -317,14 +327,14 @@
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sorted, result);
+            AssertOrdering(sorted, result, tp.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence8()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
             var sorted = new List<string> { "A", "B", "C", "D", "E", };
 
@@ -341,14 +351,14 @@
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sorted, result);
+            AssertOrdering(sorted, result, tp.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequenceRdW()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
             var sorted = new List<string> { "B", "G", "I", "A", "C", "D", "E", "F", "H", };
 
@@ -369,14 +379,14 @@
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sorted, result);
+            AssertOrdering(sorted, result, tp.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequenceRdW2()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
             var sorted = new List<string> { "B", "C", "A", };
 
@@ -393,14 +403,14 @@
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sorted, result);
+            AssertOrdering(sorted, result, tp.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequenceRdW3()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
             var sorted = new List<string> { "B", "C", "E", "F", "A", "D", };
             var seq11 = new List<string> {                     "A",      };
@@ -416,7 +426,7 @@
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sorted, result);
+            AssertOrdering(sorted, result, tp.Sequences);
         }
 
 
@@ -424,7 +434,7 @@
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence_M1()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
             var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "Q", "P", "K", "L", "F", "G", "H", "I", "M", "N", "O", };
 
@@ -450,16 +460,16 @@
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sorted, result);
+            AssertOrdering(sorted, result, tp.Sequences);
         }
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence_M2()
         {
             // Arrange
-            var tp = new PriorityTopologicalSort<string>();
+            var tp = CreateSort<string>();
 
 
-            
+
             var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "P", "S", "R", "Q", "K", "L", "F", "G", "H", "I", "M", "N", "O", };
 
             var seq11 = new List<string> { "A",                                                                                           };
@@ -486,7 +496,59 @@
             var result = tp.Sort();
 
             // Assert
-            Assert.AreEqual(sorted, result);
+            AssertOrdering(sorted, result, tp.Sequences);
+        }
+
+        public void AssertOrdering<T>(IEnumerable<T> sorted, IEnumerable<T> result, IEnumerable<IEnumerable<T>> sequences)
+        {
+            if (UsesPriority)
+            {
+                Assert.AreEqual(sorted, result);
+            }
+            else
+            {
+                var pairs = sequences.SelectMany(s => s.Zip(s.Skip(1), (i1, i2) => new Tuple<T, T>(i1, i2)));
+                foreach (var pair in pairs)
+                {
+                    Assert.True(AreInOrder(result, pair.Item1, pair.Item2));
+                }
+            }
+        }
+
+        public static bool AreInOrder<T>(IEnumerable<T> result, T item1, T item2)
+        {
+            var result_list = ((result as IList<T>) ?? result.ToList()).AsReadOnly();
+
+            var index1 = result_list.IndexOf(item1);
+            var index2 = result_list.IndexOf(item2);
+
+            var error_flag = false;
+            var error_item = default(T);
+            var param_name = "";
+
+            if (index2 == -1)
+            {
+                error_item = item2;
+                param_name ="item2";
+            }
+            if (index1 == -1)
+            {
+                error_item = item1;
+                param_name ="item1";
+            }
+            if (error_flag)
+            {
+                var items_list = String.Join(", ", result.Select(o => o.ToString()));
+                var error_text = String.Format("The item: [{0}] was not found in the collection: [{1}]", error_item, items_list);
+                throw new ArgumentException(error_text, param_name);
+            }
+
+            return (index1 < index2);
+        }
+
+        public TopologicalSort<T> CreateSort<T>() where T : IEquatable<T>
+        {
+            return new TopologicalSort<T>(UsesPriority);
         }
     }
 }
