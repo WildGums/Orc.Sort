@@ -22,484 +22,449 @@
         [Test]
         public void CanSort_FirstSequenceToBeIncluded_ReturnsTrue()
         {
-            // Arrange
-            var tp = CreateSort<string>();
-            var seq1 = new List<string> { "A", "B", "C", };
+            var sort = CreateSort<string>();
 
-            // Act
-            bool result = tp.CanSort(seq1);
+            var seq_11 = new List<string> { "A", "B", "C", };
 
-            // Assert
+            bool result = sort.CanSort(seq_11);
+
             Assert.True(result);
         }
 
         [Test]
         public void CanSort_EmptySequence_ReturnsTrue()
         {
-            // Arrange
-            var tp = CreateSort<string>();
-            var seq1 = new List<string> { "A", "B", "C", };
-            var seq2 = new List<string>();
+            var sort = CreateSort<string>();
 
-            // Act
-            tp.Add(seq1);
-            bool result = tp.CanSort(seq2);
+            var seq_11 = new List<string> { "A", "B", "C", };
+            var seq_21 = new List<string>();
 
-            // Assert
+            sort.Add(seq_11);
+
+            bool result = sort.CanSort(seq_21);
+
             Assert.True(result);
         }
 
         [Test]
         public void CanSort_NullSequence_ReturnsFalse()
         {
-            // Arrange
-            var tp = CreateSort<string>();
-            var seq1 = new List<string> { "A", "B", "C", };
+            var sort = CreateSort<string>();
 
-            // Act
-            tp.Add(seq1);
-            bool result = tp.CanSort(null);
+            var seq_11 = new List<string> { "A", "B", "C", };
 
-            // Assert
+            sort.Add(seq_11);
+
+            bool result = sort.CanSort(null);
+
             Assert.False(result);
         }
 
         [Test]
         public void CanSort_LoopInSequenceIsNOTWeaveable_ReturnsFalse()
         {
-            // Arrange
-            var tp = CreateSort<string>();
-            var seq1 = new List<string> { "A", "B", "C", "A", };
+            var sort = CreateSort<string>();
 
-            // Act
-            bool result = tp.CanSort(seq1);
+            var seq_11 = new List<string> { "A", "B", "C", "A", };
 
-            // Assert
+            bool result = sort.CanSort(seq_11);
+
             Assert.False(result);
         }
 
         [Test]
         public void CanSort_SecondSequenceIsWeaveable_ReturnsTrue()
         {
-            // Arrange
-            var tp = CreateSort<string>();
-            var seq1 = new List<string> { "A", "B", "C", };
-            var seq2 = new List<string> { "A", "D",      };
+            var sort = CreateSort<string>();
 
-            // Act
-            tp.Add(seq1);
-            bool result = tp.CanSort(seq2);
+            var seq_11 = new List<string> { "A", "B", "C", };
+            var seq_12 = new List<string> { "A", "D",      };
 
-            // Assert
+            sort.Add(seq_11);
+
+            bool result = sort.CanSort(seq_12);
+
             Assert.True(result);
         }
 
         [Test]
         public void CanSort_ThirdSequenceIsNOTWeaveable_ReturnsFalse()
         {
-            // Arrange
-            var tp = CreateSort<string>();
-            var seq1 = new List<string> { "A", "B",      };
-            var seq2 = new List<string> { "A", "C", "D", };
-            var seq3 = new List<string> { "D", "A",      };
+            var sort = CreateSort<string>();
 
-            // Act
-            tp.Add(seq1);
-            tp.Add(seq2);
-            bool result = tp.CanSort(seq3);
+            var seq_11 = new List<string> { "A", "B",      };
+            var seq_12 = new List<string> { "A", "C", "D", };
+            var seq_13 = new List<string> { "D", "A",      };
 
-            // Assert
+            sort.Add(seq_11);
+            sort.Add(seq_12);
+
+            bool result = sort.CanSort(seq_13);
+
             Assert.False(result);
         }
 
         [Test]
         public void CanSort_SecondSequenceIsNOTWeaveable_ReturnsFalse()
         {
-            // Arrange
-            var tp = CreateSort<string>();
-            var seq1 = new List<string> { "A", "B", "C", };
-            var seq2 = new List<string> { "C", "A",      };
+            var sort = CreateSort<string>();
 
-            // Act
-            tp.Add(seq1);
-            bool result = tp.CanSort(seq2);
+            var seq_11 = new List<string> { "A", "B", "C", };
+            var seq_12 = new List<string> { "C", "A",      };
 
-            // Assert
+            sort.Add(seq_11);
+
+            bool result = sort.CanSort(seq_12);
+
             Assert.False(result);
         }
 
         [Test]
         public void CanSort_IndirectLoop_ReturnsFalse_RdW()
         {
-            // Arrange
-            var tp = CreateSort<string>();
-            var seq1 = new List<string> { "A", "B" };
-            var seq2 = new List<string> { "C", "A" };
-            var seq3 = new List<string> { "D", "B", "C" };
+            var sort = CreateSort<string>();
 
-            // Act
-            tp.Add(seq1);
-            tp.Add(seq2);
-            bool result = tp.CanSort(seq3);
+            var seq_11 = new List<string> { "A", "B" };
+            var seq_12 = new List<string> { "C", "A" };
+            var seq_13 = new List<string> { "D", "B", "C" };
 
-            // Due to seq1 and seq2, C is before B (C <- A <- B).
-            // seq3 therefore introduces a conflict (C -> B).
+            sort.Add(seq_11);
+            sort.Add(seq_12);
 
-            // Assert
+            bool result = sort.CanSort(seq_13);
+
+            // Due to seq_11 and seq_12, C is before B (C <- A <- B).
+            // Therefore, seq_13 introduces a conflict (C -> B).
+
             Assert.False(result);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "A", "B", "C", "D", "E", };
-            var seq11 = new List<string> { "A", "B", "C",           };
-            var seq12 = new List<string> {      "B",      "D", "E", };
 
-            // Act
-            tp.Add(seq11);
-            tp.Add(seq12);
-            var result = tp.Sort();
+            var seq_11 = new List<string> { "A", "B", "C",           };
+            var seq_12 = new List<string> {      "B",      "D", "E", };
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            sort.Add(seq_11);
+            sort.Add(seq_12);
+
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence2()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "A", "E", "B", "C", "D", "F", "G", "I", "H", "J", "K", "L", };
 
-            var seq11 = new List<string> { "A",                                                        };
-            var seq21 = new List<string> {           "B", "C", "D",                                    };
-            var seq22 = new List<string> {      "E", "B",           "F", "G",                          };
-            var seq23 = new List<string> {                "C",           "G",      "H",                };
-            var seq24 = new List<string> {           "B",                     "I", "H",                };
-            var seq31 = new List<string> {                                              "J", "K", "L", };
+            var seq_11 = new List<string> { "A",                                                        };
+            var seq_21 = new List<string> {           "B", "C", "D",                                    };
+            var seq_22 = new List<string> {      "E", "B",           "F", "G",                          };
+            var seq_23 = new List<string> {                "C",           "G",      "H",                };
+            var seq_24 = new List<string> {           "B",                     "I", "H",                };
+            var seq_31 = new List<string> {                                              "J", "K", "L", };
 
-            // Act
-            tp.Add(seq11);
-            tp.Add(seq21);
-            tp.Add(seq22);
-            tp.Add(seq23);
-            tp.Add(seq24);
-            tp.Add(seq31);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_21);
+            sort.Add(seq_22);
+            sort.Add(seq_23);
+            sort.Add(seq_24);
+            sort.Add(seq_31);
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence3()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "A", "E", "B", "C", "D", "F", "G", "L", "H", "I", "J", "K", };
 
-            var seq11 = new List<string> { "A",                                                        };
-            var seq21 = new List<string> {           "B", "C", "D",                                    };
-            var seq22 = new List<string> {      "E", "B",           "F", "G",                          };
-            var seq23 = new List<string> {                "C",           "G",      "H",                };
-            var seq31 = new List<string> {                                              "I", "J", "K", };
-            var seq24 = new List<string> {           "B",                     "L", "H",                };
+            var seq_11 = new List<string> { "A",                                                        };
+            var seq_21 = new List<string> {           "B", "C", "D",                                    };
+            var seq_22 = new List<string> {      "E", "B",           "F", "G",                          };
+            var seq_23 = new List<string> {                "C",           "G",      "H",                };
+            var seq_31 = new List<string> {                                              "I", "J", "K", };
+            var seq_24 = new List<string> {           "B",                     "L", "H",                };
             
-            // Act
-            tp.Add(seq11);
-            tp.Add(seq21);
-            tp.Add(seq22);
-            tp.Add(seq23);
-            tp.Add(seq31);
-            tp.Add(seq24);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_21);
+            sort.Add(seq_22);
+            sort.Add(seq_23);
+            sort.Add(seq_31);
+            sort.Add(seq_24);
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence4()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "K", "L", "F", "G", "H", "I", "M", "N", };
 
-            var seq11 = new List<string> { "A",                                                                  };
-            var seq21 = new List<string> {           "B", "C", "D",                                              };
-            var seq22 = new List<string> {           "B",           "E",           "F",                          };
-            var seq31 = new List<string> {                                              "G", "H", "I",           };
-            var seq23 = new List<string> {      "J", "B",                "K", "L",                     "M",      };
-            var seq24 = new List<string> {                "C",                "L", "F",                     "N", };
+            var seq_11 = new List<string> { "A",                                                                  };
+            var seq_21 = new List<string> {           "B", "C", "D",                                              };
+            var seq_22 = new List<string> {           "B",           "E",           "F",                          };
+            var seq_31 = new List<string> {                                              "G", "H", "I",           };
+            var seq_23 = new List<string> {      "J", "B",                "K", "L",                     "M",      };
+            var seq_24 = new List<string> {                "C",                "L", "F",                     "N", };
            
-            // Act
-            tp.Add(seq11);
-            tp.Add(seq21);
-            tp.Add(seq22);
-            tp.Add(seq31);
-            tp.Add(seq23);
-            tp.Add(seq24);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_21);
+            sort.Add(seq_22);
+            sort.Add(seq_31);
+            sort.Add(seq_23);
+            sort.Add(seq_24);
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence5()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "A", "E", "F", "G", "B", "C", "D", };
 
-            var seq11 = new List<string> { "A",                "B",           };
-            var seq21 = new List<string> {                          "C", "D", };
-            var seq12 = new List<string> {      "E", "F",                     };
-            var seq13 = new List<string> {           "F", "G",                };
-            var seq14 = new List<string> {                "G", "B",           };
+            var seq_11 = new List<string> { "A",                "B",           };
+            var seq_21 = new List<string> {                          "C", "D", };
+            var seq_12 = new List<string> {      "E", "F",                     };
+            var seq_13 = new List<string> {           "F", "G",                };
+            var seq_14 = new List<string> {                "G", "B",           };
 
-            // Act
-            tp.Add(seq11);
-            tp.Add(seq21);
-            tp.Add(seq12);
-            tp.Add(seq13);
-            tp.Add(seq14);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_21);
+            sort.Add(seq_12);
+            sort.Add(seq_13);
+            sort.Add(seq_14);
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence6()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "A", "C", "E", "F", "G", "B", "D", };
 
-            var seq11 = new List<string> { "A",                     "B",      };
-            var seq12 = new List<string> {      "C",                     "D", };
-            var seq13 = new List<string> {           "E", "F",                };
-            var seq14 = new List<string> {                "F", "G",           };
-            var seq15 = new List<string> {      "C",                "B",      };
-            var seq16 = new List<string> {                     "G", "B",      };
+            var seq_11 = new List<string> { "A",                     "B",      };
+            var seq_12 = new List<string> {      "C",                     "D", };
+            var seq_13 = new List<string> {           "E", "F",                };
+            var seq_14 = new List<string> {                "F", "G",           };
+            var seq_15 = new List<string> {      "C",                "B",      };
+            var seq_16 = new List<string> {                     "G", "B",      };
             
-            // Act
-            tp.Add(seq11);
-            tp.Add(seq12);
-            tp.Add(seq13);
-            tp.Add(seq14);
-            tp.Add(seq15);
-            tp.Add(seq16);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_12);
+            sort.Add(seq_13);
+            sort.Add(seq_14);
+            sort.Add(seq_15);
+            sort.Add(seq_16);
+
+            var result = sort.Sort();
             
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence7()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "C", "D", "E", "A", "B", };
 
-            var seq11 = new List<string> {                "A",      };
-            var seq21 = new List<string> {                     "B", };
-            var seq12 = new List<string> { "C", "D",      "A",      };
-            var seq13 = new List<string> {           "E", "A",      };
+            var seq_11 = new List<string> {                "A",      };
+            var seq_21 = new List<string> {                     "B", };
+            var seq_12 = new List<string> { "C", "D",      "A",      };
+            var seq_13 = new List<string> {           "E", "A",      };
 
-            // Act
-            tp.Add(seq11);
-            tp.Add(seq21);
-            tp.Add(seq12);
-            tp.Add(seq13);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_21);
+            sort.Add(seq_12);
+            sort.Add(seq_13);
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence8()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "A", "B", "C", "D", "E", };
 
-            var seq11 = new List<string> { "A",                     };
-            var seq12 = new List<string> { "A", "B",                };
-            var seq13 = new List<string> { "A", "B", "C",           };
-            var seq14 = new List<string> {      "B", "C", "D", "E", };
+            var seq_11 = new List<string> { "A",                     };
+            var seq_12 = new List<string> { "A", "B",                };
+            var seq_13 = new List<string> { "A", "B", "C",           };
+            var seq_14 = new List<string> {      "B", "C", "D", "E", };
 
-            // Act
-            tp.Add(seq11);
-            tp.Add(seq12);
-            tp.Add(seq13);
-            tp.Add(seq14);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_12);
+            sort.Add(seq_13);
+            sort.Add(seq_14);
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequenceRdW()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "B", "G", "I", "A", "C", "D", "E", "F", "H", };
 
-            var seq11 = new List<string> {                "A",                          };
-            var seq12 = new List<string> { "B",                "C", "D",                };
-            var seq13 = new List<string> {                               "E", "F",      };
-            var seq14 = new List<string> {      "G",      "A",                     "H", };
-            var seq15 = new List<string> {           "I", "A",                          };
-            var seq16 = new List<string> { "B",           "A",                          };
+            var seq_11 = new List<string> {                "A",                          };
+            var seq_12 = new List<string> { "B",                "C", "D",                };
+            var seq_13 = new List<string> {                               "E", "F",      };
+            var seq_14 = new List<string> {      "G",      "A",                     "H", };
+            var seq_15 = new List<string> {           "I", "A",                          };
+            var seq_16 = new List<string> { "B",           "A",                          };
 
-            // Act
-            tp.Add(seq11);
-            tp.Add(seq12);
-            tp.Add(seq13);
-            tp.Add(seq14);
-            tp.Add(seq15);
-            tp.Add(seq16);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_12);
+            sort.Add(seq_13);
+            sort.Add(seq_14);
+            sort.Add(seq_15);
+            sort.Add(seq_16);
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequenceRdW2()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "B", "C", "A", };
 
-            var seq11 = new List<string> {           "A", };
-            var seq12 = new List<string> { "B",           };
-            var seq13 = new List<string> {      "C", "A", };
-            var seq14 = new List<string> { "B",      "A", };
+            var seq_11 = new List<string> {           "A", };
+            var seq_12 = new List<string> { "B",           };
+            var seq_13 = new List<string> {      "C", "A", };
+            var seq_14 = new List<string> { "B",      "A", };
 
-            // Act
-            tp.Add(seq11);
-            tp.Add(seq12);
-            tp.Add(seq13);
-            tp.Add(seq14);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_12);
+            sort.Add(seq_13);
+            sort.Add(seq_14);
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequenceRdW3()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "B", "C", "E", "F", "A", "D", };
-            var seq11 = new List<string> {                     "A",      };
-            var seq12 = new List<string> { "B", "C",                "D", };
-            var seq13 = new List<string> {           "E",      "A",      };
-            var seq14 = new List<string> {      "C",      "F", "A" };
+            var seq_11 = new List<string> {                     "A",      };
+            var seq_12 = new List<string> { "B", "C",                "D", };
+            var seq_13 = new List<string> {           "E",      "A",      };
+            var seq_14 = new List<string> {      "C",      "F", "A" };
 
-            // Act
-            tp.Add(seq11);
-            tp.Add(seq12);
-            tp.Add(seq13);
-            tp.Add(seq14);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_12);
+            sort.Add(seq_13);
+            sort.Add(seq_14);
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
 
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence_M1()
         {
-            // Arrange
-            var tp = CreateSort<string>();
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "Q", "P", "K", "L", "F", "G", "H", "I", "M", "N", "O", };
 
-            var seq11 = new List<string> { "A",                                                                                 };
-            var seq21 = new List<string> {           "B", "C", "D",                                                             };
-            var seq22 = new List<string> {           "B",           "E",                     "F",                               };
-            var seq23 = new List<string> {                                                        "G", "H", "I",                };
-            var seq24 = new List<string> {      "J", "B",                          "K", "L",                     "M",           };
-            var seq25 = new List<string> {                "C",                          "L", "F",                     "N",      };
-            var seq31 = new List<string> {                                                                                 "O", };
-            var seq26 = new List<string> {                                    "P", "K",                                         };
-            var seq27 = new List<string> {                               "Q", "P",                                              };
+            var seq_11 = new List<string> { "A",                                                                                 };
+            var seq_21 = new List<string> {           "B", "C", "D",                                                             };
+            var seq_22 = new List<string> {           "B",           "E",                     "F",                               };
+            var seq_23 = new List<string> {                                                        "G", "H", "I",                };
+            var seq_24 = new List<string> {      "J", "B",                          "K", "L",                     "M",           };
+            var seq_25 = new List<string> {                "C",                          "L", "F",                     "N",      };
+            var seq_31 = new List<string> {                                                                                 "O", };
+            var seq_26 = new List<string> {                                    "P", "K",                                         };
+            var seq_27 = new List<string> {                               "Q", "P",                                              };
 
-            tp.Add(seq11);
-            tp.Add(seq21);
-            tp.Add(seq22);
-            tp.Add(seq23);
-            tp.Add(seq24);
-            tp.Add(seq25);
-            tp.Add(seq31);
-            tp.Add(seq26);
-            tp.Add(seq27);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_21);
+            sort.Add(seq_22);
+            sort.Add(seq_23);
+            sort.Add(seq_24);
+            sort.Add(seq_25);
+            sort.Add(seq_31);
+            sort.Add(seq_26);
+            sort.Add(seq_27);
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
         [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence_M2()
         {
-            // Arrange
-            var tp = CreateSort<string>();
-
-
+            var sort = CreateSort<string>();
 
             var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "P", "S", "R", "Q", "K", "L", "F", "G", "H", "I", "M", "N", "O", };
 
-            var seq11 = new List<string> { "A",                                                                                           };
-            var seq21 = new List<string> {           "B", "C", "D",                                                                       };
-            var seq22 = new List<string> {           "B",           "E",                               "F",                               };
-            var seq23 = new List<string> {                                                                  "G", "H", "I",                };
-            var seq24 = new List<string> {      "J", "B",                                    "K", "L",                     "M",           };
-            var seq25 = new List<string> {                "C",                                    "L", "F",                     "N",      };
-            var seq31 = new List<string> {                                                                                           "O", };
-            var seq26 = new List<string> {                               "P",           "Q", "K",                                         };
-            var seq27 = new List<string> {                                         "R", "Q",                                              };
-            var seq28 = new List<string> {                                    "S", "R",                                                   };
+            var seq_11 = new List<string> { "A",                                                                                           };
+            var seq_21 = new List<string> {           "B", "C", "D",                                                                       };
+            var seq_22 = new List<string> {           "B",           "E",                               "F",                               };
+            var seq_23 = new List<string> {                                                                  "G", "H", "I",                };
+            var seq_24 = new List<string> {      "J", "B",                                    "K", "L",                     "M",           };
+            var seq_25 = new List<string> {                "C",                                    "L", "F",                     "N",      };
+            var seq_31 = new List<string> {                                                                                           "O", };
+            var seq_26 = new List<string> {                               "P",           "Q", "K",                                         };
+            var seq_27 = new List<string> {                                         "R", "Q",                                              };
+            var seq_28 = new List<string> {                                    "S", "R",                                                   };
             
-            tp.Add(seq11);
-            tp.Add(seq21);
-            tp.Add(seq22);
-            tp.Add(seq23);
-            tp.Add(seq24);
-            tp.Add(seq25);
-            tp.Add(seq31);
-            tp.Add(seq26);
-            tp.Add(seq27);
-            tp.Add(seq28);
-            var result = tp.Sort();
+            sort.Add(seq_11);
+            sort.Add(seq_21);
+            sort.Add(seq_22);
+            sort.Add(seq_23);
+            sort.Add(seq_24);
+            sort.Add(seq_25);
+            sort.Add(seq_31);
+            sort.Add(seq_26);
+            sort.Add(seq_27);
+            sort.Add(seq_28);
 
-            // Assert
-            AssertOrdering(sorted, result, tp.Sequences);
+            var result = sort.Sort();
+
+            AssertOrdering(sorted, result, sort.Sequences);
         }
 
-        public void AssertOrdering<T>(IEnumerable<T> sorted, IEnumerable<T> result, IEnumerable<IEnumerable<T>> sequences)
+        public void AssertOrdering<T>(IEnumerable<T> sorted, IEnumerable<T> result, IEnumerable<IEnumerable<T>> seq_uences)
         {
             if (UsesPriority)
             {
@@ -507,7 +472,7 @@
             }
             else
             {
-                var pairs = sequences.SelectMany(s => s.Zip(s.Skip(1), (i1, i2) => new Tuple<T, T>(i1, i2)));
+                var pairs = seq_uences.SelectMany(s => s.Zip(s.Skip(1), (i1, i2) => new Tuple<T, T>(i1, i2)));
                 foreach (var pair in pairs)
                 {
                     Assert.True(AreInOrder(result, pair.Item1, pair.Item2));
