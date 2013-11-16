@@ -99,14 +99,14 @@
         public void EmptyCollectionTest()
         {
             ICollection<string> c = new List<string>();
-            var r = c.OrderBy2(x => x, template1);
+            var r = c.OrderBy2(template1, x => x);
             Assert.IsEmpty(r);
         }
 
         [Test]
         public void EmptyTemplateCollectionTest()
         {
-            var r = collection1.OrderBy2(x => x, new List<string>());
+            var r = collection1.OrderBy2(new List<string>(), x => x);
             Assert.That(r, Is.EquivalentTo(collection1));
         }
 
@@ -114,14 +114,14 @@
         public void EmptyBothCollectionsTest()
         {
             ICollection<string> c = new List<string>();
-            var r = c.OrderBy2(x => x, new List<string>());
+            var r = c.OrderBy2(new List<string>(), x => x);
             Assert.IsEmpty(r);
         }
 
         [Test]
         public void FirstExampleTest()
         {
-            var r = collection1.OrderBy2(x => x, template1);
+            var r = collection1.OrderBy2(template1, x => x);
 
             Assert.That(r, Is.EquivalentTo(expected1));
         }
@@ -129,7 +129,7 @@
         [Test]
         public void SecondExampleTest()
         {
-            var r = collection2.OrderBy2(x => x, template2);
+            var r = collection2.OrderBy2(template2, x => x);
 
             Assert.That(r, Is.EquivalentTo(expected2));
         }
@@ -137,7 +137,7 @@
         [Test]
         public void IntsExampleTest()
         {
-            var r = collection3.OrderBy2(x => x, template3);
+            var r = collection3.OrderBy2(template3, x => x);
 
             Assert.That(r, Is.EquivalentTo(expected3));
         }
@@ -146,7 +146,7 @@
         public void DuplicatedElementsExceptionTest()
         {
             ICollection<string> t = new List<string>() { A, A, B };
-            collection1.OrderBy2(x => x, t);
+            collection1.OrderBy2(t, x => x);
         }
 
         [Test]
@@ -159,7 +159,7 @@
                 c.Add(1000 - i);
                 t.Add(i);
             }
-            var r = c.OrderBy2(x => x, t);
+            var r = c.OrderBy2(t, x => x);
 
             var e = t.GetEnumerator();
             foreach (var v in r)
@@ -179,27 +179,7 @@
                 c.Add(1000000 - i);
                 t.Add(i);
             }
-            var r = c.OrderBy2(x => x, t);
-
-            var e = t.GetEnumerator();
-            foreach (var v in r)
-            {
-                e.MoveNext();
-                Assert.IsTrue(v.Equals(e.Current));
-            }
-        }
-
-        [Test]
-        public void ReverseSequenceTenMillionTest()
-        {
-            ICollection<int> c = new List<int>();
-            ICollection<int> t = new List<int>();
-            for (var i = 0; i <= 10000000; i++)
-            {
-                c.Add(10000000 - i);
-                t.Add(i);
-            }
-            var r = c.OrderBy2(x => x, t);
+            var r = c.OrderBy2(t, x => x);
 
             var e = t.GetEnumerator();
             foreach (var v in r)
@@ -213,7 +193,7 @@
         public void LambdaEmptyCollectionTest()
         {
             var list = new List<TestClass>();
-            var r = list.OrderBy2(x => x.V2, template4);
+            var r = list.OrderBy2(template4, x => x.V2);
 
             Assert.IsEmpty(r);
         }
@@ -222,7 +202,7 @@
         public void LambdaEmptyTemplateCollectionTest()
         {
             var list = new List<int>();
-            var r = collection4.OrderBy2(x => x.V2, list);
+            var r = collection4.OrderBy2(list, x => x.V2);
 
             Assert.That(r, Is.EquivalentTo(collection4));
         }
@@ -231,7 +211,7 @@
         public void LambdaEmptyBothCollectionsTest()
         {
             var list = new List<TestClass>();
-            var r = list.OrderBy2(x => x.V2, new List<int>());
+            var r = list.OrderBy2(new List<int>(), x => x.V2);
 
             Assert.IsEmpty(r);
         }
@@ -239,7 +219,7 @@
         [Test]
         public void LambdaExample1Test()
         {
-            var r = collection4.OrderBy2(x => x.V2, template4);
+            var r = collection4.OrderBy2(template4, x => x.V2);
 
             AssertCollectionsAreEquals(r, expected4);
         }
@@ -247,7 +227,7 @@
         [Test]
         public void LambdaExample2Test()
         {
-            var r = collection5.OrderBy2(x => x.V2, template5);
+            var r = collection5.OrderBy2(template5, x => x.V2);
 
             AssertCollectionsAreEquals(r, expected5);
         }
@@ -256,11 +236,11 @@
         public void LambdaDuplicatedElementsExceptionTest()
         {
             var t = new List<int>() { 1, 2, 2 };
-            collection4.OrderBy2(x => x.V2, t);
+            collection4.OrderBy2(t, x => x.V2);
         }
 
 
-        private void AssertCollectionsAreEquals<T>(ICollection<T> c1, ICollection<T> c2)
+        private void AssertCollectionsAreEquals<T>(IEnumerable<T> c1, IEnumerable<T> c2)
         {
             var e = c2.GetEnumerator();
             foreach (var v in c1)

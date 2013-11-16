@@ -14,7 +14,7 @@
         public void OrderBy()
         {
             string[] sourceCollection = new string[] { "A", "B", "C", "B", "A", "C", "D", "D" };
-            IEnumerable<string> result = sourceCollection.OrderBy2(x => x, new [] { "B", "A", "D", "C" });
+            IEnumerable<string> result = sourceCollection.OrderBy2(new [] { "B", "A", "D", "C" }, x => x);
             string[] correct = new string[] { "B", "B", "A", "A", "D", "D", "C", "C" };
 
             int i = 0;
@@ -40,7 +40,7 @@
                 Foo.Create("D", 4), 
             };
 
-            var result = sourceCollection.OrderBy2(x => x.Bar, new[] { "B", "A", "D", "C" });
+            var result = sourceCollection.OrderBy2(new[] { "B", "A", "D", "C" }, x => x.Bar);
 
             var correct = new[] { "B", "B", "A", "A", "D", "D", "C", "C" };
 
@@ -51,7 +51,7 @@
         public void OrderByNotMatching()
         {
             string[] sourceCollection = new string[] { "A", "B", "C", "B", "A", "D", "E", "A", "B" };
-            IEnumerable<string> result = sourceCollection.OrderBy2(x => x, new string[] { "B", "C", "A" });
+            IEnumerable<string> result = sourceCollection.OrderBy2(new string[] { "B", "C", "A" }, x => x);
             string[] correct = new string[] { "B", "B", "B", "C", "A", "A", "A", "D", "E" };
 
             int i = 0;
@@ -66,7 +66,7 @@
         public void OrderByProperty()
         {
             StringHolder[] sourceCollection = StringHolder.FromStringArray(new string[] { "A", "B", "C", "B", "A", "C", "D", "D" });
-            IEnumerable<StringHolder> result = sourceCollection.OrderBy2(x => x.String, new string[] { "B", "A", "D", "C" });
+            IEnumerable<StringHolder> result = sourceCollection.OrderBy2(new string[] { "B", "A", "D", "C" }, x => x.String);
 
             string[] correct = new string[] { "B", "B", "A", "A", "D", "D", "C", "C" };
             int i = 0;
@@ -81,7 +81,7 @@
         public void OrderByComparer()
         {
             string[] sourceCollection = new string[] { "A", "b", "C", "B", "a", "D", "E", "a", "B" };
-            IEnumerable<string> result = sourceCollection.OrderBy2(x => x, new string[] { "B", "c", "A" }, StringComparer.CurrentCultureIgnoreCase);
+            IEnumerable<string> result = sourceCollection.OrderBy2(new string[] { "B", "c", "A" }, x => x, StringComparer.CurrentCultureIgnoreCase);
             string[] correct = new string[] { "b", "B", "B", "C", "A", "a", "a", "D", "E" };
 
             int i = 0;
@@ -96,7 +96,7 @@
         public void OrderByEmptyTemplate()
         {
             string[] sourceCollection = new string[] { "A", "B", "C", "B", "A", "C", "D", "D" };
-            IEnumerable<string> result = sourceCollection.OrderBy2(x => x, new string[0]);
+            IEnumerable<string> result = sourceCollection.OrderBy2(new string[0], x => x);
             string[] correct = new string[] { "A", "B", "C", "B", "A", "C", "D", "D" };
 
             int i = 0;
@@ -112,10 +112,10 @@
         {
             string[] sourceCollection = new string[] { "A", "B", "C", "B", "A", "D", "E", "A", "B" };
 
-            Assert.Throws<ArgumentNullException>(() => TemplateSort2.OrderBy2<string, string>(null, x => x, new string[] { "B", "C", "A" }));
-            Assert.Throws<ArgumentNullException>(() => TemplateSort2.OrderBy2<string, string>(sourceCollection, null, new string[] { "B", "C", "A" }));
-            Assert.Throws<ArgumentNullException>(() => TemplateSort2.OrderBy2<string, string>(sourceCollection, x => x, null));
-            Assert.Throws<ArgumentException>(() => TemplateSort2.OrderBy2<string, string>(sourceCollection, x => x, new string[] { "A", "C", "A" }));
+            Assert.Throws<ArgumentNullException>(() => TemplateSort2.OrderBy2<string, string>(null, new string[] { "B", "C", "A" }, x => x));
+            Assert.Throws<ArgumentNullException>(() => TemplateSort2.OrderBy2<string, string>(sourceCollection, new string[] { "B", "C", "A" }, null));
+            Assert.Throws<ArgumentNullException>(() => TemplateSort2.OrderBy2<string, string>(sourceCollection, null, x => x));
+            Assert.Throws<ArgumentException>(() => TemplateSort2.OrderBy2<string, string>(sourceCollection, new string[] { "A", "C", "A" }, x => x));
         }
     }
 }
