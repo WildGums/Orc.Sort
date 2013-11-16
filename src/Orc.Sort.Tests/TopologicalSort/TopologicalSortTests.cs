@@ -151,6 +151,35 @@
         }
 
         [Test]
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence0_0()
+        {
+            var sorter = CreateTopologicalSorter<string>();
+
+            var sorted = new List<string> {"A", "B", "C", "D", "E", "F" };
+
+            var seq_1 = new List<string> {                     "E", "F" };
+            var seq_2 = new List<string> {                "D", "E"      };
+            var seq_3 = new List<string> {           "C", "D",          };
+            var seq_4 = new List<string> {           "C", "D",          };
+            var seq_5 = new List<string> {      "B", "C"                };
+            var seq_6 = new List<string> { "A", "B"                     };
+
+            sorter.Add(seq_1);
+            sorter.Add(seq_2);
+            sorter.Add(seq_3);
+            sorter.Add(seq_4);
+            sorter.Add(seq_5);
+            sorter.Add(seq_6);
+
+            var result = sorter.Sort();
+
+            AssertOrdering(sorted, result, sorter.Sequences);
+
+            Assert.True("A".ComesBefore(new List<string>() { "B", "C", "D", "E", "F" }, result));
+            Assert.True("F".ComesAfter(new List<string>() { "A", "B", "C", "D", "E" }, result));
+        }
+
+        [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence0()
         {
             var sorter = CreateTopologicalSorter<string>();
@@ -176,7 +205,7 @@
         }
 
         [Test]
-        public void Sort_CollectionOfSequences_ReturnsCorrectSequence_DifferentOrder()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence0_DifferentOrder()
         {
             var sorter = CreateTopologicalSorter<string>();
 
