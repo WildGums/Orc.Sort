@@ -228,8 +228,8 @@
             
             AssertOrdering(sorted, result, sorter.Sequences);
 
-            Assert.True("F".ComesBefore(sorted.Skip(1), result));
-            Assert.True("B".ComesAfter(sorted.Take(sorted.Count - 1), result));
+            Assert.True("A".ComesBefore(sorted.Skip(1), result));
+            Assert.True("C".ComesAfter(sorted.Take(sorted.Count - 1), result));
         }
 
         [Test]
