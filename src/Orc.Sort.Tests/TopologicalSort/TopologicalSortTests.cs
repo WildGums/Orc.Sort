@@ -151,6 +151,61 @@
         }
 
         [Test]
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence0()
+        {
+            var sorter = CreateTopologicalSorter<string>();
+
+            var sorted = new List<string> { "A", "B", "C", "D", "E", "F" };
+
+            var seq_1 = new List<string> { "A",                      "F" };
+            var seq_2 = new List<string> {      "B",                 "F" };
+            var seq_3 = new List<string> {      "B",             "E",    };
+            var seq_4 = new List<string> {            "C",       "E",    };
+            var seq_5 = new List<string> {            "C", "D"           };
+
+            sorter.Add(seq_1);
+            sorter.Add(seq_2);
+            sorter.Add(seq_3);
+            sorter.Add(seq_4);
+            sorter.Add(seq_5);
+
+            var result = sorter.Sort();
+
+            AssertOrdering(sorted, result, sorter.Sequences);
+
+            Assert.True("A".ComesBefore(new List<string>() { "B", "C", "D", "E", "F"}, result));
+            Assert.True("F".ComesAfter(new List<string>() { "A", "B", "C", "D", "E"}, result));
+        }
+
+        [Test]
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence0_DifferentOrderOfInsertion()
+        {
+            var sorter = CreateTopologicalSorter<string>();
+
+            var sorted = new List<string> { "A", "B", "C", "D", "E", "F" };
+
+            var seq_1 = new List<string> { "A",                      "F" };
+            var seq_2 = new List<string> {      "B",                 "F" };
+            var seq_3 = new List<string> {      "B",             "E",    };
+            var seq_4 = new List<string> {            "C",       "E",    };
+            var seq_5 = new List<string> {            "C", "D"           };
+
+            // The order in which the sequences are added is different
+            sorter.Add(seq_5);
+            sorter.Add(seq_2);
+            sorter.Add(seq_3);
+            sorter.Add(seq_1);
+            sorter.Add(seq_4);
+            
+            var result = sorter.Sort();
+
+            AssertOrdering(sorted, result, sorter.Sequences);
+
+            Assert.True("A".ComesBefore(new List<string>() { "B", "C", "D", "E", "F"}, result));
+            Assert.True("F".ComesAfter(new List<string>() { "A", "B", "C", "D", "E"}, result));
+        }
+
+        [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence()
         {
             var sorter = CreateTopologicalSorter<string>();
