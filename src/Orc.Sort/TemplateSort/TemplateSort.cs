@@ -21,81 +21,87 @@ namespace Orc.Sort.TemplateSort
         #region Methods
 
         /// <summary>
-        /// Sorts the elements of a sequence based on the order of the items in the specified template collection, using the
+        ///     Sorts the elements of a sequence based on the order of the items in the specified template collection, using the
         ///     specified System.Collections.Generic.IEqualityComparer&lt;T&gt;.
         /// </summary>
         /// <example>
-        /// collection = [A, B, C, B, A, C, D, D]
+        ///     collection = [A, B, C, B, A, C, D, D]
         ///     template = [B, A, D, C]
         ///     collection.SortAccordingTo(template) = [B, B, A, A, D, D, C, C]
         /// </example>
         /// <typeparam name="T">
-        /// The type of the collection to be sorted.
+        ///     The type of the collection to be sorted.
         /// </typeparam>
         /// <param name="sourceCollection">
-        /// The sequence to be sorted.
+        ///     The sequence to be sorted.
         /// </param>
         /// <param name="templateCollection">
-        /// A template collection that specifies the order in which the sequence will be sorted.
+        ///     A template collection that specifies the order in which the sequence will be sorted.
         ///     May not contain duplicates.
         /// </param>
+        /// <param name="includeNoMatches">
+        ///     Indicates whether the items in the source collection that do not match any items in the template collection should be appended to the result or not.
+        /// </param>
         /// <param name="comparer">
-        /// A System.Collections.Generic.IEqualityComparer&lt;T&gt; implementation to use when comparing the
+        ///     A System.Collections.Generic.IEqualityComparer&lt;T&gt; implementation to use when comparing the
         ///     elements in the template collection, or null to use the default one.
         /// </param>
         /// <returns>
-        /// Returns a list containing the sorted items.
+        ///     Returns a list containing the sorted items.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when either sourceCollection, keySelector or templateCollection is null.
+        ///     Thrown when either sourceCollection, keySelector or templateCollection is null.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// Thrown when the template collection contains duplicates.
+        ///     Thrown when the template collection contains duplicates.
         /// </exception>
-        public static IEnumerable<T> SortAccordingTo<T>(this IEnumerable<T> sourceCollection, IEnumerable<T> templateCollection, IEqualityComparer<T> comparer = null)
+        public static IEnumerable<T> SortAccordingTo<T>(this IEnumerable<T> sourceCollection, IEnumerable<T> templateCollection, bool includeNoMatches = true, IEqualityComparer<T> comparer = null)
         {
-            return SortAccordingTo(sourceCollection, templateCollection, x => x, comparer);
+            return SortAccordingTo(sourceCollection, templateCollection, x => x, includeNoMatches, comparer);
         }
 
         /// <summary>
-        /// Sorts the elements of a sequence based on the order of the items in the specified template collection, using the
+        ///     Sorts the elements of a sequence based on the order of the items in the specified template collection, using the
         ///     specified System.Collections.Generic.IEqualityComparer&lt;T&gt;.
         /// </summary>
         /// <example>
-        /// collection = [A, B, C, B, A, C, D, D]
+        ///     collection = [A, B, C, B, A, C, D, D]
         ///     template = [B, A, D, C]
         ///     collection.SortAccordingTo(template) = [B, B, A, A, D, D, C, C]
         /// </example>
         /// <typeparam name="TSource">
-        /// The type of the items to be sorted.
+        ///     The type of the items to be sorted.
         /// </typeparam>
         /// <typeparam name="TKey">
-        /// The type of the items in the template collection.
+        ///     The type of the items in the template collection.
         /// </typeparam>
         /// <param name="sourceCollection">
-        /// The sequence to be sorted.
+        ///     The sequence to be sorted.
         /// </param>
         /// <param name="templateCollection">
-        /// A template collection that specifies the order in which the sequence will be sorted.
+        ///     A template collection that specifies the order in which the sequence will be sorted.
         ///     May not contain duplicates.
         /// </param>
         /// <param name="keySelector">
-        /// A function to extract a key from an element.
+        ///     A function to extract a key from an element.
+        /// </param>
+        /// <param name="includeNoMatches">
+        ///     Indicates whether the items in the source collection that do not match any items in the template collection should be appended to the result or not.
         /// </param>
         /// <param name="comparer">
-        /// A System.Collections.Generic.IEqualityComparer&lt;T&gt; implementation to use when comparing the
+        ///     A System.Collections.Generic.IEqualityComparer&lt;T&gt; implementation to use when comparing the
         ///     elements in the template collection, or null to use the default one.
         /// </param>
         /// <returns>
-        /// Returns a list containing the sorted items.
+        ///     Returns a list containing the sorted items.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when either sourceCollection, keySelector or templateCollection is null.
+        ///     Thrown when either sourceCollection, keySelector or templateCollection is null.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// Thrown when the template collection contains duplicates.
+        ///     Thrown when the template collection contains duplicates.
         /// </exception>
-        public static IEnumerable<TSource> SortAccordingTo<TSource, TKey>(this IEnumerable<TSource> sourceCollection, IEnumerable<TKey> templateCollection, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer = null)
+        public static IEnumerable<TSource> SortAccordingTo<TSource, TKey>(this IEnumerable<TSource> sourceCollection, IEnumerable<TKey> templateCollection, Func<TSource, TKey> keySelector, bool includeNoMatches = true, IEqualityComparer<TKey> comparer = null)
         {
             if (sourceCollection == null)
             {
@@ -113,14 +119,21 @@ namespace Orc.Sort.TemplateSort
             }
 
             // Stores items that do not have a match in the template collection
-            var noMatches = new List<TSource>();
+            var noMatches = new Dictionary<TSource, List<TSource>>();
 
             var buckets = new Dictionary<TKey, List<TSource>>(comparer);
 
             // Build buckets based on the values in the template collection.
             foreach (TKey item in templateCollection)
             {
-                buckets.Add(item, new List<TSource>());
+                if (!buckets.ContainsKey(item))
+                {
+                    buckets.Add(item, new List<TSource>());
+                }
+                else
+                {
+                    throw new ArgumentNullException("templateCollection cannot have duplicates.");
+                }
             }
 
             // Insert values from source collection into correct buckets.
@@ -134,7 +147,14 @@ namespace Orc.Sort.TemplateSort
                 }
                 else
                 {
-                    noMatches.Add(item);
+                    if (noMatches.ContainsKey(item))
+                    {
+                        noMatches[item].Add(item);
+                    }
+                    else
+                    {
+                        noMatches[item] = new List<TSource>() { item };
+                    }
                 }
             }
 
@@ -146,7 +166,10 @@ namespace Orc.Sort.TemplateSort
                 result.AddRange(buckets[key]);
             }
 
-            result.AddRange(noMatches);
+            if (includeNoMatches)
+            {
+                result.AddRange(noMatches.SelectMany(x => x.Value));
+            }
 
             return result;
         }
