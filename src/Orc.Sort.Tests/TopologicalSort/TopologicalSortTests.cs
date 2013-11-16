@@ -502,7 +502,7 @@
             var sorter = CreateTopologicalSorter<string>();
 
             var seq_11 = new List<string>() { "A", "B", "C", "D" };
-            var seq_12 = new List<string>() { "C", "D", };
+            var seq_12 = new List<string>() { "A", "B", };
             var seq_21 = new List<string>() { "B", "A", "C", };
 
             sorter.Add(seq_11);
@@ -543,7 +543,7 @@
 
             var seq_01 = new List<string>() { "E", "F" };
             var seq_11 = new List<string>() { "A", "B", "C", "D" };
-            var seq_12 = new List<string>() { "C", "D", };
+            var seq_12 = new List<string>() { "A", "B", };
             var seq_21 = new List<string>() { "B", "A", "C", };
             var seq_31 = new List<string>() { "M", "N", "O", };
 

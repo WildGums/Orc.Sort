@@ -56,38 +56,37 @@ namespace Orc.Sort.TopologicalSort
         /// <summary>
         /// Initializes a new instance of the <see cref="PriorityTopologicalSort{T}"/> class.
         /// </summary>
-        public TopologicalSort(bool usesPriority=false, bool usesTracking=false)
+        public TopologicalSort(bool usesPriority = false, bool usesTracking = false, IEnumerable<IEnumerable<T>> sequences = null)
         {
             Sequences = new List<IEnumerable<T>>();
+
+            if (sequences != null)
+            {
+                AddRange(sequences);
+            }
+            
             UsesPriority = usesPriority;
             UsesTracking = usesTracking;
         }
-
-        public TopologicalSort(IEnumerable<IEnumerable<T>> sequences)
-            : this()
-        {
-            AddRange(sequences);
-        }
-
         #endregion
 
         #region Properties
 
         /// <summary>
-        ///     Gets or sets the sub groups.
+        ///     Gets the sub groups.
         ///     The order of the items in the sub group is important and will preserved in the final merged list.
         /// </summary>
-        public IEnumerable<IEnumerable<T>> Sequences { get; private set; }
+        public IList<IEnumerable<T>> Sequences { get; private set; }
 
         /// <summary>
-        /// Does the sorter use group add order priority?
+        /// Gets or sets a value indicating whether priority will be used or not.
         /// </summary>
-        public Boolean UsesPriority { get; protected set; }
+        public bool UsesPriority { get; protected set; }
 
         /// <summary>
-        /// Does the sorter use graph component tracking?
+        /// Gets or sets a value indicating whether tracking will be used or not.
         /// </summary>
-        public Boolean UsesTracking { get; protected set; }
+        public bool UsesTracking { get; protected set; }
 
         #endregion
 
@@ -101,7 +100,7 @@ namespace Orc.Sort.TopologicalSort
         /// </param>
         public void Add(IEnumerable<T> newSequence)
         {
-            (Sequences as List<IEnumerable<T>>).Add(newSequence);
+            Sequences.Add(newSequence);
         }
 
         /// <summary>
@@ -132,7 +131,7 @@ namespace Orc.Sort.TopologicalSort
             }
 
             var topSort = new TopologicalSort<T>();
-            topSort.Sequences = Sequences.ConcatWith(sequence);
+            topSort.Sequences = Sequences.ConcatWith(sequence).ToList();
 
             var result = topSort.Sort();
 
@@ -159,19 +158,20 @@ namespace Orc.Sort.TopologicalSort
         }
 
         /// <summary>
-        /// Return the collection of lists that are in conflict with each other.
+        /// Returns the first pair of sequences that are in conflict with each other.
         /// </summary>
         /// <returns>
         /// The <see cref="List"/>.
         /// </returns>
-        public List<IList<T>> GetConflicts()
+        public IList<IEnumerable<T>> GetConflicts()
         {
-            var conflictLists = new List<IList<T>>();
+            var conflictLists = new List<IEnumerable<T>>();
 
-            for (var i = 1; i < Sequences.Count(); i++)
+            var topSort = new TopologicalSort<T>();
+
+            for (var i = 0; i < Sequences.Count; i++)
             {
-                var topSort = new TopologicalSort<T>();
-                topSort.Sequences = Sequences.Take(i).ToList();
+                topSort.Add(Sequences[i]);
 
                 var sortedList = topSort.Sort();
 
@@ -180,12 +180,13 @@ namespace Orc.Sort.TopologicalSort
                     continue;
                 }
 
-                var subList = Sequences.Take(i).Reverse().ToList();
+                topSort = new TopologicalSort<T>();
+                topSort.Add(Sequences[i]);
 
-                for (var j = 1; j < subList.Count; j++)
+                for (var j = 0; j < i; j++)
                 {
-                    topSort = new TopologicalSort<T>();
-                    topSort.Sequences = Sequences.Take(j).ToList();
+                    
+                    topSort.Add(Sequences[j]);
 
                     sortedList = topSort.Sort();
 
@@ -194,8 +195,8 @@ namespace Orc.Sort.TopologicalSort
                         continue;
                     }
 
-                    conflictLists.Add(subList[j - 1].ToList());
-                    conflictLists.Add(subList.First().ToList());
+                    conflictLists.Add(Sequences[j].ToList());
+                    conflictLists.Add(Sequences[i].ToList());
                     break;
                 }
 
@@ -219,7 +220,7 @@ namespace Orc.Sort.TopologicalSort
 
             foreach (var sequence in Sequences)
             {
-                if (sequence.Count() == 0)
+                if (!sequence.Any())
                 {
                     continue;
                 }
