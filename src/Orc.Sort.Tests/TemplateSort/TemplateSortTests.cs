@@ -1,273 +1,264 @@
 ﻿namespace Orc.Sort.Tests.TemplateSort
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using NUnit.Framework;
 
     using Orc.Sort.TemplateSort;
 
     [TestFixture]
-    public class NaturalSortTest
+    public class TemplateSortTests
     {
-        private const string A = "A";
-        private const string B = "B";
-        private const string C = "C";
-        private const string D = "D";
-        private const string E = "E";
-
-        private readonly ICollection<string> collection1 = new List<string> { A, B, C, B, A, C, D, D };
-        private readonly ICollection<string> template1 = new List<string> { B, A, D, C };
-        private readonly ICollection<string> expected1 = new List<string> { B, B, A, A, D, D, C, C };
-
-        private readonly ICollection<string> collection2 = new List<string> { A, B, C, B, A, D, E, A, B };
-        private readonly ICollection<string> template2 = new List<string> { B, C, A };
-        private readonly ICollection<string> expected2 = new List<string> { B, B, B, C, A, A, A, D, E };
-
-        private readonly ICollection<int> collection3 = new List<int> { 5, 4, 6, 1, 2, 2, 7, 3 };
-        private readonly ICollection<int> template3 = new List<int> { 1, 2, 3, 4, 5, 6, 7 };
-        private readonly ICollection<int> expected3 = new List<int> { 1, 2, 2, 3, 4, 5, 6, 7 };
-
-        private ICollection<TestClass> collection4;
-        private ICollection<int> template4;
-        private ICollection<TestClass> expected4;
-
-        private ICollection<TestClass> collection5;
-        private ICollection<int> template5;
-        private ICollection<TestClass> expected5;
-
-        private class TestClass
+        [Test]
+        public void SortAccordingTo_EmptySourceCollectionAndTemplateCollection_ReturnsEmptyCollection()
         {
-            public int V1 { get; set; }
-            public int V2 { get; set; }
+            var sourceCollection = Enumerable.Empty<string>();
+            var templateCollection = Enumerable.Empty<string>();
 
-            public TestClass(int v1, int v2)
-            {
-                V1 = v1;
-                V2 = v2;
-            }
+            var result = sourceCollection.SortAccordingTo(templateCollection);
 
-            public bool Equals(TestClass other)
-            {
-                return V1 == other.V1 && V2 == other.V2;
-            }
-
-            public override bool Equals(object other)
-            {
-                if (!(other is TestClass))
-                    return false;
-                var o = other as TestClass;
-                return V1 == o.V1 && V2 == o.V2;
-            }
-        }
-
-        [SetUp]
-        public void Init()
-        {
-            collection4 = new List<TestClass>()
-                            {
-                                new TestClass(1,2),
-                                new TestClass(2,1),
-                                new TestClass(3,2)
-                            };
-            template4 = new List<int>() { 1, 2 };
-            expected4 = new List<TestClass>()
-                        {
-                            new TestClass(2,1),
-                            new TestClass(1,2),
-                            new TestClass(3,2)
-                        };
-            collection5 = new List<TestClass>()
-                            {
-                                new TestClass(1,2),
-                                new TestClass(2,1),
-                                new TestClass(3,3),
-                                new TestClass(4,2),
-                                new TestClass(5,4)
-                            };
-            template5 = new List<int>() { 1, 2, 3 };
-            expected5 = new List<TestClass>()
-                        {
-                            new TestClass(2,1),
-                            new TestClass(1,2),
-                            new TestClass(4,2),
-                            new TestClass(3,3),
-                            new TestClass(5,4)
-                        };
+            Assert.AreEqual(sourceCollection, result);
         }
 
         [Test]
-        public void EmptyCollectionTest()
+        public void SortAccordingTo_EmptySourceCollection_ReturnsEmptyCollection()
         {
-            ICollection<string> c = new List<string>();
-            var r = c.SortAccordingTo(template1);
-            Assert.IsEmpty(r);
+            var sourceCollection = Enumerable.Empty<string>();
+            var templateCollection = new[] { "A", "B", "C", "D" };
+
+            var result = sourceCollection.SortAccordingTo(templateCollection);
+
+            Assert.AreEqual(sourceCollection, result);
         }
 
         [Test]
-        public void EmptyTemplateCollectionTest()
+        public void SortAccordingTo_EmptySourceCollectionWithDuplicatesInTemplateCollection_ReturnsException()
         {
-            var r = collection1.SortAccordingTo(new List<string>());
-            Assert.That(r, Is.EquivalentTo(collection1));
+            var sourceCollection = Enumerable.Empty<string>();
+            var templateCollection = new[] { "A", "B", "B", "C", "D" };
+
+            Assert.Throws<ArgumentNullException>(() => sourceCollection.SortAccordingTo(templateCollection));
         }
 
         [Test]
-        public void EmptyBothCollectionsTest()
+        public void SortAccordingTo_EmptyTemplateCollection_ReturnsSameSourceCollection()
         {
-            ICollection<string> c = new List<string>();
-            var r = c.SortAccordingTo(new List<string>());
-            Assert.IsEmpty(r);
+            var sourceCollection = new [] { "A", "B", "C", "D" };
+            var templateCollection = Enumerable.Empty<string>();
+
+            var result = sourceCollection.SortAccordingTo(templateCollection);
+
+            Assert.AreEqual(sourceCollection, result);
         }
 
         [Test]
-        public void FirstExampleTest()
+        public void SortAccordingTo_NullTemplateCollection_ReturnsException()
         {
-            var r = collection1.SortAccordingTo(template1);
+            var sourceCollection = new [] { "A", "B", "C", "D" };
 
-            Assert.That(r, Is.EquivalentTo(expected1));
+            Assert.Throws<ArgumentNullException>(() => sourceCollection.SortAccordingTo(null));
         }
 
         [Test]
-        public void SecondExampleTest()
+        public void SortAccordingTo_NullSourceCollection_ReturnsException()
         {
-            var r = collection2.SortAccordingTo(template2);
+            var templateCollection = new[] { "A", "B", "C", "D" };
 
-            Assert.That(r, Is.EquivalentTo(expected2));
+            Assert.Throws<ArgumentNullException>(() => TemplateSort.SortAccordingTo(null, templateCollection));
         }
 
         [Test]
-        public void IntsExampleTest()
+        public void SortAccordingTo_NullKeySelector_ReturnsException()
         {
-            var r = collection3.SortAccordingTo(template3);
+            var sourceCollection = new[] { "A", "B", "C", "D" };
+            var templateCollection = new[] { "A", "B", "C", "D" };
 
-            Assert.That(r, Is.EquivalentTo(expected3));
-        }
-
-        [Test, ExpectedException("System.ArgumentException")]
-        public void DuplicatedElementsExceptionTest()
-        {
-            ICollection<string> t = new List<string>() { A, A, B };
-            collection1.SortAccordingTo(t);
+            Assert.Throws<ArgumentNullException>(() => sourceCollection.SortAccordingTo(templateCollection, null));
         }
 
         [Test]
-        public void ReverseSequenceThousandTest()
+        public void SortAccordingTo_TemplateCollectionThatContainsAllValuesInSourceCollection_ReturnsCorrectSequence()
         {
-            ICollection<int> c = new List<int>();
-            ICollection<int> t = new List<int>();
-            for (var i = 0; i <= 1000; i++)
-            {
-                c.Add(1000 - i);
-                t.Add(i);
-            }
-            var r = c.SortAccordingTo(t);
+            var sourceCollection = new [] { "A", "B", "C", "B", "A", "C", "D", "D" };
+            var templateCollection = new[] { "B", "A", "D", "C" };
 
-            var e = t.GetEnumerator();
-            foreach (var v in r)
-            {
-                e.MoveNext();
-                Assert.IsTrue(v.Equals(e.Current));
-            }
+            var result = sourceCollection.SortAccordingTo(templateCollection);
+
+            var expected = new [] { "B", "B", "A", "A", "D", "D", "C", "C" };
+
+            Assert.AreEqual(expected, result);
         }
 
         [Test]
-        public void ReverseSequenceMillionTest()
+        public void SortAccordingTo_TemplateCollectionSomeValuesInSourceCollection_ReturnsCorrectSequence()
         {
-            ICollection<int> c = new List<int>();
-            ICollection<int> t = new List<int>();
-            for (var i = 0; i <= 1000000; i++)
-            {
-                c.Add(1000000 - i);
-                t.Add(i);
-            }
-            var r = c.SortAccordingTo(t);
+            var sourceCollection = new[] { "A", "B", "C", "B", "A", "C", "D", "D" };
+            var templateCollection = new[] { "B", "D", "C" };
 
-            var e = t.GetEnumerator();
-            foreach (var v in r)
-            {
-                e.MoveNext();
-                Assert.IsTrue(v.Equals(e.Current));
-            }
+            var result = sourceCollection.SortAccordingTo(templateCollection);
+
+            // Since "A" does not exist int he template collection they are placed at the end of the sequence
+            var expected = new [] { "B", "B", "D", "D", "C", "C", "A", "A" };
+
+            Assert.AreEqual(expected, result);
         }
 
         [Test]
-        public void ReverseSequenceTenMillionTest()
+        public void SortAccordingTo_TemplateCollectionContainsNoValuesInSourceCollection_ReturnsCorrectSequence()
         {
-            ICollection<int> c = new List<int>();
-            ICollection<int> t = new List<int>();
-            for (var i = 0; i <= 10000000; i++)
-            {
-                c.Add(10000000 - i);
-                t.Add(i);
-            }
-            var r = c.SortAccordingTo(t);
+            var sourceCollection = new[] { "A", "B", "C", "B", "A", "C", "D", "D" };
+            var templateCollection = new[] { "X", "Y", "Z" };
 
-            var e = t.GetEnumerator();
-            foreach (var v in r)
-            {
-                e.MoveNext();
-                Assert.IsTrue(v.Equals(e.Current));
-            }
+            var result = sourceCollection.SortAccordingTo(templateCollection);
+
+            var expected = new [] {"A", "A", "B", "B", "C", "C", "D", "D"};
+
+            Assert.AreEqual(expected, result);
+        }
+
+
+        [Test]
+        public void SortAccordingTo_TemplateCollectionDoesNotContainAllValuesInSourceCollection_ReturnsCorrectSequence2()
+        {
+            var sourceCollection = new[] { "X", "A", "B", "C", "Y", "B", "A", "C", "Z", "D", "D" };
+            var templateCollection = new[] { "B", "D", "C" };
+
+            var result = sourceCollection.SortAccordingTo(templateCollection);
+
+            // Slightly more complicated than the previous test
+            // NOTE: no matches get sorted amongst themselves in the order they appear in the list.
+            var expected = new [] { "B", "B", "D", "D", "C", "C", "X", "A", "A", "Y", "Z" };
+
+            Assert.AreEqual(expected, result);
         }
 
         [Test]
-        public void LambdaEmptyCollectionTest()
+        public void SortAccordingTo_TemplateCollectionDoesNotContainAllValuesInSourceCollection_DoNotIncludeNoMatches_ReturnsCorrectSequence()
         {
-            var list = new List<TestClass>();
-            var r = list.SortAccordingTo(x => x.V2, template4);
+            var sourceCollection = new[] { "A", "B", "C", "B", "A", "C", "D", "D" };
+            var templateCollection = new[] { "B", "D", "C" };
 
-            Assert.IsEmpty(r);
+            var result = sourceCollection.SortAccordingTo(templateCollection, false);
+
+            // Since "A" does not exist in the template collection they are placed at the end of the sequence
+            var expected = new [] { "B", "B", "D", "D", "C", "C"};
+
+            Assert.AreEqual(expected, result);
         }
 
         [Test]
-        public void LambdaEmptyTemplateCollectionTest()
+        public void SortAccordingTo_TemplateCollectionContainsMoreValuesThanSourceCollection_ReturnsCorrectSequence()
         {
-            var list = new List<int>();
-            var r = collection4.SortAccordingTo(x => x.V2, list);
+            var sourceCollection = new[] { "A", "B", "C", "B", "A", "C", "D", "D" };
+            var templateCollection = new[] { "B", "A", "M", "P", "D", "C" };
 
-            Assert.That(r, Is.EquivalentTo(collection4));
+            var result = sourceCollection.SortAccordingTo(templateCollection);
+
+            var expected = new [] { "B", "B", "A", "A", "D", "D", "C", "C" };
+
+            Assert.AreEqual(expected, result);
         }
 
         [Test]
-        public void LambdaEmptyBothCollectionsTest()
+        public void SortAccordingTo_UseComparer_ReturnsCorrectSequence()
         {
-            var list = new List<TestClass>();
-            var r = list.SortAccordingTo(x => x.V2, new List<int>());
+            var sourceCollection = new [] { "A", "b", "c", "C", "B", "a", "D", "E", "a", "B" };
+            var templateCollection = new [] { "B", "c", "A" };
 
-            Assert.IsEmpty(r);
+            var result = sourceCollection.SortAccordingTo(templateCollection, comparer: StringComparer.CurrentCultureIgnoreCase);
+
+            var expected = new [] { "b", "B", "B", "c", "C", "A", "a", "a", "D", "E" };
+
+            Assert.AreEqual(expected, result);
         }
 
         [Test]
-        public void LambdaExample1Test()
+        public void SortAccordingTo_UsingIntegers_ReturnsCorrectSequence()
         {
-            var r = collection4.SortAccordingTo(x => x.V2, template4);
+            var sourceCollection = new[] {2,3,9,4,1,6 };
+            var templateCollection = Enumerable.Range(0,10);
 
-            AssertCollectionsAreEquals(r, expected4);
+            var result = sourceCollection.SortAccordingTo(templateCollection);
+
+            var expected = new [] { 1,2,3,4,6,9};
+
+            Assert.AreEqual(expected, result);
         }
 
         [Test]
-        public void LambdaExample2Test()
+        public void SortAccordingTo_UsingLambdaInteger_ReturnsCorrectSequence()
         {
-            var r = collection5.SortAccordingTo(x => x.V2, template5);
+            var sourceCollection = Helper.GetMyClassCollection();
+            var templateCollection = new [] {1,2,3,4};
 
-            AssertCollectionsAreEquals(r, expected5);
+            var result = sourceCollection.SortAccordingTo(templateCollection, x => x.IntProperty);
+
+            var expected = new [] {"1A", "1A", "2B", "2B", "3C"};
+
+            Assert.AreEqual(expected, result.Select(x => x.Name));
         }
 
-        [Test, ExpectedException("System.ArgumentException")]
-        public void LambdaDuplicatedElementsExceptionTest()
+        [Test]
+        public void SortAccordingTo_UsingLambdaString_ReturnsCorrectSequence()
         {
-            var t = new List<int>() { 1, 2, 2 };
-            collection4.SortAccordingTo(x => x.V2, t);
+            var sourceCollection = Helper.GetMyClassCollection();
+            var templateCollection = new[] { "C", "A", "B" };
+
+            var result = sourceCollection.SortAccordingTo(templateCollection, x => x.StringProperty);
+
+            var expected = new[] { "3C", "1A", "1A", "2B", "2B" };
+
+            Assert.AreEqual(expected, result.Select(x => x.Name));
         }
+    }
 
+    public class MyClass
+    {
+        public string Name { get; set; }
+        public string StringProperty { get; set; }
+        public int IntProperty { get; set; }
+    }
 
-        private void AssertCollectionsAreEquals<T>(ICollection<T> c1, ICollection<T> c2)
+    public static class Helper
+    {
+        public static IEnumerable<MyClass> GetMyClassCollection()
         {
-            var e = c2.GetEnumerator();
-            foreach (var v in c1)
-            {
-                e.MoveNext();
-                Assert.IsTrue(v.Equals(e.Current));
-            }
+            var collection = new List<MyClass>(){
+                new MyClass()
+                {
+                    Name = "2B",
+                    IntProperty = 2,
+                    StringProperty = "B"
+                },
+                new MyClass()
+                {
+                    Name = "1A",
+                    IntProperty = 1,
+                    StringProperty = "A"
+                },
+                new MyClass()
+                {
+                    Name = "2B",
+                    IntProperty = 2,
+                    StringProperty = "B"
+                },
+                new MyClass()
+                {
+                    Name = "3C",
+                    IntProperty = 3,
+                    StringProperty = "C"
+                },
+                new MyClass()
+                {
+                    Name = "1A",
+                    IntProperty = 1,
+                    StringProperty = "A"
+                },
+            };
+
+            return collection;
         }
     }
 }
