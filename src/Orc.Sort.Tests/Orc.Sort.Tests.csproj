@@ -59,6 +59,10 @@
     <Compile Include="NSort\SorterTest.cs" />
     <Compile Include="NSort\SwapSorterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TemplateSort\Foo.cs" />
+    <Compile Include="TemplateSort\NaturalSortTests.cs" />
+    <Compile Include="TemplateSort\SortingTest.cs" />
+    <Compile Include="TemplateSort\StringHolder.cs" />
     <Compile Include="TemplateSort\TemplateSortTests.cs" />
     <Compile Include="TimSort\PerformanceTests.cs" />
     <Compile Include="TimSort\PerformanceTimer.cs" />
