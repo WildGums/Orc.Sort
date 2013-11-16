@@ -157,17 +157,15 @@
 
             var sorted = new List<string> { "A", "B", "C", "D", "E", "F" };
 
-            var seq_1 = new List<string> { "A",                      "F" };
-            var seq_2 = new List<string> {      "B",                 "F" };
-            var seq_3 = new List<string> {      "B",             "E",    };
-            var seq_4 = new List<string> {            "C",       "E",    };
-            var seq_5 = new List<string> {            "C", "D"           };
+            var seq_1 = new List<string> { "A", "B",                "F" };
+            var seq_2 = new List<string> {      "B",           "E", "F" };
+            var seq_3 = new List<string> {      "B", "C",      "E"      };
+            var seq_4 = new List<string> {           "C", "D", "E"      };
 
             sorter.Add(seq_1);
             sorter.Add(seq_2);
             sorter.Add(seq_3);
             sorter.Add(seq_4);
-            sorter.Add(seq_5);
 
             var result = sorter.Sort();
 
@@ -178,31 +176,28 @@
         }
 
         [Test]
-        public void Sort_CollectionOfSequences_ReturnsCorrectSequence0_DifferentOrderOfInsertion()
+        public void Sort_CollectionOfSequences_ReturnsCorrectSequence_DifferentOrder()
         {
             var sorter = CreateTopologicalSorter<string>();
 
             var sorted = new List<string> { "A", "B", "C", "D", "E", "F" };
 
-            var seq_1 = new List<string> { "A",                      "F" };
-            var seq_2 = new List<string> {      "B",                 "F" };
-            var seq_3 = new List<string> {      "B",             "E",    };
-            var seq_4 = new List<string> {            "C",       "E",    };
-            var seq_5 = new List<string> {            "C", "D"           };
+            var seq_1 = new List<string> { "A", "B",                "F" };
+            var seq_2 = new List<string> {      "B",           "E", "F" };
+            var seq_3 = new List<string> {      "B", "C",      "E"      };
+            var seq_4 = new List<string> {           "C", "D", "E"      };
 
-            // The order in which the sequences are added is different
-            sorter.Add(seq_5);
+            sorter.Add(seq_4);
             sorter.Add(seq_2);
             sorter.Add(seq_3);
             sorter.Add(seq_1);
-            sorter.Add(seq_4);
-            
+
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
 
-            Assert.True("A".ComesBefore(new List<string>() { "B", "C", "D", "E", "F"}, result));
-            Assert.True("F".ComesAfter(new List<string>() { "A", "B", "C", "D", "E"}, result));
+            Assert.True("A".ComesBefore(new List<string>() { "B", "C", "D", "E", "F" }, result));
+            Assert.True("F".ComesAfter(new List<string>() { "A", "B", "C", "D", "E" }, result));
         }
 
         [Test]
