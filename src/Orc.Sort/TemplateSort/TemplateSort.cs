@@ -3,8 +3,7 @@
 //   
 // </copyright>
 // <summary>
-//   Contains extension methods for the ICollection interface that allow to sort the given collection
-//   according to some other collection used as template.
+//   The template sort 2.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,168 +14,140 @@ namespace Orc.Sort.TemplateSort
     using System.Linq;
 
     /// <summary>
-    ///     Contains extension methods for the ICollection interface that allow to sort the given collection
-    ///     according to some other collection used as template.
+    /// The template sort.
     /// </summary>
-    /// <remarks>
-    ///     In order to make this methods available for an ICollection object, just import this class wherever you want to use
-    ///     them.
-    /// </remarks>
     public static class TemplateSort
     {
         #region Methods
 
         /// <summary>
-        /// Sorts the collection according to the given template collection.
+        /// Sorts the elements of a sequence based on the order of the items in the specified template collection, using the
+        ///     specified System.Collections.Generic.IEqualityComparer&lt;T&gt;.
         /// </summary>
         /// <example>
-        ///     collection = [A, B, C, B, A, C, D, D]
+        /// collection = [A, B, C, B, A, C, D, D]
         ///     template = [B, A, D, C]
         ///     collection.SortAccordingTo(template) = [B, B, A, A, D, D, C, C]
         /// </example>
         /// <typeparam name="T">
-        /// The type of the elements of the collection
+        /// The type of the collection to be sorted.
         /// </typeparam>
-        /// <param name="collection">
-        /// The collection to be sorted
+        /// <param name="sourceCollection">
+        /// The sequence to be sorted.
         /// </param>
-        /// <param name="template">
-        /// The template collection to sort according to it. Must not have duplicates.
+        /// <param name="templateCollection">
+        /// A template collection that specifies the order in which the sequence will be sorted.
+        ///     May not contain duplicates.
         /// </param>
-        /// <remarks>
-        /// As long as this is an extension method, collection won't be passed as a parameter, but you can invoke this
-        ///     method on it.
-        /// </remarks>
+        /// <param name="comparer">
+        /// A System.Collections.Generic.IEqualityComparer&lt;T&gt; implementation to use when comparing the
+        ///     elements in the template collection, or null to use the default one.
+        /// </param>
         /// <returns>
-        /// A collection result of ordering the original collection according to the order of the elements of the template
-        ///     collection.
+        /// Returns a list containing the sorted items.
         /// </returns>
-        public static ICollection<T> SortAccordingTo<T>(this ICollection<T> collection, ICollection<T> template)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when either sourceCollection, keySelector or templateCollection is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the template collection contains duplicates.
+        /// </exception>
+        public static IEnumerable<T> SortAccordingTo<T>(this IEnumerable<T> sourceCollection, IEnumerable<T> templateCollection, IEqualityComparer<T> comparer = null)
         {
-            if ((collection.Count == 0) || template.Count == 0)
-            {
-                return collection;
-            }
-
-            var result = new List<T>();
-            var other = new List<T>();
-
-            // Initialize a hash table, mapping each element of the template with a counter.
-            Dictionary<T, int> hash;
-            try
-            {
-                hash = template.ToDictionary(t => t, t => 0);
-            }
-            catch (ArgumentException e)
-            {
-                throw new ArgumentException("Template collection must not have duplicated elements", e);
-            }
-
-            // Count how many of each element of the template are there in the collection.
-            foreach (var element in collection)
-            {
-                int val;
-                if (hash.TryGetValue(element, out val))
-                {
-                    hash[element] = ++val;
-                }
-                else
-                {
-                    other.Add(element); // If the element is not in the template, add it to the others list.
-                }
-            }
-
-            // For each element of the template (in order), add to the result as many elements as equal elements are there in the collection.
-            foreach (var k in template)
-            {
-                for (var i = 0; i < hash[k]; i++)
-                {
-                    result.Add(k);
-                }
-            }
-
-            // Add the elements that don't match with any elements of the template.
-            result.AddRange(other);
-            return result;
+            return SortAccordingTo(sourceCollection, templateCollection, x => x, comparer);
         }
 
         /// <summary>
-        /// Sorts the collection, using a certain property of its elements, according to the given template collection.
+        /// Sorts the elements of a sequence based on the order of the items in the specified template collection, using the
+        ///     specified System.Collections.Generic.IEqualityComparer&lt;T&gt;.
         /// </summary>
         /// <example>
-        /// Suppose collection elements are objects with two properties V1 and V2.
-        ///     collection = [{V1 = A, V2 = 2}, {V1 = B, V2 = 1}, {V1 = C, V2 = 2}]
-        ///     template = [1, 2]
-        ///     collection.SortAccordingTo(x =&gt; x.V2, template) = [{V1 = B, V2 = 1}, {V1 = A, V2 = 2}, {V1 = C, V2 = 2}]
+        /// collection = [A, B, C, B, A, C, D, D]
+        ///     template = [B, A, D, C]
+        ///     collection.SortAccordingTo(template) = [B, B, A, A, D, D, C, C]
         /// </example>
-        /// <typeparam name="T">
-        /// The type of the elements of the collection to order
+        /// <typeparam name="TSource">
+        /// The type of the items to be sorted.
         /// </typeparam>
-        /// <typeparam name="T2">
-        /// The type of the elements of the property that will be used for ordering according to the template collection.
-        ///     Note that the elements of the template collection must have the same type.
+        /// <typeparam name="TKey">
+        /// The type of the items in the template collection.
         /// </typeparam>
-        /// <param name="collection">
-        /// The collection to order.
+        /// <param name="sourceCollection">
+        /// The sequence to be sorted.
         /// </param>
-        /// <param name="orderingProperty">
-        /// A lambda expression that gets some property of the elements of the collection.
+        /// <param name="templateCollection">
+        /// A template collection that specifies the order in which the sequence will be sorted.
+        ///     May not contain duplicates.
         /// </param>
-        /// <param name="template">
-        /// The template collection to sort according to it. Must not have duplicates.
+        /// <param name="keySelector">
+        /// A function to extract a key from an element.
         /// </param>
-        /// <remarks>
-        /// As long as this is an extension method, collection won't be passed as a parameter, but you can invoke this
-        ///     method on it.
-        /// </remarks>
+        /// <param name="comparer">
+        /// A System.Collections.Generic.IEqualityComparer&lt;T&gt; implementation to use when comparing the
+        ///     elements in the template collection, or null to use the default one.
+        /// </param>
         /// <returns>
-        /// A collection result of ordering the original collection, taking the values of the selected property of its
-        ///     elements, according to the order of the elements of the template collection.
+        /// Returns a list containing the sorted items.
         /// </returns>
-        public static ICollection<T> SortAccordingTo<T, T2>(this ICollection<T> collection, Func<T, T2> orderingProperty, ICollection<T2> template)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when either sourceCollection, keySelector or templateCollection is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the template collection contains duplicates.
+        /// </exception>
+        public static IEnumerable<TSource> SortAccordingTo<TSource, TKey>(this IEnumerable<TSource> sourceCollection, IEnumerable<TKey> templateCollection, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer = null)
         {
-            if ((collection.Count == 0) || template.Count == 0)
+            if (sourceCollection == null)
             {
-                return collection;
+                throw new ArgumentNullException("sourceCollection cannot be null.");
             }
 
-            var result = new List<T>();
-            var other = new List<T>();
-
-            // Initialize a hash that maps each element in the template with a new list
-            // that is going to contain the elements of the original collection whose ordering property equals the mapped template element.
-            Dictionary<T2, List<T>> hash;
-            try
+            if (keySelector == null)
             {
-                hash = template.ToDictionary(t => t, t => new List<T>());
-            }
-            catch (ArgumentException e)
-            {
-                throw new ArgumentException("Template collection must not have duplicated elements", e);
+                throw new ArgumentNullException("keySelector cannot be null.");
             }
 
-            // For each element of the collection, add it to the list that corresponds to its ordering property value.
-            foreach (var element in collection)
+            if (templateCollection == null)
             {
-                List<T> val;
-                if (hash.TryGetValue(orderingProperty(element), out val))
+                throw new ArgumentNullException("templateCollection cannot be null.");
+            }
+
+            // Stores items that do not have a match in the template collection
+            var noMatches = new List<TSource>();
+
+            var buckets = new Dictionary<TKey, List<TSource>>(comparer);
+
+            // Build buckets based on the values in the template collection.
+            foreach (TKey item in templateCollection)
+            {
+                buckets.Add(item, new List<TSource>());
+            }
+
+            // Insert values from source collection into correct buckets.
+            foreach (TSource item in sourceCollection)
+            {
+                TKey key = keySelector(item);
+
+                if (buckets.ContainsKey(key))
                 {
-                    val.Add(element);
+                    buckets[key].Add(item);
                 }
                 else
                 {
-                    other.Add(element); // If the element is not in the template, add it to the others list.
+                    noMatches.Add(item);
                 }
             }
 
-            // Add the mapped lists to the result list in the order given by the template collection.
-            foreach (var k in template)
+            // Build the result
+            var result = new List<TSource>();
+
+            foreach (TKey key in templateCollection)
             {
-                result.AddRange(hash[k]);
+                result.AddRange(buckets[key]);
             }
 
-            // Add the elements (in order) that don't match with any elements of the template.
-            result.AddRange(other);
+            result.AddRange(noMatches);
+
             return result;
         }
 

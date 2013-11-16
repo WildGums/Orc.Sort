@@ -81,7 +81,6 @@
     <Compile Include="NSort\SwapSorter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateSort\TemplateSort.cs" />
-    <Compile Include="TemplateSort\TemplateSort2.cs" />
     <Compile Include="TimSort\TimSort.cs" />
     <Compile Include="TimSort\TimSortBase.cs" />
     <Compile Include="TimSort\TimSortExtender.cs" />
