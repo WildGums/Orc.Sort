@@ -145,7 +145,7 @@ namespace Orc.Sort.TemplateSort
                 {
                     buckets[key].Add(item);
                 }
-                else
+                else if (includeNoMatches)
                 {
                     if (noMatches.ContainsKey(item))
                     {
