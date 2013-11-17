@@ -62,14 +62,24 @@ This sort algorithm will sort a list based on the values of another list.
 
 *Example:*
 
-    ListToSort = C, B, B, L, N, P, C, A, D, E, B, E
-    TemplateList = A, B, C, D
+    SourceCollection = C, B, B, L, N, P, C, A, D, E, B, E
+    TemplateCollection = A, B, C, D
 
-	ListToSort.SortAccordingTo(TemplateList)
+	SourceCollection.SortAccordingTo(TemplateCollection)
     
     Result = A, B, B, B, C, C, D, L, N, P, E, E
 
 If there are items in the list to be sorted that are not in the template list, they simply get appended to the end of the result in the order they are found.
+
+### Features
+- TemplateCollection can be a complex type in which case SortAccordingTo() method will accept a lambda expression to sort by a specific property
+
+    `SourceCollection.SortAccordingTo(TemplateCollection, x => x.SomeProperty)`
+
+- You can choose whether to append items that did not have a match at the end of the result or not.
+- Implement your own IEqualityComparer
+
+	`SourceCollection.SortAccordingTo(TemplateCollection, comparer: StringComparer.CurrentCultureIgnoreCase);`
 
 ## Roadmap
 
