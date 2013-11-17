@@ -8,16 +8,18 @@
 
     using Orc.Sort.TopologicalSort;
 
-    [TestFixture(false)] // This will test the normal Topological sort
-    [TestFixture(true)] // This will test the priority Topological sort
+    [TestFixture(false, false)] // This will test the normal Topological sort
+    [TestFixture(true, true)] // This will test the tracking Topological sort
     public class TopologicalSortTests
     {
-        public TopologicalSortTests(bool usesPriority)
+        public TopologicalSortTests(bool usesPriority, bool usesTracking)
         {
             UsesPriority = usesPriority;
+            UsesTracking = usesTracking;
         }
 
         public bool UsesPriority { get; protected set; }
+        public bool UsesTracking { get; protected set; }
 
         [Test]
         public void CanSort_FirstSequenceToBeIncluded_ReturnsTrue()
@@ -177,6 +179,8 @@
 
             Assert.True("F".ComesBefore(sorted.Skip(1), result));
             Assert.True("B".ComesAfter(sorted.Take(sorted.Count - 1), result));
+
+//          Assert.AreEqual(1, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -202,6 +206,8 @@
 
             Assert.True("A".ComesBefore(sorted.Skip(1), result));
             Assert.True("C".ComesAfter(sorted.Take(sorted.Count - 1), result));
+
+//          Assert.AreEqual(1, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -230,6 +236,8 @@
 
             Assert.True("A".ComesBefore(sorted.Skip(1), result));
             Assert.True("C".ComesAfter(sorted.Take(sorted.Count - 1), result));
+
+//          Assert.AreEqual(1, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -249,6 +257,8 @@
 
             AssertOrdering(sorted, result, sorter.Sequences);
             Assert.True("B".ComesBefore(new List<string>(){"C", "D", "E"}, result));
+
+//          Assert.AreEqual(1, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -257,7 +267,7 @@
             var sorter = CreateTopologicalSorter<string>();
 
             var sorted = new List<string> { "A", "E", "B", "C", "D", "F", "G", "I", "H", "J", "K", "L", };
-
+            
             var seq_11 = new List<string> { "A",                                                        };
             var seq_21 = new List<string> {           "B", "C", "D",                                    };
             var seq_22 = new List<string> {      "E", "B",           "F", "G",                          };
@@ -275,6 +285,8 @@
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
+
+//          Assert.AreEqual(3, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -301,6 +313,8 @@
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
+
+//          Assert.AreEqual(3, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -327,6 +341,8 @@
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
+
+//          Assert.AreEqual(3, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -351,6 +367,8 @@
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
+
+//          Assert.AreEqual(2, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -377,6 +395,8 @@
             var result = sorter.Sort();
             
             AssertOrdering(sorted, result, sorter.Sequences);
+
+//          Assert.AreEqual(1, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -399,8 +419,9 @@
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
-
             Assert.True("A".ComesAfter(new List<string>(){"C", "D", "E"}, result));
+
+//          Assert.AreEqual(2, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -424,6 +445,8 @@
 
             AssertOrdering(sorted, result, sorter.Sequences);
             Assert.True("E".ComesAfter(new List<string>() { "A", "B", "C", "D" }, result));
+
+//          Assert.AreEqual(1, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -435,21 +458,23 @@
 
             var seq_11 = new List<string> {                "A",                          };
             var seq_12 = new List<string> { "B",                "C", "D",                };
-            var seq_13 = new List<string> {                               "E", "F",      };
-            var seq_14 = new List<string> {      "G",      "A",                     "H", };
-            var seq_15 = new List<string> {           "I", "A",                          };
-            var seq_16 = new List<string> { "B",           "A",                          };
+            var seq_21 = new List<string> {                               "E", "F",      };
+            var seq_13 = new List<string> {      "G",      "A",                     "H", };
+            var seq_14 = new List<string> {           "I", "A",                          };
+            var seq_15 = new List<string> { "B",           "A",                          };
 
             sorter.Add(seq_11);
             sorter.Add(seq_12);
+            sorter.Add(seq_21);
             sorter.Add(seq_13);
             sorter.Add(seq_14);
             sorter.Add(seq_15);
-            sorter.Add(seq_16);
 
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
+
+//          Assert.AreEqual(2, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -472,6 +497,8 @@
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
+
+//          Assert.AreEqual(1, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -493,6 +520,8 @@
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
+
+//          Assert.AreEqual(1, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -505,26 +534,28 @@
             var seq_11 = new List<string> { "A",                                                                                 };
             var seq_21 = new List<string> {           "B", "C", "D",                                                             };
             var seq_22 = new List<string> {           "B",           "E",                     "F",                               };
-            var seq_23 = new List<string> {                                                        "G", "H", "I",                };
-            var seq_24 = new List<string> {      "J", "B",                          "K", "L",                     "M",           };
-            var seq_25 = new List<string> {                "C",                          "L", "F",                     "N",      };
-            var seq_31 = new List<string> {                                                                                 "O", };
-            var seq_26 = new List<string> {                                    "P", "K",                                         };
-            var seq_27 = new List<string> {                               "Q", "P",                                              };
+            var seq_31 = new List<string> {                                                        "G", "H", "I",                };
+            var seq_23 = new List<string> {      "J", "B",                          "K", "L",                     "M",           };
+            var seq_24 = new List<string> {                "C",                          "L", "F",                     "N",      };
+            var seq_41 = new List<string> {                                                                                 "O", };
+            var seq_25 = new List<string> {                                    "P", "K",                                         };
+            var seq_26 = new List<string> {                               "Q", "P",                                              };
 
             sorter.Add(seq_11);
             sorter.Add(seq_21);
             sorter.Add(seq_22);
+            sorter.Add(seq_31);
             sorter.Add(seq_23);
             sorter.Add(seq_24);
+            sorter.Add(seq_41);
             sorter.Add(seq_25);
-            sorter.Add(seq_31);
             sorter.Add(seq_26);
-            sorter.Add(seq_27);
 
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
+
+//          Assert.AreEqual(4, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -537,28 +568,30 @@
             var seq_11 = new List<string> { "A",                                                                                           };
             var seq_21 = new List<string> {           "B", "C", "D",                                                                       };
             var seq_22 = new List<string> {           "B",           "E",                               "F",                               };
-            var seq_23 = new List<string> {                                                                  "G", "H", "I",                };
-            var seq_24 = new List<string> {      "J", "B",                                    "K", "L",                     "M",           };
-            var seq_25 = new List<string> {                "C",                                    "L", "F",                     "N",      };
-            var seq_31 = new List<string> {                                                                                           "O", };
-            var seq_26 = new List<string> {                               "P",           "Q", "K",                                         };
-            var seq_27 = new List<string> {                                         "R", "Q",                                              };
-            var seq_28 = new List<string> {                                    "S", "R",                                                   };
+            var seq_31 = new List<string> {                                                                  "G", "H", "I",                };
+            var seq_23 = new List<string> {      "J", "B",                                    "K", "L",                     "M",           };
+            var seq_24 = new List<string> {                "C",                                    "L", "F",                     "N",      };
+            var seq_41 = new List<string> {                                                                                           "O", };
+            var seq_25 = new List<string> {                               "P",           "Q", "K",                                         };
+            var seq_26 = new List<string> {                                         "R", "Q",                                              };
+            var seq_27 = new List<string> {                                    "S", "R",                                                   };
             
             sorter.Add(seq_11);
             sorter.Add(seq_21);
             sorter.Add(seq_22);
+            sorter.Add(seq_31);
             sorter.Add(seq_23);
             sorter.Add(seq_24);
+            sorter.Add(seq_41);
             sorter.Add(seq_25);
-            sorter.Add(seq_31);
             sorter.Add(seq_26);
             sorter.Add(seq_27);
-            sorter.Add(seq_28);
 
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
+
+//          Assert.AreEqual(4, sorter.components.Distinct().Count());
         }
 
         [Test]
@@ -688,9 +721,9 @@
             return (index1 < index2);
         }
 
-        public TopologicalSort<T> CreateTopologicalSorter<T>(IEnumerable<IEnumerable<T>> collection = null ) where T : IEquatable<T>
+        public TopologicalSort<T> CreateTopologicalSorter<T>(IEnumerable<IEnumerable<T>> collection = null)
         {
-            return new TopologicalSort<T>(UsesPriority, false, collection);
+            return new TopologicalSort<T>(UsesPriority, UsesTracking, collection);
         }
     }
 }

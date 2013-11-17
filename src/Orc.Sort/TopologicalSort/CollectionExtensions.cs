@@ -11,9 +11,14 @@
             return new ReadOnlyCollection<T>(list);
         }
 
-        public static IEnumerable<T> ConcatWith<T>(this IEnumerable<T> collection, T item)
+        public static IEnumerable<T> ConcatItem<T>(this IEnumerable<T> collection, T item)
         {
             return collection.Concat(new[] { item });
+        }
+
+        public static IEnumerable<T> ExceptItem<T>(this IEnumerable<T> collection, T item)
+        {
+            return collection.Except(new[] { item });
         }
     }
 }

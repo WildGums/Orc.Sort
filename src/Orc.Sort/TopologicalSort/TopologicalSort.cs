@@ -20,19 +20,8 @@ namespace Orc.Sort.TopologicalSort
     /// <typeparam name="T">
     /// </typeparam>
     public class TopologicalSort<T>
-        where T : IEquatable<T>
     {
         #region Fields
-
-        /// <summary>
-        /// The edges from each node.
-        /// </summary>
-        private List<HashSet<int>> edgesFrom;
-
-        /// <summary>
-        /// The edges into each node.
-        /// </summary>
-        private List<HashSet<int>> edgesInto;
 
         /// <summary>
         /// The nodes dictionary. Maps nodes to IDs.
@@ -45,9 +34,26 @@ namespace Orc.Sort.TopologicalSort
         private List<T> nodesList;
 
         /// <summary>
-        /// The nodes path.
+        /// The edges from each node.
         /// </summary>
-        private List<T> nodesPath;
+        private List<HashSet<int>> edgesFrom;
+
+        /// <summary>
+        /// The edges into each node.
+        /// </summary>
+        private List<HashSet<int>> edgesInto;
+
+        /// <summary>
+        /// The edges from each node - transitive closure.
+        /// </summary>
+        private List<HashSet<int>> transFrom;
+
+        /// <summary>
+        /// The edges into each node - transitive closure.
+        /// </summary>
+        private List<HashSet<int>> transInto;
+
+        private IEnumerable<T> firstConflict;
 
         #endregion
 
@@ -58,33 +64,67 @@ namespace Orc.Sort.TopologicalSort
         /// </summary>
         public TopologicalSort(bool usesPriority = false, bool usesTracking = false, IEnumerable<IEnumerable<T>> sequences = null)
         {
+            nodesDict = new Dictionary<T, int>();
+            nodesList = new List<T>();
+
+            edgesFrom = new List<HashSet<int>>();
+            edgesInto = new List<HashSet<int>>();
+
+            if (usesTracking)
+            {
+                transFrom = new List<HashSet<int>>();
+                transInto = new List<HashSet<int>>();
+            }
+
+            UsesPriority = usesPriority;
+            UsesTracking = usesTracking;
+
             Sequences = new List<IEnumerable<T>>();
 
             if (sequences != null)
             {
                 AddRange(sequences);
             }
-            
-            UsesPriority = usesPriority;
-            UsesTracking = usesTracking;
         }
+
+        public TopologicalSort(TopologicalSort<T> baseSort, bool? usesPriority = null, bool? usesTracking = null)
+        {
+            nodesDict = new Dictionary<T, int>(baseSort.nodesDict);
+            nodesList = new List<T>(baseSort.nodesList);
+
+            edgesFrom = new List<HashSet<int>>(baseSort.edgesFrom.Select(hash => new HashSet<int>(hash)));
+            edgesInto = new List<HashSet<int>>(baseSort.edgesInto.Select(hash => new HashSet<int>(hash)));
+
+            UsesPriority = usesPriority ?? baseSort.UsesPriority;
+            UsesTracking = usesTracking ?? baseSort.UsesTracking;
+
+            if (UsesTracking)
+            {
+                transFrom = new List<HashSet<int>>(baseSort.transFrom.Select(hash => new HashSet<int>(hash)));
+                transInto = new List<HashSet<int>>(baseSort.transInto.Select(hash => new HashSet<int>(hash)));
+            }
+
+            Sequences = baseSort.Sequences.ToList();
+        }
+
         #endregion
 
         #region Properties
 
         /// <summary>
-        ///     Gets the sub groups.
-        ///     The order of the items in the sub group is important and will preserved in the final merged list.
+        /// Gets the sequences.
+        /// The order of items within each sequence is important and will preserved in the final merged sequence.
+        /// If the sorter uses priority, additionally the appearance order of each item will be used if possible.
         /// </summary>
-        public IList<IEnumerable<T>> Sequences { get; private set; }
+        public IEnumerable<IEnumerable<T>> Sequences { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether priority will be used or not.
+        /// Gets the value indicating whether priority will be used or not.
         /// </summary>
         public bool UsesPriority { get; protected set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether tracking will be used or not.
+        /// Gets the value indicating whether tracking will be used or not.
         /// </summary>
         public bool UsesTracking { get; protected set; }
 
@@ -95,12 +135,46 @@ namespace Orc.Sort.TopologicalSort
         /// <summary>
         /// The add.
         /// </summary>
-        /// <param name="newSequence">
+        /// <param name="sequence">
         /// The new group.
         /// </param>
-        public void Add(IEnumerable<T> newSequence)
+        public void Add(IEnumerable<T> sequence)
         {
-            Sequences.Add(newSequence);
+            (Sequences as IList<IEnumerable<T>>).Add(sequence);
+
+            if (!sequence.Any())
+            {
+                return;
+            }
+
+            int next = 0;
+            int prev = NodeKey(sequence.First());
+
+            foreach (var node in sequence.Skip(1))
+            {
+                next = NodeKey(node);
+
+                edgesFrom[next].Add(prev);
+                edgesInto[prev].Add(next);
+
+                if (UsesTracking)
+                {
+                    foreach (int temp in transFrom[prev])
+                    {
+                        transInto[temp].UnionWith(transInto[next]);
+                    }
+                    foreach (int temp in transInto[next])
+                    {
+                        transFrom[temp].UnionWith(transFrom[prev]);
+                    }
+                    if (transFrom[prev].Contains(next))
+                    {
+                        firstConflict = firstConflict ?? sequence;
+                    }
+                }
+
+                prev = next;
+            }
         }
 
         /// <summary>
@@ -111,7 +185,10 @@ namespace Orc.Sort.TopologicalSort
         /// </param>
         public void AddRange(IEnumerable<IEnumerable<T>> newSequences)
         {
-            (Sequences as List<IEnumerable<T>>).AddRange(newSequences);
+            foreach (var sequence in newSequences)
+            {
+                Add(sequence);
+            }
         }
 
         /// <summary>
@@ -130,12 +207,43 @@ namespace Orc.Sort.TopologicalSort
                 return false;
             }
 
-            var topSort = new TopologicalSort<T>();
-            topSort.Sequences = Sequences.ConcatWith(sequence).ToList();
+            if (UsesTracking)
+            {
+                var tempFrom = new HashSet<int>();
+                var tempSeen = new HashSet<int>();
+                var tempDict = new Dictionary<T, int>(nodesDict);
 
-            var result = topSort.Sort();
+                foreach (var node in sequence.Reverse())
+                {
+                    var key = NodeKeySafe(node, tempDict);
 
-            return result != null;
+                    if (tempSeen.Contains(key))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        tempSeen.Add(key);
+                    }
+
+                    if (key < transFrom.Count)
+                    {
+                        tempFrom.UnionWith(transFrom[key]);
+                        tempFrom.Remove(key);
+                    }
+                }
+
+                tempFrom.IntersectWith(tempSeen);
+
+                return !tempFrom.Any();
+            }
+            else
+            {
+                var newSort = new TopologicalSort<T>(this, false, false);
+                newSort.Add(sequence);
+
+                return newSort.Sort() != null;
+            }
         }
 
         /// <summary>
@@ -144,17 +252,61 @@ namespace Orc.Sort.TopologicalSort
         /// <returns>
         /// The <see cref="List"/>.
         /// </returns>
-        public List<T> Sort()
+        public IList<T> Sort()
         {
-            Initialize();
-            Walk();
+            var nodesPath = new List<T>();
+            var countInto = edgesInto.Select(e => e.Count).ToList();
+
+            ISet<int> nodesNext;
+
+            if (UsesPriority)
+            {
+                nodesNext = new SortedSet<int>();
+            }
+            else
+            {
+                nodesNext = new HashSet<int>();
+            }
+
+            nodesNext.UnionWith(Enumerable.Range(0, nodesDict.Count).Where(node => countInto[node] == 0));
+
+            while (nodesNext.Count > 0)
+            {
+                int next;
+
+                if (UsesPriority)
+                {
+                    next = nodesNext.Max();
+                }
+                else
+                {
+                    next = nodesNext.First();
+                }
+
+                nodesPath.Add(nodesList[next]);
+                nodesNext.Remove(next);
+
+                foreach (int node in edgesFrom[next])
+                {
+                    countInto[node] -= 1;
+
+                    if (countInto[node] == 0)
+                    {
+                        nodesNext.Add(node);
+                    }
+                }
+            }
+
+            nodesPath.Reverse();
 
             if (nodesPath.Count == nodesList.Count)
             {
                 return nodesPath;
             }
-
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -167,76 +319,52 @@ namespace Orc.Sort.TopologicalSort
         {
             var conflictLists = new List<IEnumerable<T>>();
 
-            var topSort = new TopologicalSort<T>();
-
-            for (var i = 0; i < Sequences.Count; i++)
+            if (UsesTracking)
             {
-                topSort.Add(Sequences[i]);
-
-                var sortedList = topSort.Sort();
-
-                if (sortedList != null)
+                if (firstConflict != null)
                 {
-                    continue;
+                    conflictLists.Add(Sequences.First(s => !CanSort(s)));
+                    conflictLists.Add(firstConflict);
                 }
+                return conflictLists;
+            }
+            else
+            {
+                var newSort = new TopologicalSort<T>();
 
-                topSort = new TopologicalSort<T>();
-                topSort.Add(Sequences[i]);
+                var sequences = (Sequences as IList<IEnumerable<T>>);
 
-                for (var j = 0; j < i; j++)
+                for (var i = 0; i < sequences.Count; i++)
                 {
-                    
-                    topSort.Add(Sequences[j]);
+                    newSort.Add(sequences[i]);
 
-                    sortedList = topSort.Sort();
-
-                    if (sortedList != null)
+                    if (newSort.Sort() != null)
                     {
                         continue;
                     }
 
-                    conflictLists.Add(Sequences[j].ToList());
-                    conflictLists.Add(Sequences[i].ToList());
+                    newSort = new TopologicalSort<T>();
+                    newSort.Add(sequences[i]);
+
+                    for (var j = 0; j < i; j++)
+                    {
+                        newSort.Add(sequences[j]);
+
+                        if (newSort.Sort() != null)
+                        {
+                            continue;
+                        }
+
+                        conflictLists.Add(sequences[j].ToList());
+                        conflictLists.Add(sequences[i].ToList());
+
+                        break;
+                    }
+
                     break;
                 }
 
-                break;
-            }
-
-            return conflictLists;
-        }
-
-        /// <summary>
-        /// The initialize.
-        /// </summary>
-        private void Initialize()
-        {
-            nodesDict = new Dictionary<T, int>();
-            nodesList = new List<T>();
-            nodesPath = new List<T>();
-
-            edgesFrom = new List<HashSet<int>>();
-            edgesInto = new List<HashSet<int>>();
-
-            foreach (var sequence in Sequences)
-            {
-                if (!sequence.Any())
-                {
-                    continue;
-                }
-
-                int next = 0;
-                int prev = NodeKey(sequence.First());
-
-                foreach (var node in sequence.Skip(1))
-                {
-                    next = NodeKey(node);
-
-                    edgesFrom[next].Add(prev);
-                    edgesInto[prev].Add(next);
-
-                    prev = next;
-                }
+                return conflictLists;
             }
         }
 
@@ -253,59 +381,34 @@ namespace Orc.Sort.TopologicalSort
 
                 nodesDict.Add(node, key);
                 nodesList.Add(node);
+
                 edgesFrom.Add(new HashSet<int>());
                 edgesInto.Add(new HashSet<int>());
+
+                if (UsesTracking)
+                {
+                    transFrom.Add(new HashSet<int>(new int[] { key }));
+                    transInto.Add(new HashSet<int>(new int[] { key }));
+                }
             }
 
             return key;
         }
 
         /// <summary>
-        /// The walk.
+        /// The node key - safe.
         /// </summary>
-        private void Walk()
+        private int NodeKeySafe(T node, Dictionary<T, int> tempDict)
         {
-            ISet<int> nodesNext;
+            int key;
 
-            if (UsesPriority)
+            if (!tempDict.TryGetValue(node, out key))
             {
-                nodesNext = new SortedSet<int>();
-            }
-            else
-            {
-                nodesNext = new HashSet<int>();
+                key = tempDict.Count;
+                tempDict[node] = key;
             }
 
-            nodesNext.UnionWith(Enumerable.Range(0, nodesDict.Count).Where(node => edgesInto[node].Count == 0));
-
-            while (nodesNext.Count > 0)
-            {
-                int next = -1;
-
-                if (UsesPriority)
-                {
-                    next = nodesNext.Max();
-                }
-                else
-                {
-                    next = nodesNext.First();
-                }
-
-                nodesPath.Add(nodesList[next]);
-                nodesNext.Remove(next);
-
-                foreach (int node in edgesFrom[next])
-                {
-                    edgesInto[node].Remove(next);
-
-                    if (edgesInto[node].Count == 0)
-                    {
-                        nodesNext.Add(node);
-                    }
-                }
-            }
-
-            nodesPath.Reverse();
+            return key;
         }
 
         #endregion
