@@ -411,6 +411,37 @@ namespace Orc.Sort.TopologicalSort
             return key;
         }
 
+        
+        /// <summary>
+        /// Returns the list nodes that the given node depends on. (Nodes that must come after the given node.)
+        /// </summary>
+        public IEnumerable<T> GetDependencies(T node)
+        {
+            if (!UsesTracking)
+            {
+                throw new InvalidOperationException("tracking is not enabled");
+            }
+
+            int next = nodesDict[node];
+
+            return transFrom[next].Select(prev => nodesList[prev]);
+        }
+
+        /// <summary>
+        /// Returns the list of all nodes that depend on the given node. (Nodes that the given node must come before).
+        /// </summary>
+        public IEnumerable<T> GetDependenciesReverse(T node)
+        {
+            if (!UsesTracking)
+            {
+                throw new InvalidOperationException("tracking is not enabled");
+            }
+
+            int prev = nodesDict[node];
+
+            return transInto[prev].Select(next => nodesList[next]);
+        }
+
         #endregion
     }
 }

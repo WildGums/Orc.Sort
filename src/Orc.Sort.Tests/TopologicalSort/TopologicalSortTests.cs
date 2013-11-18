@@ -184,6 +184,68 @@
         }
 
         [Test]
+        public void GetDependencies_ReturnsCorrectSequence()
+        {
+            var sorter = CreateTopologicalSorter<string>();
+
+            var sorted = new List<string> { "A", "B", "E", "F", "D", "C", };
+            
+            var seq_11 = new List<string> { "A", "B",                "C", };
+            var seq_12 = new List<string> {      "B",           "D", "C", };
+            var seq_13 = new List<string> {      "B", "E",      "D",      };
+            var seq_14 = new List<string> {           "E", "F", "D",      };
+
+            sorter.Add(seq_14);
+            sorter.Add(seq_12);
+            sorter.Add(seq_13);
+            sorter.Add(seq_11);
+
+            var result = sorter.Sort();
+
+            if (sorter.UsesTracking)
+            {
+                Assert.AreEqual(new List<string> { "A", "B", "C", "D", "E", "F" }, sorter.GetDependencies("C").OrderBy(x => x).ToList());
+                Assert.AreEqual(new List<string> { "A", "B",      "D", "E", "F" }, sorter.GetDependencies("D").OrderBy(x => x).ToList());
+                Assert.AreEqual(new List<string> { "A", "B",           "E", "F" }, sorter.GetDependencies("F").OrderBy(x => x).ToList());
+            }
+            else
+            {
+                Assert.Throws(typeof(InvalidOperationException), delegate { sorter.GetDependencies("A"); });
+            }
+        }
+        
+        [Test]
+        public void GetDependenciesReverse_ReturnsCorrectSequence()
+        {
+            var sorter = CreateTopologicalSorter<string>();
+
+            var sorted = new List<string> { "A", "B", "E", "F", "D", "C", };
+            
+            var seq_11 = new List<string> { "A", "B",                "C", };
+            var seq_12 = new List<string> {      "B",           "D", "C", };
+            var seq_13 = new List<string> {      "B", "E",      "D",      };
+            var seq_14 = new List<string> {           "E", "F", "D",      };
+
+            sorter.Add(seq_14);
+            sorter.Add(seq_12);
+            sorter.Add(seq_13);
+            sorter.Add(seq_11);
+
+            var result = sorter.Sort();
+
+            if (sorter.UsesTracking)
+            {
+                Assert.AreEqual(new List<string> { "A", "B", "C", "D", "E", "F" }, sorter.GetDependenciesReverse("A").OrderBy(x => x).ToList());
+                Assert.AreEqual(new List<string> {      "B", "C", "D", "E", "F" }, sorter.GetDependenciesReverse("B").OrderBy(x => x).ToList());
+                Assert.AreEqual(new List<string> {           "C", "D", "E", "F" }, sorter.GetDependenciesReverse("E").OrderBy(x => x).ToList());
+            }
+            else
+            {
+                Assert.Throws(typeof(InvalidOperationException), delegate { sorter.GetDependenciesReverse("A"); });
+            }
+        }
+
+        [Test]
         public void Sort_CollectionOfSequences_ReturnsCorrectSequence0_DefaultOrder()
         {
             var sorter = CreateTopologicalSorter<string>();
