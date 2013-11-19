@@ -411,35 +411,96 @@ namespace Orc.Sort.TopologicalSort
             return key;
         }
 
-        
         /// <summary>
-        /// Returns the list nodes that the given node depends on. (Nodes that must come after the given node.)
+        /// Returns the list of all nodes that the given node depends on. (Nodes that must come before the given node.)
         /// </summary>
-        public IEnumerable<T> GetDependencies(T node)
+        public IEnumerable<T> GetPrecedents(T node, bool immediate = false, bool terminating = false)
         {
-            if (!UsesTracking)
-            {
-                throw new InvalidOperationException("tracking is not enabled");
-            }
-
+            IEnumerable<int> nodesFrom;
             int next = nodesDict[node];
 
-            return transFrom[next].Select(prev => nodesList[prev]);
+            if (immediate)
+            {
+                nodesFrom = edgesFrom[next];
+            }
+            else if (UsesTracking)
+            {
+                nodesFrom = transFrom[next];
+            }
+            else
+            {
+                nodesFrom = EdgesWalk(next, edgesFrom);
+            }
+
+            if (terminating)
+            {
+                nodesFrom = nodesFrom.Where(prev => ((prev != next) && (edgesFrom[prev].Count == 0)));
+            }
+            else
+            {
+                nodesFrom = nodesFrom.ExceptItem(next);
+            }
+
+
+            return nodesFrom.Select(prev => nodesList[prev]);
         }
 
         /// <summary>
-        /// Returns the list of all nodes that depend on the given node. (Nodes that the given node must come before).
+        /// Returns the list of all nodes that depend on the given node. (Nodes that must come after the given node.)
         /// </summary>
-        public IEnumerable<T> GetDependenciesReverse(T node)
+        public IEnumerable<T> GetDependents(T node, bool immediate = false, bool terminating = false)
         {
-            if (!UsesTracking)
-            {
-                throw new InvalidOperationException("tracking is not enabled");
-            }
-
+            IEnumerable<int> nodesInto;
             int prev = nodesDict[node];
 
-            return transInto[prev].Select(next => nodesList[next]);
+            if (immediate)
+            {
+                nodesInto = edgesInto[prev];
+            }
+            else if (UsesTracking)
+            {
+                nodesInto = transInto[prev];
+            }
+            else
+            {
+                nodesInto = EdgesWalk(prev, edgesInto);
+            }
+
+            if (terminating)
+            {
+                nodesInto = nodesInto.Where(next => ((next != prev) && (edgesInto[next].Count == 0)));
+            }
+            else
+            {
+                nodesInto = nodesInto.ExceptItem(prev);
+            }
+
+            return nodesInto.Select(next => nodesList[next]);
+        }
+
+        /// <summary>
+        /// Walks the edges from the given node recursively, and returns a set of visited nodes.
+        /// </summary>
+        private HashSet<int> EdgesWalk(int walk, List<HashSet<int>> edgesWalk)
+        {
+            var nodesWalk = new HashSet<int>();
+            var nodesSeen = new HashSet<int>();
+
+            nodesWalk.Add(walk);
+
+            while (nodesWalk.Any())
+            {
+                walk = nodesWalk.First();
+
+                if (nodesSeen.Add(walk))
+                {
+                    nodesWalk.UnionWith(edgesWalk[walk]);
+                }
+
+                nodesWalk.Remove(walk);
+            }
+
+            return nodesSeen;
         }
 
         #endregion
