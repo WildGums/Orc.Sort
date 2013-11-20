@@ -17,6 +17,6 @@
 	
 	<language>en-US</language>
 	<projectUrl>https://github.com/orcomp/orc.sort</projectUrl>	
-	<licenseUrl></licenseUrl>
+	<licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
   </metadata>
 </package>
