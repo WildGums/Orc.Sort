@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Orc.Sort</id>
+    <version>[VERSION]</version>
+	<title>Orc.Sort</title>
+    <authors>OrchestraDevs</authors>
+    <owners>OrchestraDevs</owners>
+	
+	<description>
+	  This library contains various sorting Algorithms.
+	</description>
+	<summary>
+	</summary>
+	
+	<tags>orc sorting sort algorithm</tags>
+	
+	<language>en-US</language>
+	<projectUrl>https://github.com/orcomp/orc.sort</projectUrl>	
+	<licenseUrl></licenseUrl>
+  </metadata>
+</package>
