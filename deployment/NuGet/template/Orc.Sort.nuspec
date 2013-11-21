@@ -6,17 +6,18 @@
 	<title>Orc.Sort</title>
     <authors>OrchestraDevs</authors>
     <owners>OrchestraDevs</owners>
-	
+
 	<description>
-	  This library contains various sorting Algorithms.
+	  This library contains various sorting algorithms.
+	  Namely, TopologicalSort and TemplateSort amongst others.
 	</description>
 	<summary>
 	</summary>
-	
+
 	<tags>orc sorting sort algorithm</tags>
-	
+
 	<language>en-US</language>
-	<projectUrl>https://github.com/orcomp/orc.sort</projectUrl>	
+	<projectUrl>https://github.com/orcomp/orc.sort</projectUrl>
 	<licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
   </metadata>
 </package>
