@@ -11,18 +11,57 @@ namespace Orc.Sort.Tests.Extensions
     public class IEnumerableExtensionsTests
     {
         [Test]
-        public void MergeSorted_ReturnsCorrectSequence_1()
+        public void MergeSorted_ReturnsCorrectSequence()
         {
-            var list_1 = new List<int> { 1, 2, 6, 8 };
-            var list_2 = new List<int> { 2, 3, 4, 7 };
-            var list_3 = new List<int> { 0, 1, 5, 9 };
+            var list_1 = new List<Item>
+            {
+                new Item("B", 1), new Item("C", 1), new Item("F", 1), new Item("H", 1),
+            };
 
-            var sorted = list_1.Concat(list_2).Concat(list_3).ToList();
+            var list_2 = new List<Item>
+            {
+                new Item("B", 2), new Item("D", 2), new Item("E", 2), new Item("G", 2),
+            };
+
+            var list_3 = new List<Item>
+            {
+                new Item("A", 3), new Item("B", 3), new Item("E", 3), new Item("H", 3),
+            };
+
+            var sorted = new List<Item>
+            {
+                new Item("A", 3), new Item("B", 1), new Item("B", 2), new Item("B", 3),
+                new Item("C", 1), new Item("D", 2), new Item("E", 2), new Item("E", 3), 
+                new Item("F", 1), new Item("G", 2), new Item("H", 1), new Item("H", 3),
+            };
             sorted.Sort();
 
-            var result = (new List<IEnumerable<int>> {list_1, list_2, list_3}).MergeSorted().ToList();
+            var result = (new List<IEnumerable<Item>> {list_1, list_2, list_3}).MergeSorted().ToList();
 
             Assert.AreEqual(sorted, result);
+        }
+    }
+
+    internal class Item : IComparable<Item>, IEquatable<Item>
+    {
+        public Item(string key, int listID)
+        {
+            Key = key;
+            ListID = listID;
+        }
+
+        public int ListID { get; private set; }
+
+        public string Key { get; private set; }
+
+        public int CompareTo(Item other)
+        {
+            return System.String.Compare(Key, other.Key, System.StringComparison.Ordinal);
+        }
+
+        public bool Equals(Item other)
+        {
+            return (Key.Equals(other.Key) && ListID.Equals(other.ListID));
         }
     }
 }

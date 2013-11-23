@@ -8,41 +8,48 @@ namespace Orc.Sort.Extensions
 {
     public static class IEnumerableExtensions
     {
-        public static IEnumerable<T> MergeSorted<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables)
+        public static IEnumerable<T> MergeSorted<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables, IComparer<T> itemComparer=null)
             where T : IComparable<T>
         {
-            var set = new SortedSet<KeyedEnumerator<T>>();
-            int key = 0;
+            if (itemComparer == null)
+            {
+                itemComparer = Comparer<T>.Default;
+            }
+
+            var sortedKeySet = new SortedSet<KeyedEnumerator<T>>();
+            int secondaryKey = 0;
 
             foreach (var enumerator in sortedEnumerables.Select(e => e.GetEnumerator()))
             {
                 if (enumerator.MoveNext())
-                    set.Add(new KeyedEnumerator<T>(enumerator, key++));
-            }
-
-            while (set.Count > 1)
-            {
-                var min = set.Min;
-                var has = true;
-                set.Remove(min);
-
-                while (has && min.CompareTo(set.Min) < 0)
                 {
-                    yield return min.Current;
-                    has = min.MoveNext();
-                }
-
-                if (has)
-                {
-                    set.Add(min);
+                    sortedKeySet.Add(new KeyedEnumerator<T>(enumerator, itemComparer, secondaryKey++));
                 }
             }
 
-            if (set.Count > 0)
+            while (sortedKeySet.Count > 1)
             {
-                var min = set.Min;
+                var minItem = sortedKeySet.Min;
+                var hasNext = true;
+                sortedKeySet.Remove(minItem);
+
+                while (hasNext && minItem.CompareTo(sortedKeySet.Min) < 0)
+                {
+                    yield return minItem.Current;
+                    hasNext = minItem.MoveNext();
+                }
+
+                if (hasNext)
+                {
+                    sortedKeySet.Add(minItem);
+                }
+            }
+
+            if (sortedKeySet.Count > 0)
+            {
+                var min = sortedKeySet.Min;
                 var has = true;
-                set.Remove(min);
+                sortedKeySet.Remove(min);
 
                 while (has)
                 {
@@ -54,36 +61,24 @@ namespace Orc.Sort.Extensions
         }
     }
 
-    internal class EnumeratorComparer<T> : IComparer<IEnumerator<T>>
-        where T : IComparable<T>
-    {
-        public int Compare(IEnumerator<T> x, IEnumerator<T> y)
-        {
-            var result = x.Current.CompareTo(y.Current);
-            if (result == 0)
-                result = x.GetHashCode() - y.GetHashCode();
-
-            return result;
-        }
-    }
-
     internal class KeyedEnumerator<T> : IEnumerator<T>, IComparable<KeyedEnumerator<T>>
         where T : IComparable<T>
     {
-        public KeyedEnumerator(IEnumerator<T> enumerator, int key)
+        public KeyedEnumerator(IEnumerator<T> enumerator, IComparer<T> itemComparer, int secondaryKey)
         {
             Enumerator = enumerator;
-            Key = key;
+            ItemComparer = itemComparer;
+            SecondaryKey = secondaryKey;
         }
-
-        public IEnumerator<T> Enumerator { get; private set; }
-        public int Key { get; private set; }
 
         public int CompareTo(KeyedEnumerator<T> other)
         {
-            var result = Current.CompareTo(other.Current);
+            var result = ItemComparer.Compare(Current, other.Current);
+
             if (result == 0)
-                result = Key.CompareTo(other.Key);
+            {
+                result = SecondaryKey.CompareTo(other.SecondaryKey);
+            }
 
             return result;
         }
@@ -112,5 +107,12 @@ namespace Orc.Sort.Extensions
         {
             get { return Enumerator.Current; }
         }
+
+        public IEnumerator<T> Enumerator { get; private set; }
+
+        public IComparer<T> ItemComparer { get; private set; }
+
+        public int SecondaryKey { get; private set; }
+
     }
 }
