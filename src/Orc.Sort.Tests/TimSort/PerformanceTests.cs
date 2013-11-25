@@ -9,7 +9,7 @@ namespace TimSort.Tests
     [TestFixture]
     public class PerformanceTests
     {
-        private const int maxMem = int.MaxValue/(64*4);
+        private const int maxMem = int.MaxValue/(64*32);
         const int maxSize = maxMem / sizeof(int);
         const int seed = 1234;
 

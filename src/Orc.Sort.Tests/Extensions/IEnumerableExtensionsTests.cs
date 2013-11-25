@@ -56,12 +56,24 @@ namespace Orc.Sort.Tests.Extensions
 
         public int CompareTo(Item other)
         {
-            return System.String.Compare(Key, other.Key, System.StringComparison.Ordinal);
+            var result = System.String.Compare(Key, other.Key, System.StringComparison.Ordinal);
+
+            if (result == 0)
+            {
+                return ListID.CompareTo(other.ListID);
+            }
+
+            return result;
         }
 
         public bool Equals(Item other)
         {
             return (Key.Equals(other.Key) && ListID.Equals(other.ListID));
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0},{1}", Key, ListID);
         }
     }
 }
