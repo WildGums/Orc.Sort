@@ -8,6 +8,13 @@ namespace Orc.Sort.Extensions
 {
     public static class IEnumerableExtensions
     {
+        /// <summary>
+        /// Takes a collection of sorted items and merges these collections together in order to return one sorted collection.
+        /// </summary>
+        /// <typeparam name="T"> Must be comparable. </typeparam>
+        /// <param name="sortedEnumerables"></param>
+        /// <param name="itemComparer"></param>
+        /// <returns></returns>
         public static IEnumerable<T> MergeSorted<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables, IComparer<T> itemComparer=null)
             where T : IComparable<T>
         {
