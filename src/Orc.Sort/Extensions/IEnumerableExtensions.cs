@@ -15,14 +15,14 @@ namespace Orc.Sort.Extensions
         /// <param name="sortedEnumerables"></param>
         /// <param name="itemComparer"></param>
         /// <returns></returns>
-        public static IEnumerable<T> MergeSorted<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables, IComparer<T> itemComparer=null)
+        public static IEnumerable<T> MergeSorted<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables)
             where T : IComparable<T>
         {
-            if (itemComparer == null)
-            {
-                itemComparer = Comparer<T>.Default;
-            }
+            return sortedEnumerables.MergeSorted(Comparer<T>.Default);
+        }
 
+        public static IEnumerable<T> MergeSorted<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables, IComparer<T> itemComparer)
+        {
             var sortedKeySet = new SortedSet<KeyedEnumerator<T>>();
             int secondaryKey = 0;
 
@@ -69,7 +69,6 @@ namespace Orc.Sort.Extensions
     }
 
     internal class KeyedEnumerator<T> : IEnumerator<T>, IComparable<KeyedEnumerator<T>>
-        where T : IComparable<T>
     {
         public KeyedEnumerator(IEnumerator<T> enumerator, IComparer<T> itemComparer, int secondaryKey)
         {
