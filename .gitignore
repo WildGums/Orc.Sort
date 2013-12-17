@@ -30,4 +30,6 @@ _ReSharper*/
 packages/
 
 # FAKE build
+tools/FAKE
 output/
+build-log.xml
