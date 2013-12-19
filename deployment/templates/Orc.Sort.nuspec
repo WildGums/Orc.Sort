@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Orc.Sort</id>
-    <version>[VERSION]</version>
+    <version>@build.number@</version>
 	<title>Orc.Sort</title>
     <authors>OrchestraDevs</authors>
     <owners>OrchestraDevs</owners>

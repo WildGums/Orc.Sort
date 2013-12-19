@@ -17,11 +17,17 @@ let netVersion = "NET40"
 let srcDir  = @".\src\"
 let deploymentDir  = @".\deployment\"
 let packagesDir = deploymentDir @@ "packages"
+
+let dllDeploymentDir = packagesDir @@ @"lib" @@ netVersion
+let nuspecTemplatesDir = deploymentDir @@ "templates"
+
 let nugetPath = srcDir @@ @".nuget\nuget.exe"
 let nugetPackagesDir = srcDir @@ @"packages"
+let nugetAccessKey = File.ReadAllText(@".\Nuget.key")
 let version = File.ReadAllText(@".\version.txt")
 
 let solutionAssemblyInfo = srcDir @@ binProjectName @@ "Properties\AssemblyInfo.cs"
+let binProjectDependencies:^string list = []
 
 let outputDir = @".\output\"
 let outputReleaseDir = outputDir @@ "release" @@ netVersion
@@ -113,6 +119,46 @@ FinalTarget "CloseNUnitTestRunner" (fun _ ->
 // --------------------------------------------------------------------------------------
 // Build a NuGet package
 
+Target "NuGet" (fun _ ->
+    let nugetAccessPublishKey = getBuildParamOrDefault "nugetkey" nugetAccessKey
+    let getOutputFile ext = sprintf @"%s\%s.%s" outputBinDir binProjectName ext
+    let binProjectFiles = !! (getOutputFile "dll")
+                        ++ (getOutputFile "xml")
+    let nugetDependencies = binProjectDependencies
+                              |> List.map (fun d -> d, GetPackageVersion nugetPackagesDir d)
+    
+    let getNupkgFile = sprintf "%s\%s.%s.nupkg" dllDeploymentDir binProjectName version
+    let getNuspecFile = sprintf "%s\%s.nuspec" nuspecTemplatesDir binProjectName
+
+    let preparePackage filesToPackage = 
+        CreateDir packagesDir
+        CreateDir dllDeploymentDir
+        CopyFiles dllDeploymentDir filesToPackage
+
+    let cleanPackage name = 
+        MoveFile packagesDir getNupkgFile
+        DeleteDir (packagesDir @@ "lib")
+
+    let doPackage dependencies =   
+        NuGet (fun p -> 
+            {p with
+                Project = binProjectName
+                Version = version
+                ToolPath = nugetPath
+                OutputPath = dllDeploymentDir
+                WorkingDir = packagesDir
+                Dependencies = dependencies
+                Publish = not (String.IsNullOrEmpty nugetAccessPublishKey)
+                AccessKey = nugetAccessPublishKey })
+                getNuspecFile
+    
+    let doAll files depenencies =
+        preparePackage files
+        doPackage depenencies
+        cleanPackage ""
+
+    doAll binProjectFiles nugetDependencies
+)
 
 // --------------------------------------------------------------------------------------
 // Combined targets
@@ -133,5 +179,6 @@ Target "All" DoNothing
 
 Target "Release" DoNothing
 "All" ==> "Release"
+"NuGet" ==> "Release"
  
 RunTargetOrDefault "All"
