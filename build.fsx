@@ -1,5 +1,6 @@
 #r @"tools\FAKE\tools\FakeLib.dll"
 
+open System
 open System.IO
 open System.Linq
 open System.Text
@@ -16,7 +17,8 @@ let netVersion = "NET40"
 let srcDir  = @".\src\"
 let deploymentDir  = @".\deployment\"
 let packagesDir = deploymentDir @@ "packages"
-let nugetPath = srcDir @@ @"\.nuget\nuget.exe"
+let nugetPath = srcDir @@ @".nuget\nuget.exe"
+let nugetPackagesDir = srcDir @@ @"packages"
 let version = File.ReadAllText(@".\version.txt")
 
 let solutionAssemblyInfo = srcDir @@ binProjectName @@ "Properties\AssemblyInfo.cs"
@@ -87,6 +89,26 @@ Target "BuildTests" (fun _ ->
 // --------------------------------------------------------------------------------------
 // Run tests
 
+Target "RunTests" (fun _ ->
+    let nUnitVersion = GetPackageVersion nugetPackagesDir "NUnit.Runners"
+    let nUnitPath = sprintf "%s/NUnit.Runners.%s/Tools" nugetPackagesDir nUnitVersion
+    ActivateFinalTarget "CloseNUnitTestRunner"
+    CleanDir testResultsDir
+    CreateDir testResultsDir
+
+    !! (outputDir + @"\**\*.Test.dll") 
+      ++ (outputDir + @"\**\*.Tests.dll") 
+      |> NUnit (fun p -> 
+                 {p with 
+                   ToolPath = nUnitPath
+                   DisableShadowCopy = true
+                   TimeOut = TimeSpan.FromMinutes 20.
+                   OutputFile = testResultsDir @@ "TestResults.xml"})
+)
+
+FinalTarget "CloseNUnitTestRunner" (fun _ ->  
+    ProcessHelper.killProcess "nunit-agent.exe"
+)
 
 // --------------------------------------------------------------------------------------
 // Build a NuGet package
@@ -102,6 +124,7 @@ Target "Build" DoNothing
 "UpdateAssemblyVersion" ==> "BuildOtherProjects" ==> "Build"
 
 Target "Tests" DoNothing
+"BuildTests" ==> "RunTests" ==> "Tests"
 
 Target "All" DoNothing
 "Clean" ==> "All"
