@@ -2,6 +2,8 @@
 
 open System.IO
 open System.Linq
+open System.Text
+open System.Text.RegularExpressions
 open Fake
 
 // --------------------------------------------------------------------------------------
@@ -15,6 +17,9 @@ let srcDir  = @".\src\"
 let deploymentDir  = @".\deployment\"
 let packagesDir = deploymentDir @@ "packages"
 let nugetPath = srcDir @@ @"\.nuget\nuget.exe"
+let version = File.ReadAllText(@".\version.txt")
+
+let solutionAssemblyInfo = srcDir @@ binProjectName @@ "Properties\AssemblyInfo.cs"
 
 let outputDir = @".\output\"
 let outputReleaseDir = outputDir @@ "release" @@ netVersion
@@ -59,6 +64,25 @@ Target "DeleteOutputDirectories" (fun _ ->
 // --------------------------------------------------------------------------------------
 // Build projects
 
+Target "UpdateAssemblyVersion" (fun _ ->
+      let pattern = Regex("Assembly(|File)Version(\w*)\(.*\)")
+      let result = "Assembly$1Version$2(\"" + version + "\")"
+      let content = File.ReadAllLines(solutionAssemblyInfo, Encoding.Unicode)
+                    |> Array.map(fun line -> pattern.Replace(line, result, 1))
+      File.WriteAllLines(solutionAssemblyInfo, content, Encoding.Unicode)
+)
+
+Target "BuildOtherProjects" (fun _ ->    
+    otherProjects
+      |> MSBuildRelease "" "Rebuild" 
+      |> Log "Build Other Projects"
+)
+
+Target "BuildTests" (fun _ ->    
+    testProjects
+      |> MSBuildRelease "" "Build"
+      |> Log "Build Tests"
+)
 
 // --------------------------------------------------------------------------------------
 // Run tests
@@ -75,6 +99,7 @@ Target "Clean" DoNothing
 "CleanPackagesDirectory" ==> "DeleteOutputFiles" ==> "DeleteOutputDirectories" ==> "Clean"
 
 Target "Build" DoNothing
+"UpdateAssemblyVersion" ==> "BuildOtherProjects" ==> "Build"
 
 Target "Tests" DoNothing
 
