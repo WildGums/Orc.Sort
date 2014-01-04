@@ -23,7 +23,7 @@ let nuspecTemplatesDir = deploymentDir @@ "templates"
 
 let nugetPath = srcDir @@ @".nuget\nuget.exe"
 let nugetPackagesDir = srcDir @@ @"packages"
-let nugetAccessKey = File.ReadAllText(@".\Nuget.key")
+let nugetAccessKey = if File.Exists(@".\Nuget.key") then File.ReadAllText(@".\Nuget.key") else ""
 let version = File.ReadAllText(@".\version.txt")
 
 let solutionAssemblyInfo = srcDir @@ binProjectName @@ "Properties\AssemblyInfo.cs"
