@@ -424,7 +424,7 @@ namespace System.Linq
         /// <param name="length">The length.</param>
         /// <param name="comparer">The comparer.</param>
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
-        public static void TimSort<T>(this T[] array, int start, int length, Comparer<T> comparer)
+        public static void TimSort<T>(this T[] array, int start, int length, IComparer<T> comparer)
         {
 			if (array == null) throw new ArgumentNullException("array");
             if (comparer == null) throw new ArgumentNullException("comparer");
@@ -440,7 +440,7 @@ namespace System.Linq
         /// <param name="array">The array.</param>
         /// <param name="comparer">The comparer.</param>
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
-        public static void TimSort<T>(this T[] array, Comparer<T> comparer)
+        public static void TimSort<T>(this T[] array, IComparer<T> comparer)
         {
 			if (array == null) throw new ArgumentNullException("array");
             if (comparer == null) throw new ArgumentNullException("comparer");
@@ -575,7 +575,7 @@ namespace System.Linq
         /// <param name="array">The array.</param>
         /// <param name="comparer">The comparer.</param>
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
-        public static void TimSort<T>(this List<T> array, Comparer<T> comparer)
+        public static void TimSort<T>(this List<T> array, IComparer<T> comparer)
         {
 			if (array == null) throw new ArgumentNullException("array");
             if (comparer == null) throw new ArgumentNullException("comparer");
@@ -694,7 +694,7 @@ namespace System.Linq
         /// <param name="length">The length.</param>
         /// <param name="comparer">The comparer.</param>
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
-        public static void TimSort<T>(this IList<T> array, int start, int length, Comparer<T> comparer)
+        public static void TimSort<T>(this IList<T> array, int start, int length, IComparer<T> comparer)
         {
 			if (array == null) throw new ArgumentNullException("array");
             if (comparer == null) throw new ArgumentNullException("comparer");
@@ -712,7 +712,7 @@ namespace System.Linq
         /// <param name="array">The array.</param>
         /// <param name="comparer">The comparer.</param>
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
-        public static void TimSort<T>(this IList<T> array, Comparer<T> comparer)
+        public static void TimSort<T>(this IList<T> array, IComparer<T> comparer)
         {
 			if (array == null) throw new ArgumentNullException("array");
             if (comparer == null) throw new ArgumentNullException("comparer");
