@@ -26,34 +26,42 @@ namespace Orc.Sort.TopologicalSort
         /// <summary>
         /// The nodes dictionary. Maps nodes to IDs.
         /// </summary>
-        private Dictionary<T, int> nodesDict;
+        protected Dictionary<T, int> nodesDict;
 
         /// <summary>
         /// The nodes list. Maps IDs to their nodes.
         /// </summary>
-        private List<T> nodesList;
-
-        /// <summary>
-        /// The edges from each node.
-        /// </summary>
-        private List<HashSet<int>> edgesFrom;
+        protected List<T> nodesList;
 
         /// <summary>
         /// The edges into each node.
         /// </summary>
-        private List<HashSet<int>> edgesInto;
+        protected List<HashSet<int>> edgesInto;
 
         /// <summary>
-        /// The edges from each node - transitive closure.
+        /// The edges from each node.
         /// </summary>
-        private List<HashSet<int>> transFrom;
+        protected List<HashSet<int>> edgesFrom;
 
         /// <summary>
         /// The edges into each node - transitive closure.
         /// </summary>
-        private List<HashSet<int>> transInto;
+        protected List<HashSet<int>> transInto;
 
-        private IEnumerable<T> firstConflict;
+        /// <summary>
+        /// The edges from each node - transitive closure.
+        /// </summary>
+        protected List<HashSet<int>> transFrom;
+        
+        /// <summary>
+        /// First conflicting sequence.
+        /// </summary>
+        protected IEnumerable<T> firstConflict;
+
+        /// <summary>
+        /// List of nodes in the sort order.
+        /// </summary>
+        protected List<T> nodesSort;
 
         #endregion
 
@@ -67,13 +75,13 @@ namespace Orc.Sort.TopologicalSort
             nodesDict = new Dictionary<T, int>();
             nodesList = new List<T>();
 
-            edgesFrom = new List<HashSet<int>>();
             edgesInto = new List<HashSet<int>>();
+            edgesFrom = new List<HashSet<int>>();
 
             if (usesTracking)
             {
-                transFrom = new List<HashSet<int>>();
                 transInto = new List<HashSet<int>>();
+                transFrom = new List<HashSet<int>>();
             }
 
             UsesPriority = usesPriority;
@@ -92,16 +100,16 @@ namespace Orc.Sort.TopologicalSort
             nodesDict = new Dictionary<T, int>(baseSort.nodesDict);
             nodesList = new List<T>(baseSort.nodesList);
 
-            edgesFrom = new List<HashSet<int>>(baseSort.edgesFrom.Select(hash => new HashSet<int>(hash)));
             edgesInto = new List<HashSet<int>>(baseSort.edgesInto.Select(hash => new HashSet<int>(hash)));
+            edgesFrom = new List<HashSet<int>>(baseSort.edgesFrom.Select(hash => new HashSet<int>(hash)));
 
             UsesPriority = usesPriority ?? baseSort.UsesPriority;
             UsesTracking = usesTracking ?? baseSort.UsesTracking;
 
             if (UsesTracking)
             {
-                transFrom = new List<HashSet<int>>(baseSort.transFrom.Select(hash => new HashSet<int>(hash)));
                 transInto = new List<HashSet<int>>(baseSort.transInto.Select(hash => new HashSet<int>(hash)));
+                transFrom = new List<HashSet<int>>(baseSort.transFrom.Select(hash => new HashSet<int>(hash)));
             }
 
             Sequences = baseSort.Sequences.ToList();
@@ -116,7 +124,7 @@ namespace Orc.Sort.TopologicalSort
         /// The order of items within each sequence is important and will preserved in the final merged sequence.
         /// If the sorter uses priority, additionally the appearance order of each item will be used if possible.
         /// </summary>
-        public IEnumerable<IEnumerable<T>> Sequences { get; private set; }
+        public IEnumerable<IEnumerable<T>> Sequences { get; protected set; }
 
         /// <summary>
         /// Gets the value indicating whether priority will be used or not.
@@ -138,7 +146,7 @@ namespace Orc.Sort.TopologicalSort
         /// <param name="sequence">
         /// The new group.
         /// </param>
-        public void Add(IEnumerable<T> sequence)
+        public virtual void Add(IEnumerable<T> sequence)
         {
             (Sequences as IList<IEnumerable<T>>).Add(sequence);
 
@@ -154,20 +162,20 @@ namespace Orc.Sort.TopologicalSort
             {
                 next = NodeKey(node);
 
-                edgesFrom[next].Add(prev);
-                edgesInto[prev].Add(next);
+                edgesInto[next].Add(prev);
+                edgesFrom[prev].Add(next);
 
                 if (UsesTracking)
                 {
-                    foreach (int temp in transFrom[prev])
+                    foreach (int temp in transInto[prev])
                     {
-                        transInto[temp].UnionWith(transInto[next]);
+                        transFrom[temp].UnionWith(transFrom[next]);
                     }
-                    foreach (int temp in transInto[next])
+                    foreach (int temp in transFrom[next])
                     {
-                        transFrom[temp].UnionWith(transFrom[prev]);
+                        transInto[temp].UnionWith(transInto[prev]);
                     }
-                    if (transFrom[prev].Contains(next))
+                    if (transInto[prev].Contains(next))
                     {
                         firstConflict = firstConflict ?? sequence;
                     }
@@ -175,6 +183,8 @@ namespace Orc.Sort.TopologicalSort
 
                 prev = next;
             }
+
+            nodesSort = null;
         }
 
         /// <summary>
@@ -183,7 +193,7 @@ namespace Orc.Sort.TopologicalSort
         /// <param name="newSequences">
         /// The new groups.
         /// </param>
-        public void AddRange(IEnumerable<IEnumerable<T>> newSequences)
+        public virtual void AddRange(IEnumerable<IEnumerable<T>> newSequences)
         {
             foreach (var sequence in newSequences)
             {
@@ -209,7 +219,7 @@ namespace Orc.Sort.TopologicalSort
 
             if (UsesTracking)
             {
-                var tempFrom = new HashSet<int>();
+                var tempInto = new HashSet<int>();
                 var tempSeen = new HashSet<int>();
                 var tempDict = new Dictionary<T, int>(nodesDict);
 
@@ -226,16 +236,16 @@ namespace Orc.Sort.TopologicalSort
                         tempSeen.Add(key);
                     }
 
-                    if (key < transFrom.Count)
+                    if (key < transInto.Count)
                     {
-                        tempFrom.UnionWith(transFrom[key]);
-                        tempFrom.Remove(key);
+                        tempInto.UnionWith(transInto[key]);
+                        tempInto.Remove(key);
                     }
                 }
 
-                tempFrom.IntersectWith(tempSeen);
+                tempInto.IntersectWith(tempSeen);
 
-                return !tempFrom.Any();
+                return !tempInto.Any();
             }
             else
             {
@@ -254,8 +264,13 @@ namespace Orc.Sort.TopologicalSort
         /// </returns>
         public IList<T> Sort()
         {
+            if (nodesSort != null)
+            {
+                return nodesSort.AsReadOnly();
+            }
+
             var nodesPath = new List<T>();
-            var countInto = edgesInto.Select(e => e.Count).ToList();
+            var countFrom = edgesFrom.Select(e => e.Count).ToList();
 
             ISet<int> nodesNext;
 
@@ -268,7 +283,7 @@ namespace Orc.Sort.TopologicalSort
                 nodesNext = new HashSet<int>();
             }
 
-            nodesNext.UnionWith(Enumerable.Range(0, nodesDict.Count).Where(node => countInto[node] == 0));
+            nodesNext.UnionWith(Enumerable.Range(0, nodesDict.Count).Where(node => countFrom[node] == 0));
 
             while (nodesNext.Count > 0)
             {
@@ -286,11 +301,11 @@ namespace Orc.Sort.TopologicalSort
                 nodesPath.Add(nodesList[next]);
                 nodesNext.Remove(next);
 
-                foreach (int node in edgesFrom[next])
+                foreach (int node in edgesInto[next])
                 {
-                    countInto[node] -= 1;
+                    countFrom[node] -= 1;
 
-                    if (countInto[node] == 0)
+                    if (countFrom[node] == 0)
                     {
                         nodesNext.Add(node);
                     }
@@ -301,7 +316,8 @@ namespace Orc.Sort.TopologicalSort
 
             if (nodesPath.Count == nodesList.Count)
             {
-                return nodesPath;
+                nodesSort = nodesPath;
+                return nodesSort.AsReadOnly();
             }
             else
             {
@@ -371,7 +387,7 @@ namespace Orc.Sort.TopologicalSort
         /// <summary>
         /// The node key.
         /// </summary>
-        private int NodeKey(T node)
+        protected virtual int NodeKey(T node)
         {
             int key;
 
@@ -382,13 +398,13 @@ namespace Orc.Sort.TopologicalSort
                 nodesDict.Add(node, key);
                 nodesList.Add(node);
 
-                edgesFrom.Add(new HashSet<int>());
                 edgesInto.Add(new HashSet<int>());
+                edgesFrom.Add(new HashSet<int>());
 
                 if (UsesTracking)
                 {
-                    transFrom.Add(new HashSet<int>(new int[] { key }));
                     transInto.Add(new HashSet<int>(new int[] { key }));
+                    transFrom.Add(new HashSet<int>(new int[] { key }));
                 }
             }
 
@@ -398,7 +414,7 @@ namespace Orc.Sort.TopologicalSort
         /// <summary>
         /// The node key - safe.
         /// </summary>
-        private int NodeKeySafe(T node, Dictionary<T, int> tempDict)
+        protected int NodeKeySafe(T node, Dictionary<T, int> tempDict)
         {
             int key;
 
@@ -416,33 +432,12 @@ namespace Orc.Sort.TopologicalSort
         /// </summary>
         public IEnumerable<T> GetPrecedents(T node, bool immediate = false, bool terminating = false)
         {
-            IEnumerable<int> nodesFrom;
-            int next = nodesDict[node];
+            return GetPrecedents(nodesDict[node], immediate, terminating).Select(next => nodesList[next]);
+        }
 
-            if (immediate)
-            {
-                nodesFrom = edgesFrom[next];
-            }
-            else if (UsesTracking)
-            {
-                nodesFrom = transFrom[next];
-            }
-            else
-            {
-                nodesFrom = EdgesWalk(next, edgesFrom);
-            }
-
-            if (terminating)
-            {
-                nodesFrom = nodesFrom.Where(prev => ((prev != next) && (edgesFrom[prev].Count == 0)));
-            }
-            else
-            {
-                nodesFrom = nodesFrom.ExceptItem(next);
-            }
-
-
-            return nodesFrom.Select(prev => nodesList[prev]);
+        protected IEnumerable<int> GetPrecedents(int node, bool immediate, bool terminating)
+        {
+            return GetRelated(node, immediate, terminating, edgesInto, transInto);
         }
 
         /// <summary>
@@ -450,59 +445,98 @@ namespace Orc.Sort.TopologicalSort
         /// </summary>
         public IEnumerable<T> GetDependents(T node, bool immediate = false, bool terminating = false)
         {
-            IEnumerable<int> nodesInto;
-            int prev = nodesDict[node];
+            return GetDependents(nodesDict[node], immediate, terminating).Select(next => nodesList[next]);
+        }
+
+        protected IEnumerable<int> GetDependents(int node, bool immediate, bool terminating)
+        {
+            return GetRelated(node, immediate, terminating, edgesFrom, transFrom);
+        }
+
+        /// <summary>
+        /// Returns the list of all nodes that are related to the given node.
+        /// </summary>
+        protected IEnumerable<int> GetRelated(int node, bool immediate, bool terminating, List<HashSet<int>> edgesData, List<HashSet<int>> transData = null, bool lazy = false)
+        {
+            IEnumerable<int> nodesData;
 
             if (immediate)
             {
-                nodesInto = edgesInto[prev];
+                nodesData = edgesData[node];
             }
             else if (UsesTracking)
             {
-                nodesInto = transInto[prev];
+                nodesData = transData[node];
+            }
+            else if (lazy)
+            {
+                nodesData = EdgesWalkLazy(node, edgesData);
             }
             else
             {
-                nodesInto = EdgesWalk(prev, edgesInto);
+                nodesData = EdgesWalk(node, edgesData);
             }
 
             if (terminating)
             {
-                nodesInto = nodesInto.Where(next => ((next != prev) && (edgesInto[next].Count == 0)));
+                nodesData = nodesData.Where(next => ((next != node) && (edgesData[next].Count == 0)));
             }
             else
             {
-                nodesInto = nodesInto.ExceptItem(prev);
+                nodesData = nodesData.ExceptItem(node);
             }
 
-            return nodesInto.Select(next => nodesList[next]);
+            return nodesData;
         }
 
         /// <summary>
-        /// Walks the edges from the given node recursively, and returns a set of visited nodes.
+        /// Walks the edges of the given node recursively, and returns a set of visited nodes.
         /// </summary>
-        private HashSet<int> EdgesWalk(int walk, List<HashSet<int>> edgesWalk)
+        protected HashSet<int> EdgesWalk(int node, List<HashSet<int>> edgesWalk)
         {
             var nodesWalk = new HashSet<int>();
             var nodesSeen = new HashSet<int>();
 
-            nodesWalk.Add(walk);
+            nodesWalk.Add(node);
 
             while (nodesWalk.Any())
             {
-                walk = nodesWalk.First();
+                node = nodesWalk.First();
 
-                if (nodesSeen.Add(walk))
+                if (nodesSeen.Add(node))
                 {
-                    nodesWalk.UnionWith(edgesWalk[walk]);
+                    nodesWalk.UnionWith(edgesWalk[node]);
                 }
 
-                nodesWalk.Remove(walk);
+                nodesWalk.Remove(node);
             }
 
             return nodesSeen;
         }
 
+        /// <summary>
+        /// Walks the edges of the given node recursively, and yields each visited node.
+        /// </summary>
+        protected IEnumerable<int> EdgesWalkLazy(int node, List<HashSet<int>> edgesWalk)
+        {
+            var nodesWalk = new HashSet<int>();
+            var nodesSeen = new HashSet<int>();
+
+            nodesWalk.Add(node);
+
+            while (nodesWalk.Any())
+            {
+                node = nodesWalk.First();
+
+                if (nodesSeen.Add(node))
+                {
+                    nodesWalk.UnionWith(edgesWalk[node]);
+                    yield return node;
+                }
+
+                nodesWalk.Remove(node);
+            }
+        }
         #endregion
     }
 }

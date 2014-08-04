@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Orc.Sort</id>
-    <version>[VERSION]</version>
+    <version>@build.number@</version>
 	<title>Orc.Sort</title>
     <authors>OrchestraDevs</authors>
     <owners>OrchestraDevs</owners>
@@ -19,5 +19,6 @@
 	<language>en-US</language>
 	<projectUrl>https://github.com/orcomp/orc.sort</projectUrl>
 	<licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
+	@dependencies@
   </metadata>
 </package>

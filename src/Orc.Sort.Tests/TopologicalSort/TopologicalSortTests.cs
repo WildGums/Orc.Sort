@@ -882,7 +882,8 @@
             return (index1 < index2);
         }
 
-        public TopologicalSort<T> CreateTopologicalSorter<T>(IEnumerable<IEnumerable<T>> collection = null)
+        public virtual TopologicalSort<T> CreateTopologicalSorter<T>(IEnumerable<IEnumerable<T>> collection = null)
+            where T : IEquatable<T>
         {
             return new TopologicalSort<T>(UsesPriority, UsesTracking, collection);
         }

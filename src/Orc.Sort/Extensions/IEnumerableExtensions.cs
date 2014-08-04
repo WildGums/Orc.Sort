@@ -2,12 +2,63 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Orc.Sort.Extensions
 {
     public static class IEnumerableExtensions
     {
+        /// <summary>
+        /// Enumerate through a collection starting from a specified item.
+        /// The collection must have unique values.
+        /// Example:
+        ///  {"A", "B", "C", "D", "E"}.EnumerateFrom("B") == {"B", "C", "D", "E", "A"}
+        /// </summary>
+        /// <typeparam name="T">Must be equatable</typeparam>
+        /// <param name="items">The collection to enumerate over</param>
+        /// <param name="startValue">The start value to start enumerating from</param>
+        /// <param name="isCyclic">Specify whether to stop once the end of the collection is reached or wrap around and enumerate all the items in the collection</param>
+        /// <returns></returns>
+        public static IEnumerable<T> EnumerateFrom<T>(this IEnumerable<T> items, T startValue, bool isCyclic = true) where T : IEquatable<T>
+        {
+            var foundStartValue = false;
+            var appendItems = new List<T>();
+
+            foreach (var item in items)
+            {
+                if (item.Equals(startValue))
+                {
+                    if (foundStartValue)
+                    {
+                        throw new ArgumentException("The items must be unique.");
+                    }
+
+                    foundStartValue = true;
+                }
+
+                if (foundStartValue)
+                {
+                    yield return item;
+                }
+                else if(isCyclic)
+                {
+                    appendItems.Add(item);
+                }
+            }
+
+            if (!foundStartValue)
+            {
+                throw new ArgumentException("The start value does not exist in items.");
+            }
+
+            if (isCyclic)
+            {
+                foreach (var appendItem in appendItems)
+                {
+                    yield return appendItem;
+                }
+            }
+        }
+
         /// <summary>
         /// Takes a collection of sorted items and merges these collections together in order to return one sorted collection.
         /// </summary>
