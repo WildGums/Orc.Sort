@@ -1,0 +1,33 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Orc.Sort</id>
+    <version>[VERSION]</version>
+    <title>Orc.Sort</title>
+    <authors>OrchestraDevs</authors>
+    <owners>OrchestraDevs</owners>
+
+	<description>
+	  This library contains various sorting algorithms.
+	  Namely, TopologicalSort and TemplateSort amongst others.
+	</description>
+	<summary>
+	</summary>
+
+	<tags>orc sorting sort algorithm</tags>
+
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright Orchestra team 2010 - 2014</copyright>
+
+	<language>en-US</language>
+	<projectUrl>https://github.com/Orcomp/Orc.Sort</projectUrl>
+	<!--<licenseUrl>http://catel.codeplex.com/license</licenseUrl>-->
+	<!--<iconUrl>http://www.catenalogic.com/catel.png</iconUrl>-->
+
+    <dependencies>
+      <dependency id="Catel.Core" version="[replaced]" />
+      <dependency id="Catel.MVVM" version="[replaced]" />
+      <dependency id="Catel.Extensions.Controls" version="[replaced]" />
+    </dependencies>
+  </metadata>
+</package>

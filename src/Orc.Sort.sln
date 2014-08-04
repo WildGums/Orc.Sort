@@ -1,16 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{283108D6-83C7-4D73-8A79-E1AE3E682238}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{488261C9-9974-4460-95BF-616F5FAC6FEA}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
+		Orc.Sort.sln.DotSettings = Orc.Sort.sln.DotSettings
+		Settings.StyleCop = Settings.StyleCop
+		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{52791C39-16EA-4AF8-9CDA-641676FE7413}"
+	ProjectSection(SolutionItems) = preProject
+		..\lib\repositories.config = ..\lib\repositories.config
+		..\lib\RestorePackages.bat = ..\lib\RestorePackages.bat
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort", "Orc.Sort\Orc.Sort.csproj", "{DE88E565-23FB-43B1-B5E3-7F000FBCC2C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Tests", "Orc.Sort.Tests\Orc.Sort.Tests.csproj", "{6AAEC4BB-7672-4494-A536-F8C686CED546}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{55F5D28F-943B-4B1C-9861-8CC30520B935}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Test", "Orc.Sort.Test\Orc.Sort.Test.csproj", "{6AAEC4BB-7672-4494-A536-F8C686CED546}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,5 +40,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DE88E565-23FB-43B1-B5E3-7F000FBCC2C5} = {283108D6-83C7-4D73-8A79-E1AE3E682238}
+		{6AAEC4BB-7672-4494-A536-F8C686CED546} = {283108D6-83C7-4D73-8A79-E1AE3E682238}
 	EndGlobalSection
 EndGlobal
