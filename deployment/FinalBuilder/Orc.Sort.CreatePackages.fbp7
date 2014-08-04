@@ -555,13 +555,13 @@
               <Object Class="TRunActionListAction" XMLID="{1DEC8B43-6EBF-426D-A675-8AB491EA0393}">
                 <Property MultiValue="0" name="ActionComment" type="string"></Property>
                 <Property MultiValue="1" name="ActionDescription" type="string">
-                  <![CDATA[Create Orchestra.Core package]]>
+                  <![CDATA[Create Orc.Sort package]]>
                 </Property>
                 <Property MultiValue="0" name="ActionListID" type="string">{D259DC65-F35D-4571-A445-147C0D1D13AD}</Property>
                 <Property name="ActionTextColor" type="Cardinal">0</Property>
                 <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
                 <Property MultiValue="1" name="Description" type="string">
-                  <![CDATA[Create Orchestra.Core package]]>
+                  <![CDATA[Create Orc.Sort package]]>
                 </Property>
                 <Property name="Enabled" type="Boolean">True</Property>
                 <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
