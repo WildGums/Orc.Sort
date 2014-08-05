@@ -575,7 +575,6 @@
                 <Property name="Parameters" type="TStrings">
                   <![CDATA[Name=Orc.Sort
 TargetRootDirectory=%NuGetOutputIntermediate%\%PackagesDirectoryName%
-BaseDirectory=Orc.Sort
 ]]>
                 </Property>
                 <Property name="PauseInterval" type="Cardinal">0</Property>
