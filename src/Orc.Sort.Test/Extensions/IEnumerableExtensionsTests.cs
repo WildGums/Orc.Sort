@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,69 @@ namespace Orc.Sort.Tests.Extensions
 
             Assert.AreEqual(sorted, result);
         }
+
+        [Test]
+        public void MergeSorted_ReturnsCorrectDistinctSequence()
+        {
+            var list_1 = new List<Item>
+            {
+                new Item("B", 1), new Item("C", 1), new Item("F", 1), new Item("H", 1),
+            };
+
+            var list_2 = new List<Item>
+            {
+                new Item("B", 2), new Item("D", 2), new Item("E", 2), new Item("G", 2),
+            };
+
+            var list_3 = new List<Item>
+            {
+                new Item("A", 3), new Item("B", 3), new Item("E", 3), new Item("H", 3),
+            };
+
+            var sorted = new List<Item>
+            {
+                new Item("A", 3), new Item("B", 1),
+                new Item("C", 1), new Item("D", 2), new Item("E", 2),
+                new Item("F", 1), new Item("G", 2), new Item("H", 1),
+            };
+            sorted.Sort();
+
+            var result = (new List<IEnumerable<Item>> { list_1, list_2, list_3 }).MergeSorted(true).ToList();
+
+            Assert.AreEqual(sorted, result);
+        }
+
+        [Test]
+        public void MergeSortedMany_ReturnsCorrectSequence()
+        {
+            var list_1 = new List<Item>
+            {
+                new Item("B", 1), new Item("C", 1), new Item("F", 1), new Item("H", 1),
+            };
+
+            var list_2 = new List<Item>
+            {
+                new Item("B", 2), new Item("D", 2), new Item("E", 2), new Item("G", 2),
+            };
+
+            var list_3 = new List<Item>
+            {
+                new Item("A", 3), new Item("B", 3), new Item("E", 3), new Item("H", 3),
+            };
+
+            var sorted = new List<Item>
+            {
+                new Item("A", 3), new Item("B", 1), new Item("B", 2), new Item("B", 3),
+                new Item("C", 1), new Item("D", 2), new Item("E", 2), new Item("E", 3), 
+                new Item("F", 1), new Item("G", 2), new Item("H", 1), new Item("H", 3),
+            };
+            sorted.Sort();
+
+            var comparer = Comparer<Item>.Default;
+            var result = (new List<IEnumerable<Item>> { list_1, list_2, list_3 }).MergeSortedMany(comparer).ToList();
+
+            Assert.AreEqual(sorted, result);
+        }
     }
 
     internal class Item : IComparable<Item>, IEquatable<Item>
@@ -58,17 +122,12 @@ namespace Orc.Sort.Tests.Extensions
         {
             var result = System.String.Compare(Key, other.Key, System.StringComparison.Ordinal);
 
-            if (result == 0)
-            {
-                return ListID.CompareTo(other.ListID);
-            }
-
             return result;
         }
 
         public bool Equals(Item other)
         {
-            return (Key.Equals(other.Key) && ListID.Equals(other.ListID));
+            return Key.Equals(other.Key);
         }
 
         public override string ToString()

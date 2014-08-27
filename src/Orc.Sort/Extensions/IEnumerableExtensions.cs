@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 
 namespace Orc.Sort.Extensions
 {
@@ -64,15 +65,54 @@ namespace Orc.Sort.Extensions
         /// </summary>
         /// <typeparam name="T"> Must be comparable. </typeparam>
         /// <param name="sortedEnumerables"></param>
-        /// <param name="itemComparer"></param>
+        /// <param name="distinct"></param>
         /// <returns></returns>
-        public static IEnumerable<T> MergeSorted<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables)
+        public static IEnumerable<T> MergeSorted<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables, bool distinct = false)
             where T : IComparable<T>
         {
-            return sortedEnumerables.MergeSorted(Comparer<T>.Default);
+            return sortedEnumerables.MergeSorted(Comparer<T>.Default, distinct);
         }
 
-        public static IEnumerable<T> MergeSorted<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables, IComparer<T> itemComparer)
+        /// <summary>
+        /// Takes a collection of sorted items and merges these collections together in order to return one sorted collection.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sortedEnumerables"></param>
+        /// <param name="itemComparer"></param>
+        /// <param name="distinct"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> MergeSorted<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables, IComparer<T> itemComparer, bool distinct = false)
+        {
+            var enumerators = sortedEnumerables.Select(e => e.GetEnumerator()).Where(e => e.MoveNext()).ToList();
+
+            while (enumerators.Count > 0)
+            {
+                var next_enum = enumerators.MinBy(e => e.Current, itemComparer);
+                var next_item = next_enum.Current;
+
+                if (distinct)
+                {
+                    enumerators.RemoveAll(e => (itemComparer.Compare(e.Current, next_item) == 0) && !e.MoveNext());
+                }
+                else if (!next_enum.MoveNext())
+                {
+                    enumerators.Remove(next_enum);
+                }
+
+                yield return next_item;
+            }
+        }
+
+        /// <summary>
+        /// Takes a collection of sorted items and merges these collections together in order to return one sorted collection.
+        /// 
+        /// This version is optimized for a high number of collections to merge (100+).
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sortedEnumerables"></param>
+        /// <param name="itemComparer"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> MergeSortedMany<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables, IComparer<T> itemComparer)
         {
             var sortedKeySet = new SortedSet<KeyedEnumerator<T>>();
             int secondaryKey = 0;
@@ -115,7 +155,6 @@ namespace Orc.Sort.Extensions
                     has = min.MoveNext();
                 }
             }
-
         }
     }
 
