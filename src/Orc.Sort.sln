@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{52791C39-16E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort", "Orc.Sort\Orc.Sort.csproj", "{DE88E565-23FB-43B1-B5E3-7F000FBCC2C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Test", "Orc.Sort.Test\Orc.Sort.Test.csproj", "{6AAEC4BB-7672-4494-A536-F8C686CED546}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Tests", "Orc.Sort.Tests\Orc.Sort.Tests.csproj", "{6AAEC4BB-7672-4494-A536-F8C686CED546}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
