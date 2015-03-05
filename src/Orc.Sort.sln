@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{283108D6-83C7-4D73-8A79-E1AE3E682238}"
 EndProject
@@ -16,7 +16,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{52791C39-16EA-4AF8-9CDA-641676FE7413}"
 	ProjectSection(SolutionItems) = preProject
 		..\lib\repositories.config = ..\lib\repositories.config
-		..\lib\RestorePackages.bat = ..\lib\RestorePackages.bat
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort", "Orc.Sort\Orc.Sort.csproj", "{DE88E565-23FB-43B1-B5E3-7F000FBCC2C5}"

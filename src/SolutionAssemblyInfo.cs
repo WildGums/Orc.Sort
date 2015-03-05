@@ -1,8 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SharedAssemblyInfo.cs" company="Orchestra development team">
-//   Copyright (c) 2008 - 2013 Orchestra development team. All rights reserved.
+// <copyright file="SolutionAssemblyInfo.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 using System.Reflection;
 using System.Resources;

@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using Orc.Sort.Extensions;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IEnumerableExtensionsTests.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace Orc.Sort.Tests.Extensions
+
+namespace Orc.Sort.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class IEnumerableExtensionsTests
     {
+        #region Methods
         [Test]
         public void MergeSorted_ReturnsCorrectSequence()
         {
@@ -32,7 +37,7 @@ namespace Orc.Sort.Tests.Extensions
             var sorted = new List<Item>
             {
                 new Item("A", 3), new Item("B", 1), new Item("B", 2), new Item("B", 3),
-                new Item("C", 1), new Item("D", 2), new Item("E", 2), new Item("E", 3), 
+                new Item("C", 1), new Item("D", 2), new Item("E", 2), new Item("E", 3),
                 new Item("F", 1), new Item("G", 2), new Item("H", 1), new Item("H", 3),
             };
             sorted.Sort();
@@ -68,7 +73,7 @@ namespace Orc.Sort.Tests.Extensions
             };
             sorted.Sort();
 
-            var result = (new List<IEnumerable<Item>> { list_1, list_2, list_3 }).MergeSorted(true).ToList();
+            var result = (new List<IEnumerable<Item>> {list_1, list_2, list_3}).MergeSorted(true).ToList();
 
             Assert.AreEqual(sorted, result);
         }
@@ -94,30 +99,35 @@ namespace Orc.Sort.Tests.Extensions
             var sorted = new List<Item>
             {
                 new Item("A", 3), new Item("B", 1), new Item("B", 2), new Item("B", 3),
-                new Item("C", 1), new Item("D", 2), new Item("E", 2), new Item("E", 3), 
+                new Item("C", 1), new Item("D", 2), new Item("E", 2), new Item("E", 3),
                 new Item("F", 1), new Item("G", 2), new Item("H", 1), new Item("H", 3),
             };
             sorted.Sort();
 
             var comparer = Comparer<Item>.Default;
-            var result = (new List<IEnumerable<Item>> { list_1, list_2, list_3 }).MergeSortedMany(comparer).ToList();
+            var result = (new List<IEnumerable<Item>> {list_1, list_2, list_3}).MergeSortedMany(comparer).ToList();
 
             Assert.AreEqual(sorted, result);
         }
+        #endregion
     }
 
     internal class Item : IComparable<Item>, IEquatable<Item>
     {
+        #region Constructors
         public Item(string key, int listID)
         {
             Key = key;
             ListID = listID;
         }
+        #endregion
 
+        #region Properties
         public int ListID { get; private set; }
-
         public string Key { get; private set; }
+        #endregion
 
+        #region Methods
         public int CompareTo(Item other)
         {
             var result = System.String.Compare(Key, other.Key, System.StringComparison.Ordinal);
@@ -134,5 +144,6 @@ namespace Orc.Sort.Tests.Extensions
         {
             return string.Format("{0},{1}", Key, ListID);
         }
+        #endregion
     }
 }

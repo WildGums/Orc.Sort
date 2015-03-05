@@ -1,15 +1,12 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TopologicalSort.cs" company="orc">
-//   
+// <copyright file="TopologicalSort.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
 // </copyright>
-// <summary>
-//   Uses a standard topological sort to order sequences.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace Orc.Sort.TopologicalSort
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -22,6 +19,20 @@ namespace Orc.Sort.TopologicalSort
     public class TopologicalSort<T>
     {
         #region Fields
+        /// <summary>
+        /// The edges from each node.
+        /// </summary>
+        protected List<HashSet<int>> edgesFrom;
+
+        /// <summary>
+        /// The edges into each node.
+        /// </summary>
+        protected List<HashSet<int>> edgesInto;
+
+        /// <summary>
+        /// First conflicting sequence.
+        /// </summary>
+        protected IEnumerable<T> firstConflict;
 
         /// <summary>
         /// The nodes dictionary. Maps nodes to IDs.
@@ -34,39 +45,22 @@ namespace Orc.Sort.TopologicalSort
         protected List<T> nodesList;
 
         /// <summary>
-        /// The edges into each node.
+        /// List of nodes in the sort order.
         /// </summary>
-        protected List<HashSet<int>> edgesInto;
-
-        /// <summary>
-        /// The edges from each node.
-        /// </summary>
-        protected List<HashSet<int>> edgesFrom;
-
-        /// <summary>
-        /// The edges into each node - transitive closure.
-        /// </summary>
-        protected List<HashSet<int>> transInto;
+        protected List<T> nodesSort;
 
         /// <summary>
         /// The edges from each node - transitive closure.
         /// </summary>
         protected List<HashSet<int>> transFrom;
-        
-        /// <summary>
-        /// First conflicting sequence.
-        /// </summary>
-        protected IEnumerable<T> firstConflict;
 
         /// <summary>
-        /// List of nodes in the sort order.
+        /// The edges into each node - transitive closure.
         /// </summary>
-        protected List<T> nodesSort;
-
+        protected List<HashSet<int>> transInto;
         #endregion
 
         #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PriorityTopologicalSort{T}"/> class.
         /// </summary>
@@ -114,11 +108,9 @@ namespace Orc.Sort.TopologicalSort
 
             Sequences = baseSort.Sequences.ToList();
         }
-
         #endregion
 
         #region Properties
-
         /// <summary>
         /// Gets the sequences.
         /// The order of items within each sequence is important and will preserved in the final merged sequence.
@@ -135,11 +127,9 @@ namespace Orc.Sort.TopologicalSort
         /// Gets the value indicating whether tracking will be used or not.
         /// </summary>
         public bool UsesTracking { get; protected set; }
-
         #endregion
 
         #region Methods
-
         /// <summary>
         /// The add.
         /// </summary>
@@ -403,8 +393,8 @@ namespace Orc.Sort.TopologicalSort
 
                 if (UsesTracking)
                 {
-                    transInto.Add(new HashSet<int>(new int[] { key }));
-                    transFrom.Add(new HashSet<int>(new int[] { key }));
+                    transInto.Add(new HashSet<int>(new int[] {key}));
+                    transFrom.Add(new HashSet<int>(new int[] {key}));
                 }
             }
 
@@ -540,4 +530,3 @@ namespace Orc.Sort.TopologicalSort
         #endregion
     }
 }
-

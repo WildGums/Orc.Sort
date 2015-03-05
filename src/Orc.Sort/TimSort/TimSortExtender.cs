@@ -1,42 +1,38 @@
-﻿/*
-Author: Milosz Krajewski
-License: Apache License Version 2.0, January 2004 http://www.apache.org/licenses/ 
-Description: TimSort extension methods.
-*/
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TimSortExtender.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Reflection;
-using TimSort;
 
-// ReSharper disable CheckNamespace
+ // ReSharper disable CheckNamespace
 
 namespace System.Linq
 {
-	#region class TimSortExtender
+    using Collections.Generic;
+    using Reflection;
+    using TimSort;
 
+    #region class TimSortExtender
     /// <summary>
     /// <![CDATA[T[], List<T> and IList<T>]]> extender providing TimSort extension methods.
     /// </summary>
-	public static partial class TimSortExtender
+    public static partial class TimSortExtender
     {
         #region dynamic invocation for IComparable
 
         #region class SorterProxy
-
         /// <summary>Proxy object to resolve sorter dynamically.</summary>
         internal class SorterProxy
         {
             #region fields (public)
-
             /// <summary>The sort all proxy.</summary>
             public Action<object> SortAll;
 
             /// <summary>The sort range proxy.</summary>
             public Action<object, int, int> SortRange;
-
             #endregion
         }
-
         #endregion
 
         private static readonly Dictionary<Type, SorterProxy> SorterProxyMap
@@ -47,7 +43,7 @@ namespace System.Linq
         /// <returns><c>true</c> if  implements IComparable; otherwise, <c>false</c>.</returns>
         private static bool IsIComparable<T>()
         {
-            return (typeof(IComparable<T>)).IsAssignableFrom(typeof(T));
+            return (typeof (IComparable<T>)).IsAssignableFrom(typeof (T));
         }
 
         /// <summary>Gets the sorter proxy for IComparable.</summary>
@@ -65,12 +61,12 @@ namespace System.Linq
             {
                 const BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic;
                 sorter = new SorterProxy();
-                var staticType = sorterType.MakeGenericType(typeof(TItem));
-                var sortAll = (Action<TContainer>)Delegate.CreateDelegate(
-                    typeof(Action<TContainer>),
+                var staticType = sorterType.MakeGenericType(typeof (TItem));
+                var sortAll = (Action<TContainer>) Delegate.CreateDelegate(
+                    typeof (Action<TContainer>),
                     staticType.GetMethod("SortAll", flags));
-                var sortRange = (Action<TContainer, int, int>)Delegate.CreateDelegate(
-                    typeof(Action<TContainer, int, int>),
+                var sortRange = (Action<TContainer, int, int>) Delegate.CreateDelegate(
+                    typeof (Action<TContainer, int, int>),
                     staticType.GetMethod("SortRange", flags));
                 sorter.SortAll = (array) => sortAll(array as TContainer);
                 sorter.SortRange = (array, lo, hi) => sortRange(array as TContainer, lo, hi);
@@ -86,8 +82,11 @@ namespace System.Linq
         /// <returns><c>true</c> if sorting was successful, <c>false</c> otherwise.</returns>
         private static bool TryComparableTimSort<TItem>(TItem[] array)
         {
-            if (!IsIComparable<TItem>()) return false;
-            GetComparableSorterProxy<TItem[], TItem>(typeof(ComparableArrayTimSort<>)).SortAll(array);
+            if (!IsIComparable<TItem>())
+            {
+                return false;
+            }
+            GetComparableSorterProxy<TItem[], TItem>(typeof (ComparableArrayTimSort<>)).SortAll(array);
             return true;
         }
 
@@ -99,8 +98,11 @@ namespace System.Linq
         /// <returns><c>true</c> if sorting was successful, <c>false</c> otherwise.</returns>
         private static bool TryComparableTimSort<TItem>(TItem[] array, int lo, int hi)
         {
-            if (!IsIComparable<TItem>()) return false;
-            GetComparableSorterProxy<TItem[], TItem>(typeof(ComparableArrayTimSort<>)).SortRange(array, lo, hi);
+            if (!IsIComparable<TItem>())
+            {
+                return false;
+            }
+            GetComparableSorterProxy<TItem[], TItem>(typeof (ComparableArrayTimSort<>)).SortRange(array, lo, hi);
             return true;
         }
 
@@ -110,8 +112,11 @@ namespace System.Linq
         /// <returns><c>true</c> if sorting was successful, <c>false</c> otherwise.</returns>
         private static bool TryComparableTimSort<TItem>(List<TItem> list)
         {
-            if (!IsIComparable<TItem>()) return false;
-            GetComparableSorterProxy<TItem[], TItem>(typeof(ComparableListTimSort<>)).SortAll(list);
+            if (!IsIComparable<TItem>())
+            {
+                return false;
+            }
+            GetComparableSorterProxy<TItem[], TItem>(typeof (ComparableListTimSort<>)).SortAll(list);
             return true;
         }
 
@@ -123,8 +128,11 @@ namespace System.Linq
         /// <returns><c>true</c> if sorting was successful, <c>false</c> otherwise.</returns>
         private static bool TryComparableTimSort<TItem>(List<TItem> list, int lo, int hi)
         {
-            if (!IsIComparable<TItem>()) return false;
-            GetComparableSorterProxy<TItem[], TItem>(typeof(ComparableListTimSort<>)).SortRange(list, lo, hi);
+            if (!IsIComparable<TItem>())
+            {
+                return false;
+            }
+            GetComparableSorterProxy<TItem[], TItem>(typeof (ComparableListTimSort<>)).SortRange(list, lo, hi);
             return true;
         }
 
@@ -134,8 +142,11 @@ namespace System.Linq
         /// <returns><c>true</c> if sorting was successful, <c>false</c> otherwise.</returns>
         private static bool TryComparableTimSort<TItem>(IList<TItem> list)
         {
-            if (!IsIComparable<TItem>()) return false;
-            GetComparableSorterProxy<TItem[], TItem>(typeof(ComparableIListTimSort<>)).SortAll(list);
+            if (!IsIComparable<TItem>())
+            {
+                return false;
+            }
+            GetComparableSorterProxy<TItem[], TItem>(typeof (ComparableIListTimSort<>)).SortAll(list);
             return true;
         }
 
@@ -147,17 +158,18 @@ namespace System.Linq
         /// <returns><c>true</c> if sorting was successful, <c>false</c> otherwise.</returns>
         private static bool TryComparableTimSort<TItem>(IList<TItem> list, int lo, int hi)
         {
-            if (!IsIComparable<TItem>()) return false;
-            GetComparableSorterProxy<TItem[], TItem>(typeof(ComparableIListTimSort<>)).SortRange(list, lo, hi);
+            if (!IsIComparable<TItem>())
+            {
+                return false;
+            }
+            GetComparableSorterProxy<TItem[], TItem>(typeof (ComparableIListTimSort<>)).SortRange(list, lo, hi);
             return true;
         }
-
         #endregion
 
         #region internal implementation access
-
         /// <summary>The map of '_items' member in <see cref="List{T}"/></summary>
-	    private static readonly Dictionary<Type, FieldInfo> ItemMemberMap = 
+        private static readonly Dictionary<Type, FieldInfo> ItemMemberMap =
             new Dictionary<Type, FieldInfo>();
 
         /// <summary>Tries to get '_items' member from <see cref="List{T}" />.</summary>
@@ -173,8 +185,11 @@ namespace System.Linq
                 member = typeof (List<TItem>).GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance);
                 ItemMemberMap.Add(listType, member);
             }
-            if (member == null) return null;
-            return (TItem[])member.GetValue(list);
+            if (member == null)
+            {
+                return null;
+            }
+            return (TItem[]) member.GetValue(list);
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
@@ -189,11 +204,9 @@ namespace System.Linq
         }
 
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
-
         #endregion
     }
-
-	#endregion
+    #endregion
 }
 
 // ReSharper restore CheckNamespace

@@ -1,33 +1,43 @@
-﻿namespace Orc.Sort.Tests.TopologicalSort
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TopologicalSortTests.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
+namespace Orc.Sort.Tests.TopologicalSort
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using NUnit.Framework;
-
-    using Orc.Sort.TopologicalSort;
-    using Orc.Sort.TemplateSort;
+    using Sort.TemplateSort;
+    using Sort.TopologicalSort;
 
     [TestFixture(false, false)] // This will test the normal Topological sort
     [TestFixture(true, true)] // This will test the tracking Topological sort
     public class TopologicalSortTests
     {
+        #region Constructors
         public TopologicalSortTests(bool usesPriority, bool usesTracking)
         {
             UsesPriority = usesPriority;
             UsesTracking = usesTracking;
         }
+        #endregion
 
+        #region Properties
         public bool UsesPriority { get; protected set; }
         public bool UsesTracking { get; protected set; }
+        #endregion
 
+        #region Methods
         [Test]
         public void CanSort_FirstSequenceToBeIncluded_ReturnsTrue()
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_11 = new List<string> { "A", "B", "C", };
+            var seq_11 = new List<string> {"A", "B", "C",};
 
             bool result = sorter.CanSort(seq_11);
 
@@ -37,8 +47,8 @@
         [Test]
         public void Constructor_AcceptsACollection_ReturnsTrue()
         {
-            var seq_11 = new List<string> { "A", "B", "C", };
-            var sorter = CreateTopologicalSorter<string>(new List<IEnumerable<string>>(){seq_11});
+            var seq_11 = new List<string> {"A", "B", "C",};
+            var sorter = CreateTopologicalSorter<string>(new List<IEnumerable<string>>() {seq_11});
 
             var result = sorter.Sort();
 
@@ -50,7 +60,7 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_11 = new List<string> { "A", "B", "C", };
+            var seq_11 = new List<string> {"A", "B", "C",};
             var seq_21 = new List<string>();
 
             sorter.Add(seq_11);
@@ -65,7 +75,7 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_11 = new List<string> { "A", "B", "C", };
+            var seq_11 = new List<string> {"A", "B", "C",};
 
             sorter.Add(seq_11);
 
@@ -79,7 +89,7 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_11 = new List<string> { "A", "B", "C", "A", };
+            var seq_11 = new List<string> {"A", "B", "C", "A",};
 
             bool result = sorter.CanSort(seq_11);
 
@@ -91,8 +101,8 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_11 = new List<string> { "A", "B", "C", };
-            var seq_12 = new List<string> { "A", "D",      };
+            var seq_11 = new List<string> {"A", "B", "C",};
+            var seq_12 = new List<string> {"A", "D",};
 
             sorter.Add(seq_11);
 
@@ -106,8 +116,8 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_11 = new List<string> { "A", "B", "C", };
-            var seq_12 = new List<string> { "C", "A", };
+            var seq_11 = new List<string> {"A", "B", "C",};
+            var seq_12 = new List<string> {"C", "A",};
 
             sorter.Add(seq_11);
 
@@ -121,9 +131,9 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_11 = new List<string> { "A", "B",      };
-            var seq_12 = new List<string> { "A", "C", "D", };
-            var seq_13 = new List<string> { "D", "A",      };
+            var seq_11 = new List<string> {"A", "B",};
+            var seq_12 = new List<string> {"A", "C", "D",};
+            var seq_13 = new List<string> {"D", "A",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_12);
@@ -138,9 +148,9 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_11 = new List<string> { "A", "B" };
-            var seq_12 = new List<string> { "C", "A" };
-            var seq_13 = new List<string> { "D", "B", "C" };
+            var seq_11 = new List<string> {"A", "B"};
+            var seq_12 = new List<string> {"C", "A"};
+            var seq_13 = new List<string> {"D", "B", "C"};
 
             sorter.Add(seq_11);
             sorter.Add(seq_12);
@@ -158,14 +168,14 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "F", "E", "D", "C", "A", "B", };
+            var sorted = new List<string> {"F", "E", "D", "C", "A", "B",};
 
-            var seq_11 = new List<string> {                     "A", "B", };
-            var seq_12 = new List<string> {                "C", "A",      };
-            var seq_13 = new List<string> {           "D", "C",           };
-            var seq_14 = new List<string> {           "D", "C",           };
-            var seq_15 = new List<string> {      "E", "D",                };
-            var seq_16 = new List<string> { "F", "E",                     };
+            var seq_11 = new List<string> {"A", "B",};
+            var seq_12 = new List<string> {"C", "A",};
+            var seq_13 = new List<string> {"D", "C",};
+            var seq_14 = new List<string> {"D", "C",};
+            var seq_15 = new List<string> {"E", "D",};
+            var seq_16 = new List<string> {"F", "E",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_12);
@@ -189,12 +199,12 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string>    { "A", "B", "E", "F", "D", "C", };
-            
-            var seq_11 = new List<string>    { "A", "B",                "C", };
-            var seq_12 = new List<string>    {      "B",           "D", "C", };
-            var seq_13 = new List<string>    {      "B", "E",      "D",      };
-            var seq_14 = new List<string>    {           "E", "F", "D",      };
+            var sorted = new List<string> {"A", "B", "E", "F", "D", "C",};
+
+            var seq_11 = new List<string> {"A", "B", "C",};
+            var seq_12 = new List<string> {"B", "D", "C",};
+            var seq_13 = new List<string> {"B", "E", "D",};
+            var seq_14 = new List<string> {"E", "F", "D",};
 
             sorter.Add(seq_12);
             sorter.Add(seq_13);
@@ -203,38 +213,38 @@
 
             var result = sorter.Sort();
 
-            Assert.AreEqual(new List<string> { "A",                          }, sorter.GetPrecedents("B").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> { "A", "B", "E",                }, sorter.GetPrecedents("F").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> { "A", "B", "E", "F",           }, sorter.GetPrecedents("D").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> { "A", "B", "E", "F", "D",      }, sorter.GetPrecedents("C").SortAccordingTo(sorted));
- 
-            Assert.AreEqual(new List<string> { "A",                          }, sorter.GetPrecedents("B", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {           "E",                }, sorter.GetPrecedents("F", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {      "B", "E", "F",           }, sorter.GetPrecedents("D", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {      "B",           "D",      }, sorter.GetPrecedents("C", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A", "B", "E",}, sorter.GetPrecedents("F").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A", "B", "E", "F",}, sorter.GetPrecedents("D").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A", "B", "E", "F", "D",}, sorter.GetPrecedents("C").SortAccordingTo(sorted));
 
-            Assert.AreEqual(new List<string> { "A",                          }, sorter.GetPrecedents("B", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> { "A",                          }, sorter.GetPrecedents("F", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> { "A",                          }, sorter.GetPrecedents("D", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> { "A",                          }, sorter.GetPrecedents("C", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"E",}, sorter.GetPrecedents("F", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"B", "E", "F",}, sorter.GetPrecedents("D", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"B", "D",}, sorter.GetPrecedents("C", true, false).SortAccordingTo(sorted));
 
-            Assert.AreEqual(new List<string> { "A",                          }, sorter.GetPrecedents("B", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                               }, sorter.GetPrecedents("F", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                               }, sorter.GetPrecedents("D", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                               }, sorter.GetPrecedents("C", true,  true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("F", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("D", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("C", false, true).SortAccordingTo(sorted));
+
+            Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("F", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("D", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("C", true, true).SortAccordingTo(sorted));
         }
-        
+
         [Test]
         public void GetPrecedents_ReturnsCorrectSequence_2()
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string>    { "A", "B", "E", "F", "D", "C", "G", "H", };
-            
-            var seq_11 = new List<string>    { "A", "B",                "C",           };
-            var seq_12 = new List<string>    {                     "D", "C",           };
-            var seq_13 = new List<string>    {      "B", "E",      "D",                };
-            var seq_14 = new List<string>    {                "F", "D",      "G", "H", };
+            var sorted = new List<string> {"A", "B", "E", "F", "D", "C", "G", "H",};
+
+            var seq_11 = new List<string> {"A", "B", "C",};
+            var seq_12 = new List<string> {"D", "C",};
+            var seq_13 = new List<string> {"B", "E", "D",};
+            var seq_14 = new List<string> {"F", "D", "G", "H",};
 
             sorter.Add(seq_12);
             sorter.Add(seq_13);
@@ -243,38 +253,38 @@
 
             var result = sorter.Sort();
 
-            Assert.AreEqual(new List<string> { "A",                                   }, sorter.GetPrecedents("B").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                                        }, sorter.GetPrecedents("F").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> { "A", "B", "E", "F",                    }, sorter.GetPrecedents("D").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> { "A", "B", "E", "F", "D",               }, sorter.GetPrecedents("C").SortAccordingTo(sorted));
- 
-            Assert.AreEqual(new List<string> { "A",                                   }, sorter.GetPrecedents("B", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                                        }, sorter.GetPrecedents("F", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {           "E", "F",                    }, sorter.GetPrecedents("D", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {      "B",           "D",               }, sorter.GetPrecedents("C", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("F").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A", "B", "E", "F",}, sorter.GetPrecedents("D").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A", "B", "E", "F", "D",}, sorter.GetPrecedents("C").SortAccordingTo(sorted));
 
-            Assert.AreEqual(new List<string> { "A",                                   }, sorter.GetPrecedents("B", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                                        }, sorter.GetPrecedents("F", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> { "A",           "F",                    }, sorter.GetPrecedents("D", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> { "A",           "F",                    }, sorter.GetPrecedents("C", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("F", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"E", "F",}, sorter.GetPrecedents("D", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"B", "D",}, sorter.GetPrecedents("C", true, false).SortAccordingTo(sorted));
 
-            Assert.AreEqual(new List<string> { "A",                                   }, sorter.GetPrecedents("B", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                                        }, sorter.GetPrecedents("F", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                "F",                    }, sorter.GetPrecedents("D", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                                        }, sorter.GetPrecedents("C", true,  true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("F", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A", "F",}, sorter.GetPrecedents("D", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"A", "F",}, sorter.GetPrecedents("C", false, true).SortAccordingTo(sorted));
+
+            Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("F", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"F",}, sorter.GetPrecedents("D", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("C", true, true).SortAccordingTo(sorted));
         }
-        
+
         [Test]
         public void GetDependents_ReturnsCorrectSequence_1()
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string>    { "A", "B", "E", "F", "D", "C", };
-            
-            var seq_11 = new List<string>    { "A", "B",                "C", };
-            var seq_12 = new List<string>    {      "B",           "D", "C", };
-            var seq_13 = new List<string>    {      "B", "E",      "D",      };
-            var seq_14 = new List<string>    {           "E", "F", "D",      };
+            var sorted = new List<string> {"A", "B", "E", "F", "D", "C",};
+
+            var seq_11 = new List<string> {"A", "B", "C",};
+            var seq_12 = new List<string> {"B", "D", "C",};
+            var seq_13 = new List<string> {"B", "E", "D",};
+            var seq_14 = new List<string> {"E", "F", "D",};
 
             sorter.Add(seq_12);
             sorter.Add(seq_13);
@@ -283,38 +293,38 @@
 
             var result = sorter.Sort();
 
-            Assert.AreEqual(new List<string> {      "B", "E", "F", "D", "C", }, sorter.GetDependents("A").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {           "E", "F", "D", "C", }, sorter.GetDependents("B").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                "F", "D", "C", }, sorter.GetDependents("E").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                               }, sorter.GetDependents("C").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"B", "E", "F", "D", "C",}, sorter.GetDependents("A").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"E", "F", "D", "C",}, sorter.GetDependents("B").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"F", "D", "C",}, sorter.GetDependents("E").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetDependents("C").SortAccordingTo(sorted));
 
-            Assert.AreEqual(new List<string> {      "B",                     }, sorter.GetDependents("A", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {           "E",      "D", "C", }, sorter.GetDependents("B", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                "F", "D",      }, sorter.GetDependents("E", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                               }, sorter.GetDependents("C", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"B",}, sorter.GetDependents("A", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"E", "D", "C",}, sorter.GetDependents("B", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"F", "D",}, sorter.GetDependents("E", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetDependents("C", true, false).SortAccordingTo(sorted));
 
-            Assert.AreEqual(new List<string> {                          "C", }, sorter.GetDependents("A", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                          "C", }, sorter.GetDependents("B", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                          "C", }, sorter.GetDependents("E", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                               }, sorter.GetDependents("C", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("A", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("B", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("E", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetDependents("C", false, true).SortAccordingTo(sorted));
 
-            Assert.AreEqual(new List<string> {                               }, sorter.GetDependents("A", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                          "C", }, sorter.GetDependents("B", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                               }, sorter.GetDependents("E", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                               }, sorter.GetDependents("C", true,  true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetDependents("A", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("B", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetDependents("E", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetDependents("C", true, true).SortAccordingTo(sorted));
         }
 
         [Test]
         public void GetDependents_ReturnsCorrectSequence_2()
         {
             var sorter = CreateTopologicalSorter<string>();
-            
-            var sorted = new List<string>    { "A", "B", "E", "F", "D", "C", "G", "H", };
-            
-            var seq_11 = new List<string>    { "A", "B",                "C",           };
-            var seq_12 = new List<string>    {                     "D", "C",           };
-            var seq_13 = new List<string>    {      "B", "E",      "D",                };
-            var seq_14 = new List<string>    {                "F", "D",      "G", "H", };
+
+            var sorted = new List<string> {"A", "B", "E", "F", "D", "C", "G", "H",};
+
+            var seq_11 = new List<string> {"A", "B", "C",};
+            var seq_12 = new List<string> {"D", "C",};
+            var seq_13 = new List<string> {"B", "E", "D",};
+            var seq_14 = new List<string> {"F", "D", "G", "H",};
 
             sorter.Add(seq_12);
             sorter.Add(seq_13);
@@ -323,25 +333,25 @@
 
             var result = sorter.Sort();
 
-            Assert.AreEqual(new List<string> {      "B", "E",      "D", "C", "G", "H", }, sorter.GetDependents("A").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {           "E",      "D", "C", "G", "H", }, sorter.GetDependents("B").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                     "D", "C", "G", "H", }, sorter.GetDependents("E").SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                          "C", "G", "H", }, sorter.GetDependents("D").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"B", "E", "D", "C", "G", "H",}, sorter.GetDependents("A").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"E", "D", "C", "G", "H",}, sorter.GetDependents("B").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"D", "C", "G", "H",}, sorter.GetDependents("E").SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C", "G", "H",}, sorter.GetDependents("D").SortAccordingTo(sorted));
 
-            Assert.AreEqual(new List<string> {      "B",                               }, sorter.GetDependents("A", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {           "E",           "C",           }, sorter.GetDependents("B", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                     "D",                }, sorter.GetDependents("E", true, false).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                          "C", "G",      }, sorter.GetDependents("D", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"B",}, sorter.GetDependents("A", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"E", "C",}, sorter.GetDependents("B", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"D",}, sorter.GetDependents("E", true, false).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C", "G",}, sorter.GetDependents("D", true, false).SortAccordingTo(sorted));
 
-            Assert.AreEqual(new List<string> {                          "C",      "H", }, sorter.GetDependents("A", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                          "C",      "H", }, sorter.GetDependents("B", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                          "C",      "H", }, sorter.GetDependents("E", false, true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                          "C",      "H", }, sorter.GetDependents("D", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C", "H",}, sorter.GetDependents("A", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C", "H",}, sorter.GetDependents("B", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C", "H",}, sorter.GetDependents("E", false, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C", "H",}, sorter.GetDependents("D", false, true).SortAccordingTo(sorted));
 
-            Assert.AreEqual(new List<string> {                                         }, sorter.GetDependents("A", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                          "C",           }, sorter.GetDependents("B", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                                         }, sorter.GetDependents("E", true,  true).SortAccordingTo(sorted));
-            Assert.AreEqual(new List<string> {                          "C",           }, sorter.GetDependents("D", true,  true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetDependents("A", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("B", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {}, sorter.GetDependents("E", true, true).SortAccordingTo(sorted));
+            Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("D", true, true).SortAccordingTo(sorted));
         }
 
         [Test]
@@ -349,12 +359,12 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "A", "B", "E", "F", "D", "C", };
+            var sorted = new List<string> {"A", "B", "E", "F", "D", "C",};
 
-            var seq_11 = new List<string> { "A", "B",                "C", };
-            var seq_12 = new List<string> {      "B",           "D", "C", };
-            var seq_13 = new List<string> {      "B", "E",      "D",      };
-            var seq_14 = new List<string> {           "E", "F", "D",      };
+            var seq_11 = new List<string> {"A", "B", "C",};
+            var seq_12 = new List<string> {"B", "D", "C",};
+            var seq_13 = new List<string> {"B", "E", "D",};
+            var seq_14 = new List<string> {"E", "F", "D",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_12);
@@ -376,12 +386,12 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "A", "B", "E", "F", "D", "C", };
+            var sorted = new List<string> {"A", "B", "E", "F", "D", "C",};
 
-            var seq_11 = new List<string> { "A", "B",                "C", };
-            var seq_12 = new List<string> {      "B",           "D", "C", };
-            var seq_13 = new List<string> {      "B", "E",      "D",      };
-            var seq_14 = new List<string> {           "E", "F", "D",      };
+            var seq_11 = new List<string> {"A", "B", "C",};
+            var seq_12 = new List<string> {"B", "D", "C",};
+            var seq_13 = new List<string> {"B", "E", "D",};
+            var seq_14 = new List<string> {"E", "F", "D",};
 
             sorter.Add(seq_14);
             sorter.Add(seq_12);
@@ -392,7 +402,7 @@
 
             // different list order doesn't make a difference in this case,
             // because there's only one possible sort order for this graph.
-            
+
             AssertOrdering(sorted, result, sorter.Sequences);
 
             Assert.True("A".ComesBefore(sorted.Skip(1), result));
@@ -406,10 +416,10 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "A", "B", "C", "D", "E", };
+            var sorted = new List<string> {"A", "B", "C", "D", "E",};
 
-            var seq_11 = new List<string> { "A", "B", "C",           };
-            var seq_12 = new List<string> {      "B",      "D", "E", };
+            var seq_11 = new List<string> {"A", "B", "C",};
+            var seq_12 = new List<string> {"B", "D", "E",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_12);
@@ -417,7 +427,7 @@
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
-            Assert.True("B".ComesBefore(new List<string>(){"C", "D", "E"}, result));
+            Assert.True("B".ComesBefore(new List<string>() {"C", "D", "E"}, result));
 
 //          Assert.AreEqual(1, sorter.components.Distinct().Count());
         }
@@ -427,14 +437,14 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "A", "E", "B", "C", "D", "F", "G", "I", "H", "J", "K", "L", };
-            
-            var seq_11 = new List<string> { "A",                                                        };
-            var seq_21 = new List<string> {           "B", "C", "D",                                    };
-            var seq_22 = new List<string> {      "E", "B",           "F", "G",                          };
-            var seq_23 = new List<string> {                "C",           "G",      "H",                };
-            var seq_24 = new List<string> {           "B",                     "I", "H",                };
-            var seq_31 = new List<string> {                                              "J", "K", "L", };
+            var sorted = new List<string> {"A", "E", "B", "C", "D", "F", "G", "I", "H", "J", "K", "L",};
+
+            var seq_11 = new List<string> {"A",};
+            var seq_21 = new List<string> {"B", "C", "D",};
+            var seq_22 = new List<string> {"E", "B", "F", "G",};
+            var seq_23 = new List<string> {"C", "G", "H",};
+            var seq_24 = new List<string> {"B", "I", "H",};
+            var seq_31 = new List<string> {"J", "K", "L",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_21);
@@ -455,15 +465,15 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "A", "E", "B", "C", "D", "F", "G", "L", "H", "I", "J", "K", };
+            var sorted = new List<string> {"A", "E", "B", "C", "D", "F", "G", "L", "H", "I", "J", "K",};
 
-            var seq_11 = new List<string> { "A",                                                        };
-            var seq_21 = new List<string> {           "B", "C", "D",                                    };
-            var seq_22 = new List<string> {      "E", "B",           "F", "G",                          };
-            var seq_23 = new List<string> {                "C",           "G",      "H",                };
-            var seq_31 = new List<string> {                                              "I", "J", "K", };
-            var seq_24 = new List<string> {           "B",                     "L", "H",                };
-            
+            var seq_11 = new List<string> {"A",};
+            var seq_21 = new List<string> {"B", "C", "D",};
+            var seq_22 = new List<string> {"E", "B", "F", "G",};
+            var seq_23 = new List<string> {"C", "G", "H",};
+            var seq_31 = new List<string> {"I", "J", "K",};
+            var seq_24 = new List<string> {"B", "L", "H",};
+
             sorter.Add(seq_11);
             sorter.Add(seq_21);
             sorter.Add(seq_22);
@@ -483,15 +493,15 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "K", "L", "F", "G", "H", "I", "M", "N", };
+            var sorted = new List<string> {"A", "J", "B", "C", "D", "E", "K", "L", "F", "G", "H", "I", "M", "N",};
 
-            var seq_11 = new List<string> { "A",                                                                  };
-            var seq_21 = new List<string> {           "B", "C", "D",                                              };
-            var seq_22 = new List<string> {           "B",           "E",           "F",                          };
-            var seq_31 = new List<string> {                                              "G", "H", "I",           };
-            var seq_23 = new List<string> {      "J", "B",                "K", "L",                     "M",      };
-            var seq_24 = new List<string> {                "C",                "L", "F",                     "N", };
-           
+            var seq_11 = new List<string> {"A",};
+            var seq_21 = new List<string> {"B", "C", "D",};
+            var seq_22 = new List<string> {"B", "E", "F",};
+            var seq_31 = new List<string> {"G", "H", "I",};
+            var seq_23 = new List<string> {"J", "B", "K", "L", "M",};
+            var seq_24 = new List<string> {"C", "L", "F", "N",};
+
             sorter.Add(seq_11);
             sorter.Add(seq_21);
             sorter.Add(seq_22);
@@ -511,13 +521,13 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "A", "E", "F", "G", "B", "C", "D", };
+            var sorted = new List<string> {"A", "E", "F", "G", "B", "C", "D",};
 
-            var seq_11 = new List<string> { "A",                "B",           };
-            var seq_21 = new List<string> {                          "C", "D", };
-            var seq_12 = new List<string> {      "E", "F",                     };
-            var seq_13 = new List<string> {           "F", "G",                };
-            var seq_14 = new List<string> {                "G", "B",           };
+            var seq_11 = new List<string> {"A", "B",};
+            var seq_21 = new List<string> {"C", "D",};
+            var seq_12 = new List<string> {"E", "F",};
+            var seq_13 = new List<string> {"F", "G",};
+            var seq_14 = new List<string> {"G", "B",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_21);
@@ -537,15 +547,15 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "A", "C", "E", "F", "G", "B", "D", };
+            var sorted = new List<string> {"A", "C", "E", "F", "G", "B", "D",};
 
-            var seq_11 = new List<string> { "A",                     "B",      };
-            var seq_12 = new List<string> {      "C",                     "D", };
-            var seq_13 = new List<string> {           "E", "F",                };
-            var seq_14 = new List<string> {                "F", "G",           };
-            var seq_15 = new List<string> {      "C",                "B",      };
-            var seq_16 = new List<string> {                     "G", "B",      };
-            
+            var seq_11 = new List<string> {"A", "B",};
+            var seq_12 = new List<string> {"C", "D",};
+            var seq_13 = new List<string> {"E", "F",};
+            var seq_14 = new List<string> {"F", "G",};
+            var seq_15 = new List<string> {"C", "B",};
+            var seq_16 = new List<string> {"G", "B",};
+
             sorter.Add(seq_11);
             sorter.Add(seq_12);
             sorter.Add(seq_13);
@@ -554,7 +564,7 @@
             sorter.Add(seq_16);
 
             var result = sorter.Sort();
-            
+
             AssertOrdering(sorted, result, sorter.Sequences);
 
 //          Assert.AreEqual(1, sorter.components.Distinct().Count());
@@ -565,12 +575,12 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "C", "D", "E", "A", "B", };
+            var sorted = new List<string> {"C", "D", "E", "A", "B",};
 
-            var seq_11 = new List<string> {                "A",      };
-            var seq_21 = new List<string> {                     "B", };
-            var seq_12 = new List<string> { "C", "D",      "A",      };
-            var seq_13 = new List<string> {           "E", "A",      };
+            var seq_11 = new List<string> {"A",};
+            var seq_21 = new List<string> {"B",};
+            var seq_12 = new List<string> {"C", "D", "A",};
+            var seq_13 = new List<string> {"E", "A",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_21);
@@ -580,7 +590,7 @@
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
-            Assert.True("A".ComesAfter(new List<string>(){"C", "D", "E"}, result));
+            Assert.True("A".ComesAfter(new List<string>() {"C", "D", "E"}, result));
 
 //          Assert.AreEqual(2, sorter.components.Distinct().Count());
         }
@@ -590,12 +600,12 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "A", "B", "C", "D", "E", };
+            var sorted = new List<string> {"A", "B", "C", "D", "E",};
 
-            var seq_11 = new List<string> { "A",                     };
-            var seq_12 = new List<string> { "A", "B",                };
-            var seq_13 = new List<string> { "A", "B", "C",           };
-            var seq_14 = new List<string> {      "B", "C", "D", "E", };
+            var seq_11 = new List<string> {"A",};
+            var seq_12 = new List<string> {"A", "B",};
+            var seq_13 = new List<string> {"A", "B", "C",};
+            var seq_14 = new List<string> {"B", "C", "D", "E",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_12);
@@ -605,7 +615,7 @@
             var result = sorter.Sort();
 
             AssertOrdering(sorted, result, sorter.Sequences);
-            Assert.True("E".ComesAfter(new List<string>() { "A", "B", "C", "D" }, result));
+            Assert.True("E".ComesAfter(new List<string>() {"A", "B", "C", "D"}, result));
 
 //          Assert.AreEqual(1, sorter.components.Distinct().Count());
         }
@@ -615,14 +625,14 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "B", "G", "I", "A", "C", "D", "E", "F", "H", };
+            var sorted = new List<string> {"B", "G", "I", "A", "C", "D", "E", "F", "H",};
 
-            var seq_11 = new List<string> {                "A",                          };
-            var seq_12 = new List<string> { "B",                "C", "D",                };
-            var seq_21 = new List<string> {                               "E", "F",      };
-            var seq_13 = new List<string> {      "G",      "A",                     "H", };
-            var seq_14 = new List<string> {           "I", "A",                          };
-            var seq_15 = new List<string> { "B",           "A",                          };
+            var seq_11 = new List<string> {"A",};
+            var seq_12 = new List<string> {"B", "C", "D",};
+            var seq_21 = new List<string> {"E", "F",};
+            var seq_13 = new List<string> {"G", "A", "H",};
+            var seq_14 = new List<string> {"I", "A",};
+            var seq_15 = new List<string> {"B", "A",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_12);
@@ -643,12 +653,12 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "B", "C", "A", };
+            var sorted = new List<string> {"B", "C", "A",};
 
-            var seq_11 = new List<string> {           "A", };
-            var seq_12 = new List<string> { "B",           };
-            var seq_13 = new List<string> {      "C", "A", };
-            var seq_14 = new List<string> { "B",      "A", };
+            var seq_11 = new List<string> {"A",};
+            var seq_12 = new List<string> {"B",};
+            var seq_13 = new List<string> {"C", "A",};
+            var seq_14 = new List<string> {"B", "A",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_12);
@@ -667,11 +677,11 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "B", "C", "E", "F", "A", "D", };
-            var seq_11 = new List<string> {                     "A",      };
-            var seq_12 = new List<string> { "B", "C",                "D", };
-            var seq_13 = new List<string> {           "E",      "A",      };
-            var seq_14 = new List<string> {      "C",      "F", "A" };
+            var sorted = new List<string> {"B", "C", "E", "F", "A", "D",};
+            var seq_11 = new List<string> {"A",};
+            var seq_12 = new List<string> {"B", "C", "D",};
+            var seq_13 = new List<string> {"E", "A",};
+            var seq_14 = new List<string> {"C", "F", "A"};
 
             sorter.Add(seq_11);
             sorter.Add(seq_12);
@@ -690,17 +700,17 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "Q", "P", "K", "L", "F", "G", "H", "I", "M", "N", "O", };
+            var sorted = new List<string> {"A", "J", "B", "C", "D", "E", "Q", "P", "K", "L", "F", "G", "H", "I", "M", "N", "O",};
 
-            var seq_11 = new List<string> { "A",                                                                                 };
-            var seq_21 = new List<string> {           "B", "C", "D",                                                             };
-            var seq_22 = new List<string> {           "B",           "E",                     "F",                               };
-            var seq_31 = new List<string> {                                                        "G", "H", "I",                };
-            var seq_23 = new List<string> {      "J", "B",                          "K", "L",                     "M",           };
-            var seq_24 = new List<string> {                "C",                          "L", "F",                     "N",      };
-            var seq_41 = new List<string> {                                                                                 "O", };
-            var seq_25 = new List<string> {                                    "P", "K",                                         };
-            var seq_26 = new List<string> {                               "Q", "P",                                              };
+            var seq_11 = new List<string> {"A",};
+            var seq_21 = new List<string> {"B", "C", "D",};
+            var seq_22 = new List<string> {"B", "E", "F",};
+            var seq_31 = new List<string> {"G", "H", "I",};
+            var seq_23 = new List<string> {"J", "B", "K", "L", "M",};
+            var seq_24 = new List<string> {"C", "L", "F", "N",};
+            var seq_41 = new List<string> {"O",};
+            var seq_25 = new List<string> {"P", "K",};
+            var seq_26 = new List<string> {"Q", "P",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_21);
@@ -724,19 +734,19 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var sorted = new List<string> { "A", "J", "B", "C", "D", "E", "P", "S", "R", "Q", "K", "L", "F", "G", "H", "I", "M", "N", "O", };
+            var sorted = new List<string> {"A", "J", "B", "C", "D", "E", "P", "S", "R", "Q", "K", "L", "F", "G", "H", "I", "M", "N", "O",};
 
-            var seq_11 = new List<string> { "A",                                                                                           };
-            var seq_21 = new List<string> {           "B", "C", "D",                                                                       };
-            var seq_22 = new List<string> {           "B",           "E",                               "F",                               };
-            var seq_31 = new List<string> {                                                                  "G", "H", "I",                };
-            var seq_23 = new List<string> {      "J", "B",                                    "K", "L",                     "M",           };
-            var seq_24 = new List<string> {                "C",                                    "L", "F",                     "N",      };
-            var seq_41 = new List<string> {                                                                                           "O", };
-            var seq_25 = new List<string> {                               "P",           "Q", "K",                                         };
-            var seq_26 = new List<string> {                                         "R", "Q",                                              };
-            var seq_27 = new List<string> {                                    "S", "R",                                                   };
-            
+            var seq_11 = new List<string> {"A",};
+            var seq_21 = new List<string> {"B", "C", "D",};
+            var seq_22 = new List<string> {"B", "E", "F",};
+            var seq_31 = new List<string> {"G", "H", "I",};
+            var seq_23 = new List<string> {"J", "B", "K", "L", "M",};
+            var seq_24 = new List<string> {"C", "L", "F", "N",};
+            var seq_41 = new List<string> {"O",};
+            var seq_25 = new List<string> {"P", "Q", "K",};
+            var seq_26 = new List<string> {"R", "Q",};
+            var seq_27 = new List<string> {"S", "R",};
+
             sorter.Add(seq_11);
             sorter.Add(seq_21);
             sorter.Add(seq_22);
@@ -760,8 +770,8 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_11 = new List<string>() { "A", "B", "C", "D" };
-            var seq_21 = new List<string>() { "B", "A", "C", };
+            var seq_11 = new List<string>() {"A", "B", "C", "D"};
+            var seq_21 = new List<string>() {"B", "A", "C",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_21);
@@ -777,9 +787,9 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_11 = new List<string>() { "A", "B", "C", "D" };
-            var seq_12 = new List<string>() { "A", "B", };
-            var seq_21 = new List<string>() { "B", "A", "C", };
+            var seq_11 = new List<string>() {"A", "B", "C", "D"};
+            var seq_12 = new List<string>() {"A", "B",};
+            var seq_21 = new List<string>() {"B", "A", "C",};
 
             sorter.Add(seq_11);
             sorter.Add(seq_12);
@@ -796,10 +806,10 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_01 = new List<string>() { "E", "F" };
-            var seq_11 = new List<string>() { "A", "B", "C", "D" };
-            var seq_12 = new List<string>() { "C", "D", };
-            var seq_21 = new List<string>() { "B", "A", "C", };
+            var seq_01 = new List<string>() {"E", "F"};
+            var seq_11 = new List<string>() {"A", "B", "C", "D"};
+            var seq_12 = new List<string>() {"C", "D",};
+            var seq_21 = new List<string>() {"B", "A", "C",};
 
             sorter.Add(seq_01);
             sorter.Add(seq_11);
@@ -817,11 +827,11 @@
         {
             var sorter = CreateTopologicalSorter<string>();
 
-            var seq_01 = new List<string>() { "E", "F" };
-            var seq_11 = new List<string>() { "A", "B", "C", "D" };
-            var seq_12 = new List<string>() { "A", "B", };
-            var seq_21 = new List<string>() { "B", "A", "C", };
-            var seq_31 = new List<string>() { "M", "N", "O", };
+            var seq_01 = new List<string>() {"E", "F"};
+            var seq_11 = new List<string>() {"A", "B", "C", "D"};
+            var seq_12 = new List<string>() {"A", "B",};
+            var seq_21 = new List<string>() {"B", "A", "C",};
+            var seq_31 = new List<string>() {"M", "N", "O",};
 
             sorter.Add(seq_01);
             sorter.Add(seq_11);
@@ -865,12 +875,12 @@
             if (index2 == -1)
             {
                 error_item = item2;
-                param_name ="item2";
+                param_name = "item2";
             }
             if (index1 == -1)
             {
                 error_item = item1;
-                param_name ="item1";
+                param_name = "item1";
             }
             if (error_flag)
             {
@@ -887,5 +897,6 @@
         {
             return new TopologicalSort<T>(UsesPriority, UsesTracking, collection);
         }
+        #endregion
     }
 }

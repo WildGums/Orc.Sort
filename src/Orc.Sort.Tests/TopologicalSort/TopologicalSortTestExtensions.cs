@@ -1,4 +1,11 @@
-﻿namespace Orc.Sort.Tests.TopologicalSort
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TopologicalSortTestExtensions.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
+namespace Orc.Sort.Tests.TopologicalSort
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +13,8 @@
 
     public static class TopologicalSortTestExtensions
     {
-        public static bool ComesBefore<T>(this T beforeItem, IEnumerable<T> afterItems , IEnumerable<T> collection)
+        #region Methods
+        public static bool ComesBefore<T>(this T beforeItem, IEnumerable<T> afterItems, IEnumerable<T> collection)
         {
             var beforeItemFound = false;
 
@@ -38,7 +46,7 @@
 
         public static bool ComesBefore<T>(this T beforeItem, T afterItem, IEnumerable<T> collection)
         {
-            return beforeItem.ComesBefore(new List<T>() { afterItem }, collection);
+            return beforeItem.ComesBefore(new List<T>() {afterItem}, collection);
         }
 
         public static bool ComesAfter<T>(this T afterItem, IEnumerable<T> beforeItems, IEnumerable<T> collection)
@@ -48,7 +56,8 @@
 
         public static bool ComesAfter<T>(this T afterItem, T beforeItem, IEnumerable<T> collection)
         {
-            return afterItem.ComesAfter(new List<T>() { beforeItem }, collection);
+            return afterItem.ComesAfter(new List<T>() {beforeItem}, collection);
         }
+        #endregion
     }
 }

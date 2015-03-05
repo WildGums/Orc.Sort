@@ -1,18 +1,29 @@
-namespace Orc.Sort.Interfaces
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ISorter.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
+namespace Orc.Sort
 {
     using System.Collections;
     using System.Collections.Generic;
 
     /// <summary>
-	/// Summary description for ISorter.
-	/// </summary>
-	public interface ISorter
-	{
-		void Sort(IList list);
-	}
+    /// Summary description for ISorter.
+    /// </summary>
+    public interface ISorter
+    {
+        #region Methods
+        void Sort(IList list);
+        #endregion
+    }
 
     public interface ISorter<T>
     {
+        #region Methods
         void Sort(IList<T> list);
+        #endregion
     }
 }

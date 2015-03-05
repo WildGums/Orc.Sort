@@ -1,18 +1,28 @@
-﻿using System;
-using NUnit.Framework;
-using System.Linq;
-using System.Collections.Generic;
-using Performance;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PerformanceTests.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 
 namespace TimSort.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using NUnit.Framework;
+    using Performance;
+
     [TestFixture]
     public class PerformanceTests
     {
+        #region Fields
         private const int maxMem = int.MaxValue/(64*32);
-        const int maxSize = maxMem / sizeof(int);
-        const int seed = 1234;
+        private const int maxSize = maxMem/sizeof (int);
+        private const int seed = 1234;
+        #endregion
 
+        #region Methods
         public static int Compare(int a, int b)
         {
             // Thread.Sleep(0); // make compare function slow
@@ -29,14 +39,20 @@ namespace TimSort.Tests
             int[] b = new int[maxSize];
 
             Console.WriteLine("Preparing...");
-            for (int i = 0; i < maxSize; i++) a[i] = b[i] = r.Next();
+            for (int i = 0; i < maxSize; i++)
+            {
+                a[i] = b[i] = r.Next();
+            }
 
             Console.WriteLine("Sorting...");
             PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b), maxSize);
             PerformanceTimer.Debug("timsort", 1, () => a.TimSort(), maxSize);
 
             Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+            for (int i = 0; i < maxSize; i++)
+            {
+                Assert.AreEqual(a[i], b[i]);
+            }
         }
 
         [Test]
@@ -50,14 +66,20 @@ namespace TimSort.Tests
             Guid[] b = new Guid[length];
 
             Console.WriteLine("Preparing...");
-            for (int i = 0; i < length; i++) a[i] = b[i] = Guid.NewGuid();
+            for (int i = 0; i < length; i++)
+            {
+                a[i] = b[i] = Guid.NewGuid();
+            }
 
             Console.WriteLine("Sorting...");
             PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b), maxSize);
             PerformanceTimer.Debug("timsort", 1, () => a.TimSort(), maxSize);
 
             Console.WriteLine("Testing...");
-            for (int i = 0; i < length; i++) Assert.AreEqual(a[i], b[i]);
+            for (int i = 0; i < length; i++)
+            {
+                Assert.AreEqual(a[i], b[i]);
+            }
         }
 
         [Test]
@@ -70,14 +92,20 @@ namespace TimSort.Tests
             int[] b = new int[maxSize];
 
             Console.WriteLine("Preparing...");
-            for (int i = 0; i < maxSize; i++) a[i] = b[i] = r.Next();
+            for (int i = 0; i < maxSize; i++)
+            {
+                a[i] = b[i] = r.Next();
+            }
 
             Console.WriteLine("Sorting...");
             PerformanceTimer.Debug("builtin", 1, () => Array.Sort(b, Compare), maxSize);
             PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
 
             Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+            for (int i = 0; i < maxSize; i++)
+            {
+                Assert.AreEqual(a[i], b[i]);
+            }
         }
 
         [Test]
@@ -93,10 +121,10 @@ namespace TimSort.Tests
             Console.WriteLine("Preparing...");
             for (int i = 0; i < maxSize; i++)
             {
-                value = 
-                    r.Next(100) < 80 
-                    ? value + r.Next(100) 
-                    : value - r.Next(100);
+                value =
+                    r.Next(100) < 80
+                        ? value + r.Next(100)
+                        : value - r.Next(100);
                 a[i] = b[i] = value;
             }
 
@@ -105,7 +133,10 @@ namespace TimSort.Tests
             PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
 
             Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+            for (int i = 0; i < maxSize; i++)
+            {
+                Assert.AreEqual(a[i], b[i]);
+            }
         }
 
         [Test]
@@ -121,10 +152,10 @@ namespace TimSort.Tests
             Console.WriteLine("Preparing...");
             for (int i = 0; i < maxSize; i++)
             {
-                value = 
-                    r.Next(100) < 80 
-                    ? value - r.Next(100) 
-                    : value + r.Next(100);
+                value =
+                    r.Next(100) < 80
+                        ? value - r.Next(100)
+                        : value + r.Next(100);
                 a[i] = b[i] = value;
             }
 
@@ -133,7 +164,10 @@ namespace TimSort.Tests
             PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
 
             Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+            for (int i = 0; i < maxSize; i++)
+            {
+                Assert.AreEqual(a[i], b[i]);
+            }
         }
 
         [Test]
@@ -146,7 +180,10 @@ namespace TimSort.Tests
             int[] b = new int[maxSize];
 
             Console.WriteLine("Preparing...");
-            for (int i = 0; i < maxSize; i++) b[i] = r.Next();
+            for (int i = 0; i < maxSize; i++)
+            {
+                b[i] = r.Next();
+            }
             a.AddRange(b);
 
             Console.WriteLine("Sorting...");
@@ -154,7 +191,10 @@ namespace TimSort.Tests
             PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
 
             Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+            for (int i = 0; i < maxSize; i++)
+            {
+                Assert.AreEqual(a[i], b[i]);
+            }
         }
 
         [Test]
@@ -170,10 +210,10 @@ namespace TimSort.Tests
             Console.WriteLine("Preparing...");
             for (int i = 0; i < maxSize; i++)
             {
-                value = 
-                    r.Next(100) < 80 
-                    ? value + r.Next(100) 
-                    : value - r.Next(100);
+                value =
+                    r.Next(100) < 80
+                        ? value + r.Next(100)
+                        : value - r.Next(100);
                 b[i] = value;
             }
             a.AddRange(b);
@@ -183,7 +223,10 @@ namespace TimSort.Tests
             PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
 
             Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+            for (int i = 0; i < maxSize; i++)
+            {
+                Assert.AreEqual(a[i], b[i]);
+            }
         }
 
         [Test]
@@ -199,10 +242,10 @@ namespace TimSort.Tests
             Console.WriteLine("Preparing...");
             for (int i = 0; i < maxSize; i++)
             {
-                value = 
-                    r.Next(100) < 80 
-                    ? value - r.Next(100) 
-                    : value + r.Next(100);
+                value =
+                    r.Next(100) < 80
+                        ? value - r.Next(100)
+                        : value + r.Next(100);
                 b[i] = value;
             }
             a.AddRange(b);
@@ -212,7 +255,11 @@ namespace TimSort.Tests
             PerformanceTimer.Debug("timsort", 1, () => a.TimSort(Compare), maxSize);
 
             Console.WriteLine("Testing...");
-            for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
+            for (int i = 0; i < maxSize; i++)
+            {
+                Assert.AreEqual(a[i], b[i]);
+            }
         }
+        #endregion
     }
 }

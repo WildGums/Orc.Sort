@@ -1,11 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PriorityTopologicalSort.cs" company="orc">
-//   
+// <copyright file="PriorityTopologicalSort.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
 // </copyright>
-// <summary>
-//   Uses a priority topological sort to order sequences by the priority they are processed in.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace Orc.Sort.TopologicalSort
 {
@@ -19,6 +17,7 @@ namespace Orc.Sort.TopologicalSort
     public class PriorityTopologicalSort<T> : TopologicalSort<T>
         where T : IEquatable<T>
     {
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="PriorityTopologicalSort{T}"/> class.
         /// </summary>
@@ -26,5 +25,6 @@ namespace Orc.Sort.TopologicalSort
         {
             base.UsesPriority = true;
         }
+        #endregion
     }
 }

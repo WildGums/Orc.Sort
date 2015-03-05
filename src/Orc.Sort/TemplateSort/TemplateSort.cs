@@ -1,11 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TemplateSort.cs" company="">
-//   
+// <copyright file="TemplateSort.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
 // </copyright>
-// <summary>
-//   The template sort 2.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 
 namespace Orc.Sort.TemplateSort
 {
@@ -19,7 +17,6 @@ namespace Orc.Sort.TemplateSort
     public static class TemplateSort
     {
         #region Methods
-
         /// <summary>
         ///     Sorts the elements of a sequence based on the order of the items in the specified template collection, using the
         ///     specified System.Collections.Generic.IEqualityComparer&lt;T&gt;.
@@ -153,7 +150,7 @@ namespace Orc.Sort.TemplateSort
                     }
                     else
                     {
-                        noMatches[item] = new List<TSource>() { item };
+                        noMatches[item] = new List<TSource>() {item};
                     }
                 }
             }
@@ -173,7 +170,6 @@ namespace Orc.Sort.TemplateSort
 
             return result;
         }
-
         #endregion
     }
 }

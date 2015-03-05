@@ -1,46 +1,111 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System.Threading;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PerformanceTimer.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
 
 namespace Performance
 {
-    #region class PerformanceTimer
+    using System;
+    using System.ComponentModel;
+    using System.Runtime.InteropServices;
+    using System.Threading;
 
+    #region class PerformanceTimer
     /// <summary>
     /// Encapsulates access to system performance counter.
     /// </summary>
     public class PerformanceTimer
     {
-        #region fields
+        #region Constructors
 
+        #region constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PerformanceTimer"/> class.
+        /// Timers is not started.
+        /// </summary>
+        public PerformanceTimer()
+        {
+            Reset();
+        }
+        #endregion
+
+        #endregion
+
+        #region class PerformanceTimerScope
+        /// <summary>
+        /// Utility class to use with <c>using</c> keyword. 
+        /// See <see cref="PerformanceTimer.Scope()"/> for more information.
+        /// Basicly, class which starts the timer when instantiated and stops then timer when disposed.
+        /// </summary>
+        internal class PerformanceTimerScope : IDisposable
+        {
+            #region Fields
+
+            #region fields
+            private readonly PerformanceTimer m_Timer;
+            #endregion
+
+            #endregion
+
+            #region Constructors
+
+            #region constructor
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PerformanceTimerScope"/> class.
+            /// </summary>
+            /// <param name="timer">The timer to control.</param>
+            public PerformanceTimerScope(PerformanceTimer timer)
+            {
+                m_Timer = timer;
+                timer.Start();
+            }
+            #endregion
+
+            #endregion
+
+            #region Methods
+
+            #region IDisposable Members
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// In this case it just stops controlled timer.
+            /// </summary>
+            public void Dispose()
+            {
+                m_Timer.Stop();
+            }
+            #endregion
+
+            #endregion
+        }
+        #endregion
+
+        #region fields
         private int m_StartedCount;
         private long m_StartTime;
         private long m_StopTime;
         private long m_Frequency;
         private long m_ElapsedTime;
-
         #endregion
 
         #region imports
-
         [DllImport("kernel32.dll")]
         internal static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
 
         [DllImport("kernel32.dll")]
         internal static extern bool QueryPerformanceFrequency(out long lpFrequency);
-
         #endregion
 
         #region properties
-
         /// <summary>
         /// Returns the duration of the timer (in seconds)
         /// </summary>
         /// <value>The elapsed time in seconds.</value>
         public double Elapsed
         {
-            get { return (double)(m_ElapsedTime) / (double)m_Frequency; }
+            get { return (double) (m_ElapsedTime)/(double) m_Frequency; }
         }
 
         /// <summary>
@@ -51,69 +116,9 @@ namespace Performance
         {
             get { return TimeSpan.FromSeconds(Elapsed); }
         }
-
-        #endregion
-
-        #region class PerformanceTimerScope
-
-        /// <summary>
-        /// Utility class to use with <c>using</c> keyword. 
-        /// See <see cref="PerformanceTimer.Scope()"/> for more information.
-        /// Basicly, class which starts the timer when instantiated and stops then timer when disposed.
-        /// </summary>
-        internal class PerformanceTimerScope: IDisposable
-        {
-            #region fields
-
-            private readonly PerformanceTimer m_Timer;
-
-            #endregion
-
-            #region constructor
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="PerformanceTimerScope"/> class.
-            /// </summary>
-            /// <param name="timer">The timer to control.</param>
-            public PerformanceTimerScope(PerformanceTimer timer)
-            {
-                m_Timer = timer;
-                timer.Start();
-            }
-
-            #endregion
-
-            #region IDisposable Members
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// In this case it just stops controlled timer.
-            /// </summary>
-            public void Dispose()
-            {
-                m_Timer.Stop();
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        #region constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PerformanceTimer"/> class.
-        /// Timers is not started.
-        /// </summary>
-        public PerformanceTimer()
-        {
-            Reset();
-        }
-
         #endregion
 
         #region public interface
-
         /// <summary>
         /// Resets the timer. Timer is not started.
         /// </summary>
@@ -135,10 +140,14 @@ namespace Performance
                 Thread.Sleep(0);
 
                 if (!QueryPerformanceFrequency(out m_Frequency))
+                {
                     throw new Win32Exception();
+                }
 
                 if (!QueryPerformanceCounter(out m_StartTime))
+                {
                     throw new Win32Exception();
+                }
             }
             m_StartedCount++;
         }
@@ -165,7 +174,9 @@ namespace Performance
         public double Stop()
         {
             if (m_StartedCount <= 0)
+            {
                 return Elapsed;
+            }
 
             QueryPerformanceCounter(out m_StopTime);
             m_StartedCount--;
@@ -207,8 +218,8 @@ namespace Performance
             {
                 action();
             }
-            var time = timer.Elapsed / repeat;
-            Console.WriteLine("{0}: {1:0.0000}ms ({2:0.00}/s)", name, time * 1000, size / time);
+            var time = timer.Elapsed/repeat;
+            Console.WriteLine("{0}: {1:0.0000}ms ({2:0.00}/s)", name, time*1000, size/time);
         }
 
         /// <summary>Measures the time spent executing action.</summary>
@@ -229,14 +240,11 @@ namespace Performance
                     result = action();
                 }
             }
-            var time = timer.Elapsed / repeat;
-            Console.WriteLine("{0}: {1:0.0000}ms ({2:0.00}/s)", name, time * 1000, size / time);
+            var time = timer.Elapsed/repeat;
+            Console.WriteLine("{0}: {1:0.0000}ms ({2:0.00}/s)", name, time*1000, size/time);
             return result;
         }
-
         #endregion
     }
-
     #endregion
-
 }

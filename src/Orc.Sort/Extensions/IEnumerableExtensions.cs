@@ -1,13 +1,21 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using MoreLinq;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IEnumerableExtensions.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace Orc.Sort.Extensions
+
+namespace Orc.Sort
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using MoreLinq;
+
     public static class IEnumerableExtensions
     {
+        #region Methods
         /// <summary>
         /// Enumerate through a collection starting from a specified item.
         /// The collection must have unique values.
@@ -40,7 +48,7 @@ namespace Orc.Sort.Extensions
                 {
                     yield return item;
                 }
-                else if(isCyclic)
+                else if (isCyclic)
                 {
                     appendItems.Add(item);
                 }
@@ -156,17 +164,37 @@ namespace Orc.Sort.Extensions
                 }
             }
         }
+        #endregion
     }
 
     internal class KeyedEnumerator<T> : IEnumerator<T>, IComparable<KeyedEnumerator<T>>
     {
+        #region Constructors
         public KeyedEnumerator(IEnumerator<T> enumerator, IComparer<T> itemComparer, int secondaryKey)
         {
             Enumerator = enumerator;
             ItemComparer = itemComparer;
             SecondaryKey = secondaryKey;
         }
+        #endregion
 
+        #region Properties
+        public T Current
+        {
+            get { return Enumerator.Current; }
+        }
+
+        object IEnumerator.Current
+        {
+            get { return Enumerator.Current; }
+        }
+
+        public IEnumerator<T> Enumerator { get; private set; }
+        public IComparer<T> ItemComparer { get; private set; }
+        public int SecondaryKey { get; private set; }
+        #endregion
+
+        #region Methods
         public int CompareTo(KeyedEnumerator<T> other)
         {
             var result = ItemComparer.Compare(Current, other.Current);
@@ -193,22 +221,6 @@ namespace Orc.Sort.Extensions
         {
             Enumerator.Reset();
         }
-
-        public T Current
-        {
-            get { return Enumerator.Current; }
-        }
-
-        object IEnumerator.Current
-        {
-            get { return Enumerator.Current; }
-        }
-
-        public IEnumerator<T> Enumerator { get; private set; }
-
-        public IComparer<T> ItemComparer { get; private set; }
-
-        public int SecondaryKey { get; private set; }
-
+        #endregion
     }
 }

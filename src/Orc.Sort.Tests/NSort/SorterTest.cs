@@ -1,12 +1,17 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SorterTest.cs" company="Orcomp development team">
+//   Copyright (c) 2008 - 2015 Orcomp development team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+
 namespace Orc.Sort.Tests.NSort
 {
     using System;
     using System.Collections;
-
+    
     using NUnit.Framework;
-
-    using Orc.Sort.Interfaces;
-    using Orc.Sort.NSort;
+    using Sort.NSort;
 
 #if (SILVERLIGHT)
     using C5;
@@ -17,13 +22,18 @@ namespace Orc.Sort.Tests.NSort
     /// </summary>
     public class SorterTest
     {
+        #region Constructors
         public SorterTest()
         {
             Sorter = null;
         }
+        #endregion
 
+        #region Properties
         public ISorter Sorter { get; set; }
+        #endregion
 
+        #region Methods
         public void SortTest()
         {
             var rnd = new Random();
@@ -52,11 +62,13 @@ namespace Orc.Sort.Tests.NSort
 
             Assert.AreEqual(sortedList.Keys, list);
         }
+        #endregion
     }
 
     [TestFixture]
     public class QuickSorterTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -68,12 +80,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
-
 
     [TestFixture]
     public class BubbleSorterTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -85,12 +98,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
-
 
     [TestFixture]
     public class BiDirectionalBubbleSortTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -102,12 +116,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
-
 
     [TestFixture]
     public class ComboSort11Test : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -119,11 +134,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
 
     [TestFixture]
     public class HeapSortTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -135,6 +152,7 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
 
     [TestFixture]
@@ -152,11 +170,10 @@ namespace Orc.Sort.Tests.NSort
     //        this.SortTest();
     //    }
     //}
-
-
     [TestFixture]
     public class OddEvenTransportSorterTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -168,11 +185,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
 
     [TestFixture]
     public class FastQuickSorterTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -184,11 +203,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
 
     [TestFixture]
     public class SelectionSortTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -200,11 +221,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
 
     [TestFixture]
     public class ShakerTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -216,11 +239,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
 
     [TestFixture]
     public class DoubleStorageMergeSortTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -232,11 +257,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
 
     [TestFixture]
     public class InPlaceMergeSortTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -248,11 +275,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
 
     [TestFixture]
     public class InsertionSortTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -264,11 +293,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
 
     [TestFixture]
     public class ShellSortTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -280,11 +311,13 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
 
     [TestFixture]
     public class QuickSortWithBubbleSortTest : SorterTest
     {
+        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -296,5 +329,6 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
+        #endregion
     }
 }
