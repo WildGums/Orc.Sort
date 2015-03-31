@@ -11,7 +11,7 @@ namespace Orc.Sort.NSort
     using System.Collections;
     
 
-    /**
+    /*
  * 
  * SortAlgorithm.java
  *
@@ -72,8 +72,8 @@ namespace Orc.Sort.NSort
         /// this function it will be with the parameters 0, a.length - 1.
         /// </remarks>
         /// <param name="list">list to sort</param>
-        /// <param name="lo0">left boundary of array partition</param>
-        /// <param name="hi0">right boundary of array partition</param>
+        /// <param name="l">left boundary of array partition</param>
+        /// <param name="r">right boundary of array partition</param>
         internal void QuickSort(IList list, int l, int r)
         {
             int M = 4;

@@ -18,11 +18,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{52791C39-16E
 		..\lib\repositories.config = ..\lib\repositories.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort", "Orc.Sort\Orc.Sort.csproj", "{DE88E565-23FB-43B1-B5E3-7F000FBCC2C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.NET40", "Orc.Sort\Orc.Sort.NET40\Orc.Sort.NET40.csproj", "{DE88E565-23FB-43B1-B5E3-7F000FBCC2C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Tests", "Orc.Sort.Tests\Orc.Sort.Tests.csproj", "{6AAEC4BB-7672-4494-A536-F8C686CED546}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Tests.NET40", "Orc.Sort.Tests\Orc.Sort.Tests.NET40\Orc.Sort.Tests.NET40.csproj", "{6AAEC4BB-7672-4494-A536-F8C686CED546}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B31836F6-2BF6-4624-A792-06D38A71089A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DCCC9FEA-73FA-48F1-9968-6DD26260A8B2}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.Sort.Shared", "Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.shproj", "{2AE05119-CD1B-4DFE-A540-813FA5742C27}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Orc.Sort.Tests.Shared", "Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.shproj", "{5914B36C-9314-4F89-9DD2-05A32D9BAB02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.NET45", "Orc.Sort\Orc.Sort.NET45\Orc.Sort.NET45.csproj", "{26078C0A-CC3E-4D4C-922C-CA5D43351A7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Tests.NET45", "Orc.Sort.Tests\Orc.Sort.Tests.NET45\Orc.Sort.Tests.NET45.csproj", "{66EB08C4-21EF-4949-861F-F408B2F0370B}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{de88e565-23fb-43b1-b5e3-7f000fbcc2c5}*SharedItemsImports = 4
+		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{66eb08c4-21ef-4949-861f-f408b2f0370b}*SharedItemsImports = 4
+		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{5914b36c-9314-4f89-9dd2-05a32d9bab02}*SharedItemsImports = 13
+		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{6aaec4bb-7672-4494-a536-f8c686ced546}*SharedItemsImports = 4
+		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{26078c0a-cc3e-4d4c-922c-ca5d43351a7d}*SharedItemsImports = 4
+		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{2ae05119-cd1b-4dfe-a540-813fa5742c27}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -36,12 +56,26 @@ Global
 		{6AAEC4BB-7672-4494-A536-F8C686CED546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AAEC4BB-7672-4494-A536-F8C686CED546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AAEC4BB-7672-4494-A536-F8C686CED546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26078C0A-CC3E-4D4C-922C-CA5D43351A7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26078C0A-CC3E-4D4C-922C-CA5D43351A7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26078C0A-CC3E-4D4C-922C-CA5D43351A7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26078C0A-CC3E-4D4C-922C-CA5D43351A7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66EB08C4-21EF-4949-861F-F408B2F0370B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66EB08C4-21EF-4949-861F-F408B2F0370B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66EB08C4-21EF-4949-861F-F408B2F0370B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66EB08C4-21EF-4949-861F-F408B2F0370B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{DE88E565-23FB-43B1-B5E3-7F000FBCC2C5} = {283108D6-83C7-4D73-8A79-E1AE3E682238}
-		{6AAEC4BB-7672-4494-A536-F8C686CED546} = {283108D6-83C7-4D73-8A79-E1AE3E682238}
+		{DE88E565-23FB-43B1-B5E3-7F000FBCC2C5} = {B31836F6-2BF6-4624-A792-06D38A71089A}
+		{6AAEC4BB-7672-4494-A536-F8C686CED546} = {DCCC9FEA-73FA-48F1-9968-6DD26260A8B2}
+		{B31836F6-2BF6-4624-A792-06D38A71089A} = {283108D6-83C7-4D73-8A79-E1AE3E682238}
+		{DCCC9FEA-73FA-48F1-9968-6DD26260A8B2} = {283108D6-83C7-4D73-8A79-E1AE3E682238}
+		{2AE05119-CD1B-4DFE-A540-813FA5742C27} = {B31836F6-2BF6-4624-A792-06D38A71089A}
+		{5914B36C-9314-4F89-9DD2-05A32D9BAB02} = {DCCC9FEA-73FA-48F1-9968-6DD26260A8B2}
+		{26078C0A-CC3E-4D4C-922C-CA5D43351A7D} = {B31836F6-2BF6-4624-A792-06D38A71089A}
+		{66EB08C4-21EF-4949-861F-F408B2F0370B} = {DCCC9FEA-73FA-48F1-9968-6DD26260A8B2}
 	EndGlobalSection
 EndGlobal

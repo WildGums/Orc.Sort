@@ -250,7 +250,7 @@ namespace Orc.Sort.TopologicalSort
         /// The sort.
         /// </summary>
         /// <returns>
-        /// The <see cref="List"/>.
+        /// The <see cref="List{T}"/>.
         /// </returns>
         public IList<T> Sort()
         {
@@ -318,9 +318,7 @@ namespace Orc.Sort.TopologicalSort
         /// <summary>
         /// Returns the first pair of sequences that are in conflict with each other.
         /// </summary>
-        /// <returns>
-        /// The <see cref="List"/>.
-        /// </returns>
+        /// <returns>The <see cref="List{T}" />.</returns>
         public IList<IEnumerable<T>> GetConflicts()
         {
             var conflictLists = new List<IEnumerable<T>>();
