@@ -1,5 +1,7 @@
 # Orc.Sort
 
+[![Join the chat at https://gitter.im/WildGums/Orc.Sort](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/WildGums/Orc.Sort?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This library contains various sorting Algorithms.
 
 
