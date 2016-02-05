@@ -4,8 +4,8 @@
     <id>Orc.Sort</id>
     <version>[VERSION]</version>
     <title>Orc.Sort</title>
-    <authors>OrchestraDevs</authors>
-    <owners>OrchestraDevs</owners>
+    <authors>WildGums</authors>
+    <owners>WildGums</owners>
 
 	<description>
 	  This library contains various sorting algorithms.
@@ -17,10 +17,10 @@
 	<tags>orc sorting sort algorithm</tags>
 
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <copyright>Copyright Orchestra team 2010 - 2014</copyright>
+    <copyright>Copyright WildGums 2010 - 2016</copyright>
 
 	<language>en-US</language>
-	<projectUrl>https://github.com/Orcomp/Orc.Sort</projectUrl>
+	<projectUrl>https://github.com/WildGums/Orc.Sort</projectUrl>
 	<!--<licenseUrl>http://catel.codeplex.com/license</licenseUrl>-->
 	<!--<iconUrl>http://www.catenalogic.com/catel.png</iconUrl>-->
   </metadata>
