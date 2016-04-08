@@ -41,7 +41,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MoreLinq">
-      <HintPath>..\..\..\lib\morelinq.2.0.0-alpha01\lib\net35\MoreLinq.dll</HintPath>
+      <HintPath>..\..\..\lib\morelinq.2.0.0-beta03\lib\net35\MoreLinq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,15 +53,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\Orc.Sort.Shared\Properties\Resources.NET40.Designer.cs">
       <Link>Properties\Resources.NET40.Designer.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ModuleInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Orc.Sort.Shared\Properties\Resources.de.resx">
@@ -83,6 +82,9 @@
     <EmbeddedResource Include="..\Orc.Sort.Shared\Properties\Resources.ru.resx">
       <Link>Properties\Resources.ru.resx</Link>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\Orc.Sort.Shared\Orc.Sort.Shared.projitems" Label="Shared" Condition="Exists('..\Orc.Sort.Shared\Orc.Sort.Shared.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

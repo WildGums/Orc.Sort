@@ -14,8 +14,8 @@ using System.Resources;
 ////[assembly: AssemblyProduct("DEFINED IN ACTUAL ASSEMBLYINFO")]
 ////[assembly: AssemblyDescription("DEFINED IN ACTUAL ASSEMBLYINFO")]
 
-[assembly: AssemblyCompany("CatenaLogic")]
-[assembly: AssemblyCopyright("Copyright © WildGums 2010 - 2014")]
+[assembly: AssemblyCompany("WildGums")]
+[assembly: AssemblyCopyright("Copyright © WildGums 2010 - 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en-US")]

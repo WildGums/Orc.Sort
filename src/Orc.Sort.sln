@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{283108D6-83C7-4D73-8A79-E1AE3E682238}"
 EndProject
@@ -29,13 +29,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.NET45", "Orc.Sort\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Tests.NET45", "Orc.Sort.Tests\Orc.Sort.Tests.NET45\Orc.Sort.Tests.NET45.csproj", "{66EB08C4-21EF-4949-861F-F408B2F0370B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.NET46", "Orc.Sort\Orc.Sort.NET46\Orc.Sort.NET46.csproj", "{85375788-D085-4738-8514-D58B1D259D28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Tests.NET46", "Orc.Sort.Tests\Orc.Sort.Tests.NET46\Orc.Sort.Tests.NET46.csproj", "{DCEFE8E6-8C97-4C93-B9A9-7E3B9E524FD4}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{85375788-d085-4738-8514-d58b1d259d28}*SharedItemsImports = 4
 		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{de88e565-23fb-43b1-b5e3-7f000fbcc2c5}*SharedItemsImports = 4
 		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{66eb08c4-21ef-4949-861f-f408b2f0370b}*SharedItemsImports = 4
 		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{5914b36c-9314-4f89-9dd2-05a32d9bab02}*SharedItemsImports = 13
 		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{6aaec4bb-7672-4494-a536-f8c686ced546}*SharedItemsImports = 4
 		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{26078c0a-cc3e-4d4c-922c-ca5d43351a7d}*SharedItemsImports = 4
+		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{dcefe8e6-8c97-4c93-b9a9-7e3b9e524fd4}*SharedItemsImports = 4
 		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{2ae05119-cd1b-4dfe-a540-813fa5742c27}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +65,14 @@ Global
 		{66EB08C4-21EF-4949-861F-F408B2F0370B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66EB08C4-21EF-4949-861F-F408B2F0370B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66EB08C4-21EF-4949-861F-F408B2F0370B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85375788-D085-4738-8514-D58B1D259D28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85375788-D085-4738-8514-D58B1D259D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85375788-D085-4738-8514-D58B1D259D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85375788-D085-4738-8514-D58B1D259D28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCEFE8E6-8C97-4C93-B9A9-7E3B9E524FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCEFE8E6-8C97-4C93-B9A9-7E3B9E524FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCEFE8E6-8C97-4C93-B9A9-7E3B9E524FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCEFE8E6-8C97-4C93-B9A9-7E3B9E524FD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,5 +86,7 @@ Global
 		{5914B36C-9314-4F89-9DD2-05A32D9BAB02} = {DCCC9FEA-73FA-48F1-9968-6DD26260A8B2}
 		{26078C0A-CC3E-4D4C-922C-CA5D43351A7D} = {B31836F6-2BF6-4624-A792-06D38A71089A}
 		{66EB08C4-21EF-4949-861F-F408B2F0370B} = {DCCC9FEA-73FA-48F1-9968-6DD26260A8B2}
+		{85375788-D085-4738-8514-D58B1D259D28} = {B31836F6-2BF6-4624-A792-06D38A71089A}
+		{DCEFE8E6-8C97-4C93-B9A9-7E3B9E524FD4} = {DCCC9FEA-73FA-48F1-9968-6DD26260A8B2}
 	EndGlobalSection
 EndGlobal
