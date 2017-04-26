@@ -1,12 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{283108D6-83C7-4D73-8A79-E1AE3E682238}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{488261C9-9974-4460-95BF-616F5FAC6FEA}"
 	ProjectSection(SolutionItems) = preProject
+		GlobalSuppressions.cs = GlobalSuppressions.cs
 		nuget.config = nuget.config
 		Orc.Sort.sln.DotSettings = Orc.Sort.sln.DotSettings
 		Settings.StyleCop = Settings.StyleCop
@@ -35,14 +36,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Tests.NET46", "Orc
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{85375788-d085-4738-8514-d58b1d259d28}*SharedItemsImports = 4
-		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{de88e565-23fb-43b1-b5e3-7f000fbcc2c5}*SharedItemsImports = 4
-		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{66eb08c4-21ef-4949-861f-f408b2f0370b}*SharedItemsImports = 4
-		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{5914b36c-9314-4f89-9dd2-05a32d9bab02}*SharedItemsImports = 13
-		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{6aaec4bb-7672-4494-a536-f8c686ced546}*SharedItemsImports = 4
 		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{26078c0a-cc3e-4d4c-922c-ca5d43351a7d}*SharedItemsImports = 4
-		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{dcefe8e6-8c97-4c93-b9a9-7e3b9e524fd4}*SharedItemsImports = 4
 		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{2ae05119-cd1b-4dfe-a540-813fa5742c27}*SharedItemsImports = 13
+		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{5914b36c-9314-4f89-9dd2-05a32d9bab02}*SharedItemsImports = 13
+		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{66eb08c4-21ef-4949-861f-f408b2f0370b}*SharedItemsImports = 4
+		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{6aaec4bb-7672-4494-a536-f8c686ced546}*SharedItemsImports = 4
+		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{85375788-d085-4738-8514-d58b1d259d28}*SharedItemsImports = 4
+		Orc.Sort.Tests\Orc.Sort.Tests.Shared\Orc.Sort.Tests.Shared.projitems*{dcefe8e6-8c97-4c93-b9a9-7e3b9e524fd4}*SharedItemsImports = 4
+		Orc.Sort\Orc.Sort.Shared\Orc.Sort.Shared.projitems*{de88e565-23fb-43b1-b5e3-7f000fbcc2c5}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
