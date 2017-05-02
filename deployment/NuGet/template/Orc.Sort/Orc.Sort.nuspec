@@ -25,7 +25,7 @@
 	<!--<iconUrl>http://www.catenalogic.com/catel.png</iconUrl>-->
 	
     <dependencies>
-      <dependency id="MoreLinq" version="[replaced]" />
+      <dependency id="morelinq" version="[replaced]" />
 	  <dependency id="System.ValueTuple" version="[replaced]" />
     </dependencies>	
   </metadata>
