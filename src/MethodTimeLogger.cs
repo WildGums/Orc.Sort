@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
-using Catel.Logging;
+//using Catel.Logging;
 using System;
 
 /// <summary>
@@ -33,8 +33,8 @@ internal static class MethodTimeLogger
             finalMessage += $" | {message}";
         }
 
-        var logger = LogManager.GetLogger(type);
-        logger.Debug(finalMessage);
+        //var logger = LogManager.GetLogger(type);
+        //logger.Debug(finalMessage);
     }
     #endregion
 }
