@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SwapSorterTest.cs" company="WildGums">
-//   Copyright (c) 2008 - 2015 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -26,19 +26,23 @@ namespace Orc.Sort.Tests.NSort
 
         #region Methods
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
         public void NullSwapper()
         {
-            SwapSorter sorter = this.Sorter;
-            sorter.Swapper = null;
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var sorter = this.Sorter;
+                sorter.Swapper = null;
+            });
         }
 
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
         public void NullComparer()
         {
-            SwapSorter sorter = this.Sorter;
-            sorter.Comparer = null;
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var sorter = this.Sorter;
+                sorter.Comparer = null;
+            });
         }
         #endregion
     }
