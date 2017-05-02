@@ -23,5 +23,10 @@
 	<projectUrl>https://github.com/WildGums/Orc.Sort</projectUrl>
 	<!--<licenseUrl>http://catel.codeplex.com/license</licenseUrl>-->
 	<!--<iconUrl>http://www.catenalogic.com/catel.png</iconUrl>-->
+	
+    <dependencies>
+      <dependency id="MoreLinq" version="[replaced]" />
+	  <dependency id="System.ValueTuple" version="[replaced]" />
+    </dependencies>	
   </metadata>
 </package>
