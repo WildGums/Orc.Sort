@@ -10,9 +10,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)..\..\SolutionAssemblyInfo.cs" />
+	<Compile Include="$(MSBuildThisFileDirectory)..\..\MethodTimeLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\GlobalSuppressions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IEnumerableExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ISorter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ISwap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ModuleInitializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NSort.Generic\BidirectionalBubbleSort.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NSort.Generic\BubbleSorter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NSort.Generic\ComboSort11.cs" />
