@@ -15,7 +15,7 @@ using System.Resources;
 ////[assembly: AssemblyDescription("DEFINED IN ACTUAL ASSEMBLYINFO")]
 
 [assembly: AssemblyCompany("WildGums")]
-[assembly: AssemblyCopyright("Copyright © WildGums 2010 - 2016")]
+[assembly: AssemblyCopyright("Copyright © WildGums 2010 - 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en-US")]
