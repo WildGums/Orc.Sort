@@ -15,9 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{488261C9-9
 		SolutionAssemblyInfo.cs = SolutionAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.NET40", "Orc.Sort\Orc.Sort.NET40\Orc.Sort.NET40.csproj", "{DE88E565-23FB-43B1-B5E3-7F000FBCC2C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.NET47", "Orc.Sort\Orc.Sort.NET47\Orc.Sort.NET47.csproj", "{DE88E565-23FB-43B1-B5E3-7F000FBCC2C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Tests.NET40", "Orc.Sort.Tests\Orc.Sort.Tests.NET40\Orc.Sort.Tests.NET40.csproj", "{6AAEC4BB-7672-4494-A536-F8C686CED546}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Sort.Tests.NET47", "Orc.Sort.Tests\Orc.Sort.Tests.NET47\Orc.Sort.Tests.NET47.csproj", "{6AAEC4BB-7672-4494-A536-F8C686CED546}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B31836F6-2BF6-4624-A792-06D38A71089A}"
 EndProject
