@@ -1,5 +1,0 @@
-﻿ISwap and ISorter
-(c) 2005 Mathew Hall. All Right Reserved.
- 
-Modified from the C# implementation written by Jonathan de Halleux, Marc Clifton, and Robert Rohde (see http://www.codeproject.com/csharp/cssorters.asp) 
-based on Java implementations by James Gosling, Jason Harrison, Jack Snoeyink, Jim Boritz, Denis Ahrens, Alvin Raj (see http://www.cs.ubc.ca/spider/harrison/Java/sorting-demo.html).
