@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SelectionSort.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,12 +8,11 @@
 namespace Orc.Sort.NSort.Generic
 {
     using System.Collections.Generic;
-    
 
     public class SelectionSort<T> : SwapSorter<T>
     {
         #region Constructors
-        public SelectionSort() : base()
+        public SelectionSort()
         {
         }
 
@@ -27,20 +26,20 @@ namespace Orc.Sort.NSort.Generic
         public override void Sort(IList<T> list)
         {
             int i;
-            int j;
-            int min;
 
             for (i = 0; i < list.Count; i++)
             {
-                min = i;
+                var min = i;
+                int j;
                 for (j = i + 1; j < list.Count; j++)
                 {
-                    if (this.Comparer.Compare(list[j], list[min]) < 0)
+                    if (Comparer.Compare(list[j], list[min]) < 0)
                     {
                         min = j;
                     }
                 }
-                this.Swapper.Swap(list, min, i);
+
+                Swapper.Swap(list, min, i);
             }
         }
         #endregion

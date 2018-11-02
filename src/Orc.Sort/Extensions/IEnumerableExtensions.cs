@@ -1,9 +1,8 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IEnumerableExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace Orc.Sort
 {
@@ -17,15 +16,18 @@ namespace Orc.Sort
     {
         #region Methods
         /// <summary>
-        /// Enumerate through a collection starting from a specified item.
-        /// The collection must have unique values.
-        /// Example:
-        ///  {"A", "B", "C", "D", "E"}.EnumerateFrom("B") == {"B", "C", "D", "E", "A"}
+        ///     Enumerate through a collection starting from a specified item.
+        ///     The collection must have unique values.
+        ///     Example:
+        ///     {"A", "B", "C", "D", "E"}.EnumerateFrom("B") == {"B", "C", "D", "E", "A"}
         /// </summary>
         /// <typeparam name="T">Must be equatable</typeparam>
         /// <param name="items">The collection to enumerate over</param>
         /// <param name="startValue">The start value to start enumerating from</param>
-        /// <param name="isCyclic">Specify whether to stop once the end of the collection is reached or wrap around and enumerate all the items in the collection</param>
+        /// <param name="isCyclic">
+        ///     Specify whether to stop once the end of the collection is reached or wrap around and enumerate
+        ///     all the items in the collection
+        /// </param>
         /// <returns></returns>
         public static IEnumerable<T> EnumerateFrom<T>(this IEnumerable<T> items, T startValue, bool isCyclic = true) where T : IEquatable<T>
         {
@@ -59,17 +61,19 @@ namespace Orc.Sort
                 throw new ArgumentException("The start value does not exist in items.");
             }
 
-            if (isCyclic)
+            if (!isCyclic)
             {
-                foreach (var appendItem in appendItems)
-                {
-                    yield return appendItem;
-                }
+                yield break;
+            }
+
+            foreach (var appendItem in appendItems)
+            {
+                yield return appendItem;
             }
         }
 
         /// <summary>
-        /// Takes a collection of sorted items and merges these collections together in order to return one sorted collection.
+        ///     Takes a collection of sorted items and merges these collections together in order to return one sorted collection.
         /// </summary>
         /// <typeparam name="T"> Must be comparable. </typeparam>
         /// <param name="sortedEnumerables"></param>
@@ -82,7 +86,7 @@ namespace Orc.Sort
         }
 
         /// <summary>
-        /// Takes a collection of sorted items and merges these collections together in order to return one sorted collection.
+        ///     Takes a collection of sorted items and merges these collections together in order to return one sorted collection.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="sortedEnumerables"></param>
@@ -95,26 +99,25 @@ namespace Orc.Sort
 
             while (enumerators.Count > 0)
             {
-                var next_enum = enumerators.MinBy(e => e.Current, itemComparer);
-                var next_item = next_enum.Current;
+                var nextEnum = enumerators.MinBy(e => e.Current, itemComparer);
+                var nextItem = nextEnum.Current;
 
                 if (distinct)
                 {
-                    enumerators.RemoveAll(e => (itemComparer.Compare(e.Current, next_item) == 0) && !e.MoveNext());
+                    enumerators.RemoveAll(e => itemComparer.Compare(e.Current, nextItem) == 0 && !e.MoveNext());
                 }
-                else if (!next_enum.MoveNext())
+                else if (!nextEnum.MoveNext())
                 {
-                    enumerators.Remove(next_enum);
+                    enumerators.Remove(nextEnum);
                 }
 
-                yield return next_item;
+                yield return nextItem;
             }
         }
 
         /// <summary>
-        /// Takes a collection of sorted items and merges these collections together in order to return one sorted collection.
-        /// 
-        /// This version is optimized for a high number of collections to merge (100+).
+        ///     Takes a collection of sorted items and merges these collections together in order to return one sorted collection.
+        ///     This version is optimized for a high number of collections to merge (100+).
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="sortedEnumerables"></param>
@@ -123,7 +126,7 @@ namespace Orc.Sort
         public static IEnumerable<T> MergeSortedMany<T>(this IEnumerable<IEnumerable<T>> sortedEnumerables, IComparer<T> itemComparer)
         {
             var sortedKeySet = new SortedSet<KeyedEnumerator<T>>();
-            int secondaryKey = 0;
+            var secondaryKey = 0;
 
             foreach (var enumerator in sortedEnumerables.Select(e => e.GetEnumerator()))
             {
@@ -151,17 +154,19 @@ namespace Orc.Sort
                 }
             }
 
-            if (sortedKeySet.Count > 0)
+            if (sortedKeySet.Count <= 0)
             {
-                var min = sortedKeySet.Min;
-                var has = true;
-                sortedKeySet.Remove(min);
+                yield break;
+            }
 
-                while (has)
-                {
-                    yield return min.Current;
-                    has = min.MoveNext();
-                }
+            var min = sortedKeySet.Min;
+            var has = true;
+            sortedKeySet.Remove(min);
+
+            while (has)
+            {
+                yield return min.Current;
+                has = min.MoveNext();
             }
         }
         #endregion
@@ -179,19 +184,13 @@ namespace Orc.Sort
         #endregion
 
         #region Properties
-        public T Current
-        {
-            get { return Enumerator.Current; }
-        }
+        public T Current => Enumerator.Current;
 
-        object IEnumerator.Current
-        {
-            get { return Enumerator.Current; }
-        }
+        object IEnumerator.Current => Enumerator.Current;
 
-        public IEnumerator<T> Enumerator { get; private set; }
-        public IComparer<T> ItemComparer { get; private set; }
-        public int SecondaryKey { get; private set; }
+        public IEnumerator<T> Enumerator { get; }
+        public IComparer<T> ItemComparer { get; }
+        public int SecondaryKey { get; }
         #endregion
 
         #region Methods

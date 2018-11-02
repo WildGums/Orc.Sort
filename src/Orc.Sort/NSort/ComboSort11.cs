@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ComboSort11.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,16 +8,15 @@
 namespace Orc.Sort.NSort
 {
     using System.Collections;
-    
 
     public class ComboSort11 : SwapSorter
     {
-        #region Fields
-        private const double c_COMBOSORTSHRINKFACTOR = 1.3;
+        #region Constants
+        private const double ComboSortShrinkFactor = 1.3;
         #endregion
 
         #region Constructors
-        public ComboSort11() : base()
+        public ComboSort11()
         {
         }
 
@@ -30,13 +29,9 @@ namespace Orc.Sort.NSort
         #region Methods
         public override void Sort(IList list)
         {
-            bool flipped = true;
-            int gap;
-            int top;
-            int i;
-            int j;
+            var flipped = true;
 
-            gap = list.Count;
+            var gap = list.Count;
 
             do
             {
@@ -46,32 +41,35 @@ namespace Orc.Sort.NSort
                 }
                 else
                 {
-                    gap = (int) (gap/c_COMBOSORTSHRINKFACTOR);
+                    gap = (int)(gap / ComboSortShrinkFactor);
                 }
+
                 switch (gap)
                 {
                     case 0:
                         gap = 1;
                         break;
                     case 9:
-                        gap = 11;
-                        break;
                     case 10:
                         gap = 11;
                         break;
                 }
+
                 flipped = false;
-                top = list.Count - gap;
+                var top = list.Count - gap;
+                int i;
                 for (i = 0; i < top; i++)
                 {
-                    j = i + gap;
-                    if (this.Comparer.Compare(list[i], list[j]) > 0)
+                    var j = i + gap;
+                    if (Comparer.Compare(list[i], list[j]) <= 0)
                     {
-                        this.Swapper.Swap(list, i, j);
-                        flipped = true;
+                        continue;
                     }
+
+                    Swapper.Swap(list, i, j);
+                    flipped = true;
                 }
-            } while (flipped || (gap > 1));
+            } while (flipped || gap > 1);
         }
         #endregion
     }

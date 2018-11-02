@@ -23,7 +23,7 @@ namespace Orc.Sort.TopologicalSort
         /// </summary>
         public PriorityTopologicalSort()
         {
-            base.UsesPriority = true;
+            UsesPriority = true;
         }
         #endregion
     }

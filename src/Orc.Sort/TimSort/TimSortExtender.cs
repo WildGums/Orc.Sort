@@ -56,26 +56,27 @@ namespace System.Linq
             where TContainer : class
         {
             var key = sorterType;
-            SorterProxy sorter;
 
-            if (!SorterProxyMap.TryGetValue(key, out sorter))
+            if (SorterProxyMap.TryGetValue(key, out var sorter))
             {
-                const BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic;
-                sorter = new SorterProxy();
-
-                var staticType = sorterType.MakeGenericType(typeof (TItem));
-                var sortAll = (Action<TContainer>)DelegateHelper.CreateDelegate(
-                    typeof (Action<TContainer>),
-                    staticType.GetMethod("SortAll", flags));
-
-                var sortRange = (Action<TContainer, int, int>)DelegateHelper.CreateDelegate(
-                    typeof (Action<TContainer, int, int>),
-                    staticType.GetMethod("SortRange", flags));
-
-                sorter.SortAll = (array) => sortAll(array as TContainer);
-                sorter.SortRange = (array, lo, hi) => sortRange(array as TContainer, lo, hi);
-                SorterProxyMap[key] = sorter;
+                return sorter;
             }
+
+            const BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic;
+            sorter = new SorterProxy();
+
+            var staticType = sorterType.MakeGenericType(typeof (TItem));
+            var sortAll = (Action<TContainer>)DelegateHelper.CreateDelegate(
+                typeof (Action<TContainer>),
+                staticType.GetMethod("SortAll", flags));
+
+            var sortRange = (Action<TContainer, int, int>)DelegateHelper.CreateDelegate(
+                typeof (Action<TContainer, int, int>),
+                staticType.GetMethod("SortRange", flags));
+
+            sorter.SortAll = (array) => sortAll(array as TContainer);
+            sorter.SortRange = (array, lo, hi) => sortRange(array as TContainer, lo, hi);
+            SorterProxyMap[key] = sorter;
 
             return sorter;
         }
@@ -182,9 +183,8 @@ namespace System.Linq
         /// <returns>Array of items (if available)</returns>
         private static TItem[] GetInternalMember<TItem>(List<TItem> list)
         {
-            FieldInfo member;
             var listType = typeof (List<TItem>);
-            if (!ItemMemberMap.TryGetValue(listType, out member))
+            if (!ItemMemberMap.TryGetValue(listType, out var member))
             {
                 member = typeof (List<TItem>).GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance);
                 ItemMemberMap.Add(listType, member);

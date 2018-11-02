@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SwapSorter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -9,7 +9,7 @@ namespace Orc.Sort.NSort
 {
     using System;
     using System.Collections;
-    
+    using Catel;
 
     /// <summary>
     /// Abstract base class for Swap sort algorithms.
@@ -22,30 +22,24 @@ namespace Orc.Sort.NSort
     public abstract class SwapSorter : ISorter
     {
         #region Fields
-        private IComparer comparer;
-        private ISwap swapper;
+        private IComparer _comparer;
+        private ISwap _swapper;
         #endregion
 
         #region Constructors
         public SwapSorter()
         {
-            this.comparer = new ComparableComparer();
-            this.swapper = new DefaultSwap();
+            _comparer = new ComparableComparer();
+            _swapper = new DefaultSwap();
         }
 
         public SwapSorter(IComparer comparer, ISwap swapper)
         {
-            if (comparer == null)
-            {
-                throw new ArgumentNullException("comparer");
-            }
-            if (swapper == null)
-            {
-                throw new ArgumentNullException("swapper");
-            }
+            Argument.IsNotNull(() => comparer);
+            Argument.IsNotNull(() => swapper);
 
-            this.comparer = comparer;
-            this.swapper = swapper;
+            _comparer = comparer;
+            _swapper = swapper;
         }
         #endregion
 
@@ -61,15 +55,8 @@ namespace Orc.Sort.NSort
         /// </exception>
         public IComparer Comparer
         {
-            get { return this.comparer; }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("comparer");
-                }
-                this.comparer = value;
-            }
+            get => _comparer;
+            set => _comparer = value ?? throw new ArgumentNullException(nameof(Comparer));
         }
 
         /// <summary>
@@ -81,19 +68,12 @@ namespace Orc.Sort.NSort
         /// <exception cref="ArgumentNullException">Swapper is a null reference</exception>
         public ISwap Swapper
         {
-            get { return this.swapper; }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("swapper");
-                }
-                this.swapper = value;
-            }
+            get => _swapper;
+            set => _swapper = value ?? throw new ArgumentNullException(nameof(Swapper));
         }
         #endregion
 
-        #region Methods
+        #region ISorter Members
         public abstract void Sort(IList list);
         #endregion
     }

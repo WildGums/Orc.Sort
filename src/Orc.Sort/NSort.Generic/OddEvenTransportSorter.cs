@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="OddEvenTransportSorter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,7 +8,6 @@
 namespace Orc.Sort.NSort.Generic
 {
     using System.Collections.Generic;
-    
 
     /// <summary>
     /// Odd-Even Transport sort parralel algorithm
@@ -23,7 +22,6 @@ namespace Orc.Sort.NSort.Generic
     {
         #region Constructors
         public OddEvenTransportSorter()
-            : base()
         {
         }
 
@@ -36,21 +34,21 @@ namespace Orc.Sort.NSort.Generic
         #region Methods
         public override void Sort(IList<T> list)
         {
-            for (int i = 0; i < list.Count/2; ++i)
+            for (var i = 0; i < list.Count / 2; ++i)
             {
-                for (int j = 0; j + 1 < list.Count; j += 2)
+                for (var j = 0; j + 1 < list.Count; j += 2)
                 {
-                    if (this.Comparer.Compare(list[j], list[j + 1]) > 0)
+                    if (Comparer.Compare(list[j], list[j + 1]) > 0)
                     {
-                        this.Swapper.Swap(list, j, j + 1);
+                        Swapper.Swap(list, j, j + 1);
                     }
                 }
 
-                for (int j = 1; j + 1 < list.Count; j += 2)
+                for (var j = 1; j + 1 < list.Count; j += 2)
                 {
-                    if (this.Comparer.Compare(list[j], list[j + 1]) > 0)
+                    if (Comparer.Compare(list[j], list[j + 1]) > 0)
                     {
-                        this.Swapper.Swap(list, j, j + 1);
+                        Swapper.Swap(list, j, j + 1);
                     }
                 }
             }

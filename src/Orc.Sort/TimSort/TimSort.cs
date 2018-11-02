@@ -71,6 +71,7 @@
 
 namespace System.Linq
 {
+    using Catel;
     using Catel.Reflection;
     using Collections.Generic;
     using TimSort;

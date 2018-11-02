@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ShellSort.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,12 +8,11 @@
 namespace Orc.Sort.NSort.Generic
 {
     using System.Collections.Generic;
-    
 
     public class ShellSort<T> : SwapSorter<T>
     {
         #region Constructors
-        public ShellSort() : base()
+        public ShellSort()
         {
         }
 
@@ -26,32 +25,28 @@ namespace Orc.Sort.NSort.Generic
         #region Methods
         public override void Sort(IList<T> list)
         {
-            int h;
-            int i;
-            int j;
-            T b;
-            bool loop = true;
+            var h = 1;
 
-            h = 1;
-
-            while (h*3 + 1 <= list.Count)
+            while (h * 3 + 1 <= list.Count)
             {
-                h = 3*h + 1;
+                h = 3 * h + 1;
             }
+
             while (h > 0)
             {
+                int i;
                 for (i = h - 1; i < list.Count; i++)
                 {
-                    b = list[i];
-                    j = i;
-                    loop = true;
+                    var b = list[i];
+                    var j = i;
+                    var loop = true;
                     while (loop)
                     {
                         if (j >= h)
                         {
-                            if (this.Comparer.Compare(list[j - h], b) > 0)
+                            if (Comparer.Compare(list[j - h], b) > 0)
                             {
-                                this.Swapper.Set(list, j, j - h);
+                                Swapper.Set(list, j, j - h);
                                 j = j - h;
                             }
                             else
@@ -64,9 +59,11 @@ namespace Orc.Sort.NSort.Generic
                             loop = false;
                         }
                     }
-                    this.Swapper.Set(list, j, b);
+
+                    Swapper.Set(list, j, b);
                 }
-                h = h/3;
+
+                h = h / 3;
             }
         }
         #endregion

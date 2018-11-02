@@ -1,20 +1,18 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DoubleStorageMergeSort.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 
 namespace Orc.Sort.NSort
 {
-    using System;
     using System.Collections;
-    
 
     public class DoubleStorageMergeSort : SwapSorter
     {
         #region Constructors
-        public DoubleStorageMergeSort() : base()
+        public DoubleStorageMergeSort()
         {
         }
 
@@ -27,58 +25,57 @@ namespace Orc.Sort.NSort
         #region Methods
         public override void Sort(IList list)
         {
-            object[] scratch = new IComparable[list.Count];
-            this.Sort(list, 0, list.Count - 1, scratch);
+            var scratch = new object[list.Count];
+            Sort(list, 0, list.Count - 1, scratch);
         }
 
         private void Sort(IList list, int fromPos, int toPos, object[] scratch)
         {
-            int mid = 0;
-            int i;
-            int t_low;
-            int t_high;
-
-            if (fromPos < toPos)
+            if (fromPos >= toPos)
             {
-                mid = (fromPos + toPos)/2;
-                this.Sort(list, fromPos, mid, scratch);
-                this.Sort(list, mid + 1, toPos, scratch);
+                return;
+            }
 
-                t_low = fromPos;
-                t_high = mid + 1;
-                for (i = fromPos; i <= toPos; i++)
+            var mid = (fromPos + toPos) / 2;
+            Sort(list, fromPos, mid, scratch);
+            Sort(list, mid + 1, toPos, scratch);
+
+            var tLow = fromPos;
+            var tHigh = mid + 1;
+            int i;
+            for (i = fromPos; i <= toPos; i++)
+            {
+                if (tLow <= mid)
                 {
-                    if (t_low <= mid)
+                    if (tHigh > toPos)
                     {
-                        if (t_high > toPos)
-                        {
-                            scratch[i] = list[t_low];
-                            t_low++;
-                        }
-                        else
-                        {
-                            if (this.Comparer.Compare(list[t_low], list[t_high]) < 0)
-                            {
-                                scratch[i] = list[t_low];
-                                t_low++;
-                            }
-                            else
-                            {
-                                scratch[i] = list[t_high];
-                                t_high++;
-                            }
-                        }
+                        scratch[i] = list[tLow];
+                        tLow++;
                     }
                     else
                     {
-                        scratch[i] = list[t_high];
-                        t_high++;
+                        if (Comparer.Compare(list[tLow], list[tHigh]) < 0)
+                        {
+                            scratch[i] = list[tLow];
+                            tLow++;
+                        }
+                        else
+                        {
+                            scratch[i] = list[tHigh];
+                            tHigh++;
+                        }
                     }
                 }
-                for (i = fromPos; i <= toPos; i++)
+                else
                 {
-                    this.Swapper.Set(list, i, scratch[i]);
+                    scratch[i] = list[tHigh];
+                    tHigh++;
                 }
+            }
+
+            for (i = fromPos; i <= toPos; i++)
+            {
+                Swapper.Set(list, i, scratch[i]);
             }
         }
         #endregion
