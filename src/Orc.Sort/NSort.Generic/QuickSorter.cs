@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="QuickSorter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,7 +8,6 @@
 namespace Orc.Sort.NSort.Generic
 {
     using System.Collections.Generic;
-    
 
     /// <summary>
     /// http://www.codeproject.com/csharp/csquicksort.asp
@@ -17,7 +16,6 @@ namespace Orc.Sort.NSort.Generic
     {
         #region Constructors
         public QuickSorter()
-            : base()
         {
         }
 
@@ -34,7 +32,7 @@ namespace Orc.Sort.NSort.Generic
         /// <param name="array">The array to sort.</param>
         public override void Sort(IList<T> array)
         {
-            this.Sort(array, 0, array.Count - 1);
+            Sort(array, 0, array.Count - 1);
         }
 
         public void Sort(IList<T> array, int lower, int upper)
@@ -43,9 +41,9 @@ namespace Orc.Sort.NSort.Generic
             if (lower < upper)
             {
                 // Split and sort partitions
-                int split = this.Pivot(array, lower, upper);
-                this.Sort(array, lower, split - 1);
-                this.Sort(array, split + 1, upper);
+                var split = Pivot(array, lower, upper);
+                Sort(array, lower, split - 1);
+                Sort(array, split + 1, upper);
             }
         }
 
@@ -53,39 +51,40 @@ namespace Orc.Sort.NSort.Generic
         internal int Pivot(IList<T> array, int lower, int upper)
         {
             // Pivot with first element
-            int left = lower + 1;
-            T pivot = array[lower];
-            int right = upper;
+            var left = lower + 1;
+            var pivot = array[lower];
+            var right = upper;
 
             // Partition array elements
             while (left <= right)
             {
                 // Find item out of place
-                while ((left <= right) && (this.Comparer.Compare(array[left], pivot) <= 0))
+                while (left <= right && (Comparer.Compare(array[left], pivot) <= 0))
                 {
                     ++left;
                 }
 
-                while ((left <= right) && (this.Comparer.Compare(array[right], pivot) > 0))
+                while ((left <= right) && (Comparer.Compare(array[right], pivot) > 0))
                 {
                     --right;
                 }
 
                 // Swap values if necessary
-                if (left < right)
+                if (left >= right)
                 {
-                    this.Swapper.Swap(array, left, right);
-                    ++left;
-                    --right;
+                    continue;
                 }
+
+                Swapper.Swap(array, left, right);
+                ++left;
+                --right;
             }
 
             // Move pivot element
-            this.Swapper.Swap(array, lower, right);
+            Swapper.Swap(array, lower, right);
             return right;
         }
         #endregion
-
         #endregion
     }
 }

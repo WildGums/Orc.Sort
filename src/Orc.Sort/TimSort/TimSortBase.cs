@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TimSortBase.cs" company="WildGums">
 //   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
 // </copyright>
@@ -63,9 +63,6 @@ namespace TimSort
     /// <typeparam name="TItem">The type of the item.</typeparam>
     internal abstract class TimSortBase<TList, TItem>
     {
-        #region Constructors
-
-        #region constructor
         /// <summary>Initializes a new instance of the <see cref="TimSortBase&lt;TList, TItem&gt;"/> class.</summary>
         /// <param name="array">The array.</param>
         /// <param name="arrayLength">Length of the array.</param>
@@ -75,7 +72,7 @@ namespace TimSort
             _arrayLength = arrayLength;
 
             // Allocate temp storage (which may be increased later if necessary)
-            int mergeBufferLength =
+            var mergeBufferLength =
                 arrayLength < 2*INITIAL_TMP_STORAGE_LENGTH
                     ? arrayLength >> 1
                     : INITIAL_TMP_STORAGE_LENGTH;
@@ -89,7 +86,7 @@ namespace TimSort
             // large) stack lengths for smaller arrays.  The "magic numbers" in the
             // computation below must be changed if MIN_MERGE is decreased.  See
             // the MIN_MERGE declaration above for more information.
-            int stackLength =
+            var stackLength =
                 arrayLength < 120 ? 5 :
                     arrayLength < 1542 ? 10 :
                         arrayLength < 119151 ? 19 :
@@ -97,9 +94,6 @@ namespace TimSort
             _runBase = new int[stackLength];
             _runLength = new int[stackLength];
         }
-        #endregion
-
-        #endregion
 
         #region consts
         /// <summary>
@@ -182,7 +176,7 @@ namespace TimSort
         protected static int GetMinimumRunLength(int n)
         {
             Debug.Assert(n >= 0);
-            int r = 0; // Becomes 1 if any 1 bits are shifted off
+            var r = 0; // Becomes 1 if any 1 bits are shifted off
             while (n >= MIN_MERGE)
             {
                 r |= (n & 1);
@@ -273,7 +267,7 @@ namespace TimSort
             if (_mergeBuffer.Length < minCapacity)
             {
                 // Compute smallest power of 2 > minCapacity
-                int newSize = minCapacity;
+                var newSize = minCapacity;
                 newSize |= newSize >> 1;
                 newSize |= newSize >> 2;
                 newSize |= newSize >> 4;
@@ -299,15 +293,15 @@ namespace TimSort
         {
             if (fromIndex > toIndex)
             {
-                throw new ArgumentException(string.Format("fromIndex({0}) > toIndex({1})", fromIndex, toIndex));
+                throw new ArgumentException($"fromIndex({fromIndex}) > toIndex({toIndex})");
             }
             if (fromIndex < 0)
             {
-                throw new IndexOutOfRangeException(string.Format("fromIndex ({0}) is out of bounds", fromIndex));
+                throw new IndexOutOfRangeException($"fromIndex ({fromIndex}) is out of bounds");
             }
             if (toIndex > arrayLen)
             {
-                throw new IndexOutOfRangeException(string.Format("toIndex ({0}) is out of bounds", toIndex));
+                throw new IndexOutOfRangeException($"toIndex ({toIndex}) is out of bounds");
             }
         }
 
