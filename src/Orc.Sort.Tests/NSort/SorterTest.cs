@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SorterTest.cs" company="WildGums">
 //   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
 // </copyright>
@@ -52,13 +52,13 @@ namespace Orc.Sort.Tests.NSort
             var sortedList = new SortedList();
 #endif
 
-            foreach (int key in list)
+            foreach (var key in list)
             {
                 sortedList.Add(key, null);
             }
 
             // sort table
-            this.Sorter.Sort(list);
+            Sorter.Sort(list);
 
             Assert.AreEqual(sortedList.Keys, list);
         }

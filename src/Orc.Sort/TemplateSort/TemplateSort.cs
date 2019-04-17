@@ -121,7 +121,7 @@ namespace Orc.Sort.TemplateSort
             var buckets = new Dictionary<TKey, List<TSource>>(comparer);
 
             // Build buckets based on the values in the template collection.
-            foreach (TKey item in templateCollection)
+            foreach (var item in templateCollection)
             {
                 if (!buckets.ContainsKey(item))
                 {
@@ -134,9 +134,9 @@ namespace Orc.Sort.TemplateSort
             }
 
             // Insert values from source collection into correct buckets.
-            foreach (TSource item in sourceCollection)
+            foreach (var item in sourceCollection)
             {
-                TKey key = keySelector(item);
+                var key = keySelector(item);
 
                 if (buckets.ContainsKey(key))
                 {
@@ -150,7 +150,7 @@ namespace Orc.Sort.TemplateSort
                     }
                     else
                     {
-                        noMatches[item] = new List<TSource>() {item};
+                        noMatches[item] = new List<TSource>{item};
                     }
                 }
             }
@@ -158,7 +158,7 @@ namespace Orc.Sort.TemplateSort
             // Build the result
             var result = new List<TSource>();
 
-            foreach (TKey key in templateCollection)
+            foreach (var key in templateCollection)
             {
                 result.AddRange(buckets[key]);
             }

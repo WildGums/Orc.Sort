@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="InPlaceMergeSort.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,12 +8,11 @@
 namespace Orc.Sort.NSort
 {
     using System.Collections;
-    
 
     public class InPlaceMergeSort : SwapSorter
     {
         #region Constructors
-        public InPlaceMergeSort() : base()
+        public InPlaceMergeSort()
         {
         }
 
@@ -26,45 +25,43 @@ namespace Orc.Sort.NSort
         #region Methods
         public override void Sort(IList list)
         {
-            this.Sort(list, 0, list.Count - 1);
+            Sort(list, 0, list.Count - 1);
         }
 
         private void Sort(IList list, int fromPos, int toPos)
         {
-            int end_low;
-            int start_high;
-            int i;
-            object tmp;
-            int mid;
-
-            if (fromPos < toPos)
+            if (fromPos >= toPos)
             {
-                mid = (fromPos + toPos)/2;
+                return;
+            }
 
-                this.Sort(list, fromPos, mid);
-                this.Sort(list, mid + 1, toPos);
+            var mid = (fromPos + toPos) / 2;
 
-                end_low = mid;
-                start_high = mid + 1;
+            Sort(list, fromPos, mid);
+            Sort(list, mid + 1, toPos);
 
-                while (fromPos <= end_low & start_high <= toPos)
+            var endLow = mid;
+            var startHigh = mid + 1;
+
+            while (fromPos <= endLow & startHigh <= toPos)
+            {
+                if (Comparer.Compare(list[fromPos], list[startHigh]) < 0)
                 {
-                    if (this.Comparer.Compare(list[fromPos], list[start_high]) < 0)
+                    fromPos++;
+                }
+                else
+                {
+                    var tmp = list[startHigh];
+                    int i;
+                    for (i = startHigh - 1; i >= fromPos; i--)
                     {
-                        fromPos++;
+                        Swapper.Set(list, i + 1, list[i]);
                     }
-                    else
-                    {
-                        tmp = list[start_high];
-                        for (i = start_high - 1; i >= fromPos; i--)
-                        {
-                            this.Swapper.Set(list, i + 1, list[i]);
-                        }
-                        this.Swapper.Set(list, fromPos, tmp);
-                        fromPos++;
-                        end_low++;
-                        start_high++;
-                    }
+
+                    Swapper.Set(list, fromPos, tmp);
+                    fromPos++;
+                    endLow++;
+                    startHigh++;
                 }
             }
         }

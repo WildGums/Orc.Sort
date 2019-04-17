@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="QuickSorter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,7 +8,6 @@
 namespace Orc.Sort.NSort
 {
     using System.Collections;
-    
 
     /// <summary>
     /// http://www.codeproject.com/csharp/csquicksort.asp
@@ -34,39 +33,41 @@ namespace Orc.Sort.NSort
         /// <param name="array">The array to sort.</param>
         public override void Sort(IList array)
         {
-            this.Sort(array, 0, array.Count - 1);
+            Sort(array, 0, array.Count - 1);
         }
 
         public void Sort(IList array, int lower, int upper)
         {
             // Check for non-base case
-            if (lower < upper)
+            if (lower >= upper)
             {
-                // Split and sort partitions
-                int split = this.Pivot(array, lower, upper);
-                this.Sort(array, lower, split - 1);
-                this.Sort(array, split + 1, upper);
+                return;
             }
+
+            // Split and sort partitions
+            var split = Pivot(array, lower, upper);
+            Sort(array, lower, split - 1);
+            Sort(array, split + 1, upper);
         }
 
         #region Internal
         internal int Pivot(IList array, int lower, int upper)
         {
             // Pivot with first element
-            int left = lower + 1;
-            object pivot = array[lower];
-            int right = upper;
+            var left = lower + 1;
+            var pivot = array[lower];
+            var right = upper;
 
             // Partition array elements
             while (left <= right)
             {
                 // Find item out of place
-                while ((left <= right) && (this.Comparer.Compare(array[left], pivot) <= 0))
+                while ((left <= right) && (Comparer.Compare(array[left], pivot) <= 0))
                 {
                     ++left;
                 }
 
-                while ((left <= right) && (this.Comparer.Compare(array[right], pivot) > 0))
+                while ((left <= right) && (Comparer.Compare(array[right], pivot) > 0))
                 {
                     --right;
                 }
@@ -74,18 +75,17 @@ namespace Orc.Sort.NSort
                 // Swap values if necessary
                 if (left < right)
                 {
-                    this.Swapper.Swap(array, left, right);
+                    Swapper.Swap(array, left, right);
                     ++left;
                     --right;
                 }
             }
 
             // Move pivot element
-            this.Swapper.Swap(array, lower, right);
+            Swapper.Swap(array, lower, right);
             return right;
         }
         #endregion
-
         #endregion
     }
 }

@@ -1,9 +1,8 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ISwap.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
+//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 
 namespace Orc.Sort
 {
@@ -11,8 +10,8 @@ namespace Orc.Sort
     using System.Collections.Generic;
 
     /// <summary>
-    /// Object swapper interface
     /// </summary>
+    /// Object swapper interface
     public interface ISwap
     {
         #region Methods
