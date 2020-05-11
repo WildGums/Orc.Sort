@@ -1,19 +1,19 @@
-﻿[assembly: System.Resources.NeutralResourcesLanguageAttribute("en-US")]
-[assembly: System.Runtime.Versioning.TargetFrameworkAttribute(".NETFramework,Version=v4.6", FrameworkDisplayName=".NET Framework 4.6")]
-public class static LoadAssembliesOnStartup { }
-public class static ModuleInitializer
+﻿[assembly: System.Resources.NeutralResourcesLanguage("en-US")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v3.1", FrameworkDisplayName="")]
+public static class LoadAssembliesOnStartup { }
+public static class ModuleInitializer
 {
     public static void Initialize() { }
 }
 namespace Orc.Sort
 {
-    public class static IEnumerableExtensions
+    public static class IEnumerableExtensions
     {
-        public static System.Collections.Generic.IEnumerable<T> EnumerateFrom<T>(this System.Collections.Generic.IEnumerable<T> items, T startValue, bool isCyclic = True)
-            where T : System.IEquatable<> { }
-        public static System.Collections.Generic.IEnumerable<T> MergeSorted<T>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> sortedEnumerables, bool distinct = False)
-            where T : System.IComparable<> { }
-        public static System.Collections.Generic.IEnumerable<T> MergeSorted<T>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> sortedEnumerables, System.Collections.Generic.IComparer<T> itemComparer, bool distinct = False) { }
+        public static System.Collections.Generic.IEnumerable<T> EnumerateFrom<T>(this System.Collections.Generic.IEnumerable<T> items, T startValue, bool isCyclic = true)
+            where T : System.IEquatable<T> { }
+        public static System.Collections.Generic.IEnumerable<T> MergeSorted<T>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> sortedEnumerables, bool distinct = false)
+            where T : System.IComparable<T> { }
+        public static System.Collections.Generic.IEnumerable<T> MergeSorted<T>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> sortedEnumerables, System.Collections.Generic.IComparer<T> itemComparer, bool distinct = false) { }
         public static System.Collections.Generic.IEnumerable<T> MergeSortedMany<T>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> sortedEnumerables, System.Collections.Generic.IComparer<T> itemComparer) { }
     }
     public interface ISorter
@@ -105,18 +105,18 @@ namespace Orc.Sort.NSort
         public OddEvenTransportSorter(System.Collections.IComparer comparer, Orc.Sort.ISwap swapper) { }
         public override void Sort(System.Collections.IList list) { }
     }
+    public class QuickSortWithBubbleSort : Orc.Sort.NSort.SwapSorter
+    {
+        public QuickSortWithBubbleSort() { }
+        public QuickSortWithBubbleSort(System.Collections.IComparer comparer, Orc.Sort.ISwap swapper) { }
+        public override void Sort(System.Collections.IList list) { }
+    }
     public class QuickSorter : Orc.Sort.NSort.SwapSorter
     {
         public QuickSorter() { }
         public QuickSorter(System.Collections.IComparer comparer, Orc.Sort.ISwap swapper) { }
         public override void Sort(System.Collections.IList array) { }
         public void Sort(System.Collections.IList array, int lower, int upper) { }
-    }
-    public class QuickSortWithBubbleSort : Orc.Sort.NSort.SwapSorter
-    {
-        public QuickSortWithBubbleSort() { }
-        public QuickSortWithBubbleSort(System.Collections.IComparer comparer, Orc.Sort.ISwap swapper) { }
-        public override void Sort(System.Collections.IList list) { }
     }
     public class SelectionSort : Orc.Sort.NSort.SwapSorter
     {
@@ -217,18 +217,18 @@ namespace Orc.Sort.NSort.Generic
         public OddEvenTransportSorter(System.Collections.Generic.IComparer<T> comparer, Orc.Sort.ISwap<T> swapper) { }
         public override void Sort(System.Collections.Generic.IList<T> list) { }
     }
+    public class QuickSortWithBubbleSort<T> : Orc.Sort.NSort.Generic.SwapSorter<T>
+    {
+        public QuickSortWithBubbleSort() { }
+        public QuickSortWithBubbleSort(System.Collections.Generic.IComparer<T> comparer, Orc.Sort.ISwap<T> swapper) { }
+        public override void Sort(System.Collections.Generic.IList<T> list) { }
+    }
     public class QuickSorter<T> : Orc.Sort.NSort.Generic.SwapSorter<T>
     {
         public QuickSorter() { }
         public QuickSorter(System.Collections.Generic.IComparer<T> comparer, Orc.Sort.ISwap<T> swapper) { }
         public override void Sort(System.Collections.Generic.IList<T> array) { }
         public void Sort(System.Collections.Generic.IList<T> array, int lower, int upper) { }
-    }
-    public class QuickSortWithBubbleSort<T> : Orc.Sort.NSort.Generic.SwapSorter<T>
-    {
-        public QuickSortWithBubbleSort() { }
-        public QuickSortWithBubbleSort(System.Collections.Generic.IComparer<T> comparer, Orc.Sort.ISwap<T> swapper) { }
-        public override void Sort(System.Collections.Generic.IList<T> list) { }
     }
     public class SelectionSort<T> : Orc.Sort.NSort.Generic.SwapSorter<T>
     {
@@ -263,22 +263,22 @@ namespace Orc.Sort.NSort.Generic
 }
 namespace Orc.Sort.TemplateSort
 {
-    public class static TemplateSort
+    public static class TemplateSort
     {
-        public static System.Collections.Generic.IEnumerable<T> SortAccordingTo<T>(this System.Collections.Generic.IEnumerable<T> sourceCollection, System.Collections.Generic.IEnumerable<T> templateCollection, bool includeNoMatches = True, System.Collections.Generic.IEqualityComparer<T> comparer = null) { }
-        public static System.Collections.Generic.IEnumerable<TSource> SortAccordingTo<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> sourceCollection, System.Collections.Generic.IEnumerable<TKey> templateCollection, System.Func<TSource, TKey> keySelector, bool includeNoMatches = True, System.Collections.Generic.IEqualityComparer<TKey> comparer = null) { }
+        public static System.Collections.Generic.IEnumerable<T> SortAccordingTo<T>(this System.Collections.Generic.IEnumerable<T> sourceCollection, System.Collections.Generic.IEnumerable<T> templateCollection, bool includeNoMatches = true, System.Collections.Generic.IEqualityComparer<T> comparer = null) { }
+        public static System.Collections.Generic.IEnumerable<TSource> SortAccordingTo<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> sourceCollection, System.Collections.Generic.IEnumerable<TKey> templateCollection, System.Func<TSource, TKey> keySelector, bool includeNoMatches = true, System.Collections.Generic.IEqualityComparer<TKey> comparer = null) { }
     }
 }
 namespace Orc.Sort.TopologicalSort
 {
-    public class static CollectionExtensions
+    public static class CollectionExtensions
     {
         public static System.Collections.ObjectModel.ReadOnlyCollection<T> AsReadOnly<T>(this System.Collections.Generic.IList<T> list) { }
         public static System.Collections.Generic.IEnumerable<T> ConcatItem<T>(this System.Collections.Generic.IEnumerable<T> collection, T item) { }
         public static System.Collections.Generic.IEnumerable<T> ExceptItem<T>(this System.Collections.Generic.IEnumerable<T> collection, T item) { }
     }
     public class PriorityTopologicalSort<T> : Orc.Sort.TopologicalSort.TopologicalSort<T>
-        where T : System.IEquatable<>
+        where T : System.IEquatable<T>
     {
         public PriorityTopologicalSort() { }
     }
@@ -292,8 +292,8 @@ namespace Orc.Sort.TopologicalSort
         protected System.Collections.Generic.List<T> nodesSort;
         protected System.Collections.Generic.List<System.Collections.Generic.HashSet<int>> transFrom;
         protected System.Collections.Generic.List<System.Collections.Generic.HashSet<int>> transInto;
-        public TopologicalSort(bool usesPriority = False, bool usesTracking = False, System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> sequences = null) { }
-        public TopologicalSort(Orc.Sort.TopologicalSort.TopologicalSort<T> baseSort, System.Nullable<bool> usesPriority = null, System.Nullable<bool> usesTracking = null) { }
+        public TopologicalSort(Orc.Sort.TopologicalSort.TopologicalSort<T> baseSort, bool? usesPriority = default, bool? usesTracking = default) { }
+        public TopologicalSort(bool usesPriority = false, bool usesTracking = false, System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> sequences = null) { }
         public System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Sequences { get; set; }
         public bool UsesPriority { get; set; }
         public bool UsesTracking { get; set; }
@@ -303,11 +303,11 @@ namespace Orc.Sort.TopologicalSort
         protected System.Collections.Generic.HashSet<int> EdgesWalk(int node, System.Collections.Generic.List<System.Collections.Generic.HashSet<int>> edgesWalk) { }
         protected System.Collections.Generic.IEnumerable<int> EdgesWalkLazy(int node, System.Collections.Generic.List<System.Collections.Generic.HashSet<int>> edgesWalk) { }
         public System.Collections.Generic.IList<System.Collections.Generic.IEnumerable<T>> GetConflicts() { }
-        public System.Collections.Generic.IEnumerable<T> GetDependents(T node, bool immediate = False, bool terminating = False) { }
         protected System.Collections.Generic.IEnumerable<int> GetDependents(int node, bool immediate, bool terminating) { }
-        public System.Collections.Generic.IEnumerable<T> GetPrecedents(T node, bool immediate = False, bool terminating = False) { }
+        public System.Collections.Generic.IEnumerable<T> GetDependents(T node, bool immediate = false, bool terminating = false) { }
         protected System.Collections.Generic.IEnumerable<int> GetPrecedents(int node, bool immediate, bool terminating) { }
-        protected System.Collections.Generic.IEnumerable<int> GetRelated(int node, bool immediate, bool terminating, System.Collections.Generic.List<System.Collections.Generic.HashSet<int>> edgesData, System.Collections.Generic.List<System.Collections.Generic.HashSet<int>> transData = null, bool lazy = False) { }
+        public System.Collections.Generic.IEnumerable<T> GetPrecedents(T node, bool immediate = false, bool terminating = false) { }
+        protected System.Collections.Generic.IEnumerable<int> GetRelated(int node, bool immediate, bool terminating, System.Collections.Generic.List<System.Collections.Generic.HashSet<int>> edgesData, System.Collections.Generic.List<System.Collections.Generic.HashSet<int>> transData = null, bool lazy = false) { }
         protected virtual int NodeKey(T node) { }
         protected int NodeKeySafe(T node, System.Collections.Generic.Dictionary<T, int> tempDict) { }
         public System.Collections.Generic.IList<T> Sort() { }
@@ -315,5 +315,5 @@ namespace Orc.Sort.TopologicalSort
 }
 namespace System.Linq
 {
-    public class static TimSortExtender { }
+    public static class TimSortExtender { }
 }
