@@ -100,15 +100,16 @@ namespace Orc.Sort
             while (enumerators.Count > 0)
             {
                 var nextEnum = enumerators.MinBy(e => e.Current, itemComparer);
-                var nextItem = nextEnum.Current;
+                var enumerator = nextEnum.First();
+                var nextItem = enumerator.Current;
 
                 if (distinct)
                 {
                     enumerators.RemoveAll(e => itemComparer.Compare(e.Current, nextItem) == 0 && !e.MoveNext());
                 }
-                else if (!nextEnum.MoveNext())
+                else if (!enumerator.MoveNext())
                 {
-                    enumerators.Remove(nextEnum);
+                    enumerators.Remove(enumerator);
                 }
 
                 yield return nextItem;
