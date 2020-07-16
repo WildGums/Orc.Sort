@@ -4,4 +4,5 @@
   <LoadAssembliesOnStartup />
   <ModuleInit />
   <Obsolete />
+  <Catel />
 </Weavers>
