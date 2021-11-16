@@ -100,17 +100,17 @@ namespace Orc.Sort.TemplateSort
         /// </exception>
         public static IEnumerable<TSource> SortAccordingTo<TSource, TKey>(this IEnumerable<TSource> sourceCollection, IEnumerable<TKey> templateCollection, Func<TSource, TKey> keySelector, bool includeNoMatches = true, IEqualityComparer<TKey> comparer = null)
         {
-            if (sourceCollection == null)
+            if (sourceCollection is null)
             {
                 throw new ArgumentNullException("sourceCollection cannot be null.");
             }
 
-            if (keySelector == null)
+            if (keySelector is null)
             {
                 throw new ArgumentNullException("keySelector cannot be null.");
             }
 
-            if (templateCollection == null)
+            if (templateCollection is null)
             {
                 throw new ArgumentNullException("templateCollection cannot be null.");
             }

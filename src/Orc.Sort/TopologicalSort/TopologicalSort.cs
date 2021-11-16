@@ -83,7 +83,7 @@ namespace Orc.Sort.TopologicalSort
 
             Sequences = new List<IEnumerable<T>>();
 
-            if (sequences != null)
+            if (sequences is not null)
             {
                 AddRange(sequences);
             }
@@ -202,7 +202,7 @@ namespace Orc.Sort.TopologicalSort
         /// </returns>
         public bool CanSort(IEnumerable<T> sequence)
         {
-            if (sequence == null)
+            if (sequence is null)
             {
                 return false;
             }
@@ -242,7 +242,7 @@ namespace Orc.Sort.TopologicalSort
                 var newSort = new TopologicalSort<T>(this, false, false);
                 newSort.Add(sequence);
 
-                return newSort.Sort() != null;
+                return newSort.Sort() is not null;
             }
         }
 
@@ -254,7 +254,7 @@ namespace Orc.Sort.TopologicalSort
         /// </returns>
         public IList<T> Sort()
         {
-            if (nodesSort != null)
+            if (nodesSort is not null)
             {
                 return nodesSort.AsReadOnly();
             }
@@ -325,7 +325,7 @@ namespace Orc.Sort.TopologicalSort
 
             if (UsesTracking)
             {
-                if (firstConflict != null)
+                if (firstConflict is not null)
                 {
                     conflictLists.Add(Sequences.First(s => !CanSort(s)));
                     conflictLists.Add(firstConflict);
@@ -342,7 +342,7 @@ namespace Orc.Sort.TopologicalSort
                 {
                     newSort.Add(sequences[i]);
 
-                    if (newSort.Sort() != null)
+                    if (newSort.Sort() is not null)
                     {
                         continue;
                     }
@@ -354,7 +354,7 @@ namespace Orc.Sort.TopologicalSort
                     {
                         newSort.Add(sequences[j]);
 
-                        if (newSort.Sort() != null)
+                        if (newSort.Sort() is not null)
                         {
                             continue;
                         }

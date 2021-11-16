@@ -99,7 +99,7 @@ namespace Orc.Sort
 
             while (enumerators.Count > 0)
             {
-                var nextEnum = enumerators.MinBy(e => e.Current, itemComparer);
+                var nextEnum = MoreLinq.MoreEnumerable.MinBy(enumerators, e => e.Current, itemComparer);
                 var enumerator = nextEnum.First();
                 var nextItem = enumerator.Current;
 
