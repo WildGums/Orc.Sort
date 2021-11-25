@@ -39,12 +39,12 @@ namespace Performance
         /// See <see cref="PerformanceTimer.Scope()"/> for more information.
         /// Basicly, class which starts the timer when instantiated and stops then timer when disposed.
         /// </summary>
-        internal class PerformanceTimerScope : IDisposable
+        internal sealed class PerformanceTimerScope : IDisposable
         {
             #region Fields
 
             #region fields
-            private readonly PerformanceTimer m_Timer;
+            private readonly PerformanceTimer _timer;
             #endregion
 
             #endregion
@@ -58,7 +58,7 @@ namespace Performance
             /// <param name="timer">The timer to control.</param>
             public PerformanceTimerScope(PerformanceTimer timer)
             {
-                m_Timer = timer;
+                _timer = timer;
                 timer.Start();
             }
             #endregion
@@ -74,7 +74,7 @@ namespace Performance
             /// </summary>
             public void Dispose()
             {
-                m_Timer.Stop();
+                _timer.Stop();
             }
             #endregion
 
@@ -83,11 +83,11 @@ namespace Performance
         #endregion
 
         #region fields
-        private int m_StartedCount;
-        private long m_StartTime;
-        private long m_StopTime;
-        private long m_Frequency;
-        private long m_ElapsedTime;
+        private int _startedCount;
+        private long _startTime;
+        private long _stopTime;
+        private long _frequency;
+        private long _elapsedTime;
         #endregion
 
         #region imports
@@ -105,7 +105,7 @@ namespace Performance
         /// <value>The elapsed time in seconds.</value>
         public double Elapsed
         {
-            get { return (double) (m_ElapsedTime)/(double) m_Frequency; }
+            get { return (double) (_elapsedTime)/(double) _frequency; }
         }
 
         /// <summary>
@@ -124,8 +124,8 @@ namespace Performance
         /// </summary>
         public void Reset()
         {
-            m_StartTime = m_StartTime = m_ElapsedTime = 0;
-            m_StartedCount = 0;
+            _startTime = _startTime = _elapsedTime = 0;
+            _startedCount = 0;
         }
 
         /// <summary>
@@ -133,23 +133,23 @@ namespace Performance
         /// </summary>
         public void Start()
         {
-            if (m_StartedCount == 0)
+            if (_startedCount == 0)
             {
                 // lets waiting threads do their work
                 // this thread will more likely go uninterrupted when doing measurement
                 Thread.Sleep(0);
 
-                if (!QueryPerformanceFrequency(out m_Frequency))
+                if (!QueryPerformanceFrequency(out _frequency))
                 {
                     throw new Win32Exception();
                 }
 
-                if (!QueryPerformanceCounter(out m_StartTime))
+                if (!QueryPerformanceCounter(out _startTime))
                 {
                     throw new Win32Exception();
                 }
             }
-            m_StartedCount++;
+            _startedCount++;
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Performance
         {
             if (reset)
             {
-                if (m_StartedCount > 0)
+                if (_startedCount > 0)
                 {
                     throw new ArgumentException("Cannot restart nested timer");
                 }
@@ -173,15 +173,15 @@ namespace Performance
         /// </summary>
         public double Stop()
         {
-            if (m_StartedCount <= 0)
+            if (_startedCount <= 0)
             {
                 return Elapsed;
             }
 
-            QueryPerformanceCounter(out m_StopTime);
-            m_StartedCount--;
-            m_ElapsedTime += m_StopTime - m_StartTime;
-            m_StartTime = m_StopTime;
+            QueryPerformanceCounter(out _stopTime);
+            _startedCount--;
+            _elapsedTime += _stopTime - _startTime;
+            _startTime = _stopTime;
             return Elapsed;
         }
 
