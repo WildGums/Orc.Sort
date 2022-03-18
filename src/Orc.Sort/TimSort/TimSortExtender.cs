@@ -189,7 +189,7 @@ namespace System.Linq
                 member = typeof (List<TItem>).GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance);
                 ItemMemberMap.Add(listType, member);
             }
-            if (member == null)
+            if (member is null)
             {
                 return null;
             }

@@ -99,7 +99,7 @@ namespace Orc.Sort
 
             while (enumerators.Count > 0)
             {
-                var nextEnum = enumerators.MinBy(e => e.Current, itemComparer);
+                var nextEnum = MoreLinq.MoreEnumerable.MinBy(enumerators, e => e.Current, itemComparer);
                 var enumerator = nextEnum.First();
                 var nextItem = enumerator.Current;
 
@@ -173,7 +173,7 @@ namespace Orc.Sort
         #endregion
     }
 
-    internal class KeyedEnumerator<T> : IEnumerator<T>, IComparable<KeyedEnumerator<T>>
+    internal sealed class KeyedEnumerator<T> : IEnumerator<T>, IComparable<KeyedEnumerator<T>>
     {
         #region Constructors
         public KeyedEnumerator(IEnumerator<T> enumerator, IComparer<T> itemComparer, int secondaryKey)
@@ -209,7 +209,9 @@ namespace Orc.Sort
 
         public void Dispose()
         {
+#pragma warning disable IDISP007 // Don't dispose injected.
             Enumerator.Dispose();
+#pragma warning restore IDISP007 // Don't dispose injected.
         }
 
         public bool MoveNext()

@@ -86,7 +86,7 @@ namespace System.Linq
         /// <returns><c>true</c> if sorted using native types, <c>false</c> otherwise.</returns>
         internal static bool TryNativeTimSort<T>(T[] array)
         {
-            if (array == null)
+            if (array is null)
             {
                 return true;
             }
@@ -100,7 +100,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Byte[], but at compile time cast is required
                 var typed = array as Byte[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -111,7 +111,7 @@ namespace System.Linq
             {
                 // at runtme we know it is SByte[], but at compile time cast is required
                 var typed = array as SByte[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -122,7 +122,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Int16[], but at compile time cast is required
                 var typed = array as Int16[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -133,7 +133,7 @@ namespace System.Linq
             {
                 // at runtme we know it is UInt16[], but at compile time cast is required
                 var typed = array as UInt16[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -144,7 +144,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Int32[], but at compile time cast is required
                 var typed = array as Int32[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -155,7 +155,7 @@ namespace System.Linq
             {
                 // at runtme we know it is UInt32[], but at compile time cast is required
                 var typed = array as UInt32[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -166,7 +166,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Int64[], but at compile time cast is required
                 var typed = array as Int64[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -177,7 +177,7 @@ namespace System.Linq
             {
                 // at runtme we know it is UInt64[], but at compile time cast is required
                 var typed = array as UInt64[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -188,7 +188,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Single[], but at compile time cast is required
                 var typed = array as Single[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -199,7 +199,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Double[], but at compile time cast is required
                 var typed = array as Double[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -210,7 +210,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Decimal[], but at compile time cast is required
                 var typed = array as Decimal[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -221,7 +221,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Char[], but at compile time cast is required
                 var typed = array as Char[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -232,7 +232,7 @@ namespace System.Linq
             {
                 // at runtme we know it is DateTime[], but at compile time cast is required
                 var typed = array as DateTime[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -243,7 +243,7 @@ namespace System.Linq
             {
                 // at runtme we know it is TimeSpan[], but at compile time cast is required
                 var typed = array as TimeSpan[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -254,7 +254,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Guid[], but at compile time cast is required
                 var typed = array as Guid[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -272,7 +272,7 @@ namespace System.Linq
         /// <returns><c>true</c> if sorted using native types, <c>false</c> otherwise.</returns>
         internal static bool TryNativeTimSort<T>(T[] array, int lo, int hi)
         {
-            if (array == null)
+            if (array is null)
             {
                 return true;
             }
@@ -287,7 +287,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Byte[], but at compile time cast is required
                 var typed = array as Byte[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -298,7 +298,7 @@ namespace System.Linq
             {
                 // at runtme we know it is SByte[], but at compile time cast is required
                 var typed = array as SByte[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -309,7 +309,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Int16[], but at compile time cast is required
                 var typed = array as Int16[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -320,7 +320,7 @@ namespace System.Linq
             {
                 // at runtme we know it is UInt16[], but at compile time cast is required
                 var typed = array as UInt16[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -331,7 +331,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Int32[], but at compile time cast is required
                 var typed = array as Int32[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -342,7 +342,7 @@ namespace System.Linq
             {
                 // at runtme we know it is UInt32[], but at compile time cast is required
                 var typed = array as UInt32[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -353,7 +353,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Int64[], but at compile time cast is required
                 var typed = array as Int64[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -364,7 +364,7 @@ namespace System.Linq
             {
                 // at runtme we know it is UInt64[], but at compile time cast is required
                 var typed = array as UInt64[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -375,7 +375,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Single[], but at compile time cast is required
                 var typed = array as Single[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -386,7 +386,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Double[], but at compile time cast is required
                 var typed = array as Double[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -397,7 +397,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Decimal[], but at compile time cast is required
                 var typed = array as Decimal[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -408,7 +408,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Char[], but at compile time cast is required
                 var typed = array as Char[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -419,7 +419,7 @@ namespace System.Linq
             {
                 // at runtme we know it is DateTime[], but at compile time cast is required
                 var typed = array as DateTime[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -430,7 +430,7 @@ namespace System.Linq
             {
                 // at runtme we know it is TimeSpan[], but at compile time cast is required
                 var typed = array as TimeSpan[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -441,7 +441,7 @@ namespace System.Linq
             {
                 // at runtme we know it is Guid[], but at compile time cast is required
                 var typed = array as Guid[];
-                if (typed == null)
+                if (typed is null)
                 {
                     return false;
                 }
@@ -458,7 +458,7 @@ namespace System.Linq
         /// <param name="array">The array.</param>
         public static void TimSort<T>(this T[] array)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
@@ -486,7 +486,7 @@ namespace System.Linq
         /// <param name="length">The length.</param>
         public static void TimSort<T>(this T[] array, int start, int length)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
@@ -518,11 +518,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this T[] array, int start, int length, Comparison<T> compare)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (compare == null)
+            if (compare is null)
             {
                 throw new ArgumentNullException("compare");
             }
@@ -542,11 +542,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this T[] array, Comparison<T> compare)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (compare == null)
+            if (compare is null)
             {
                 throw new ArgumentNullException("compare");
             }
@@ -567,11 +567,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this T[] array, int start, int length, IComparer<T> comparer)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (comparer == null)
+            if (comparer is null)
             {
                 throw new ArgumentNullException("comparer");
             }
@@ -592,11 +592,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this T[] array, IComparer<T> comparer)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (comparer == null)
+            if (comparer is null)
             {
                 throw new ArgumentNullException("comparer");
             }
@@ -620,7 +620,7 @@ namespace System.Linq
         private static bool TryInternalTimSort<T>(List<T> list, int start, int length)
         {
             var array = GetInternalMember(list);
-            if (array == null)
+            if (array is null)
             {
                 return false;
             }
@@ -638,7 +638,7 @@ namespace System.Linq
         private static bool TryInternalTimSort<T>(List<T> list, int start, int length, Comparison<T> compare)
         {
             var array = GetInternalMember(list);
-            if (array == null)
+            if (array is null)
             {
                 return false;
             }
@@ -651,7 +651,7 @@ namespace System.Linq
         /// <param name="array">The array.</param>
         public static void TimSort<T>(this List<T> array)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
@@ -679,7 +679,7 @@ namespace System.Linq
         /// <param name="length">The length.</param>
         public static void TimSort<T>(this List<T> array, int start, int length)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
@@ -711,11 +711,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this List<T> array, int start, int length, Comparison<T> compare)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (compare == null)
+            if (compare is null)
             {
                 throw new ArgumentNullException("compare");
             }
@@ -740,11 +740,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this List<T> array, Comparison<T> compare)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (compare == null)
+            if (compare is null)
             {
                 throw new ArgumentNullException("compare");
             }
@@ -770,11 +770,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this List<T> array, int start, int length, IComparer<T> comparer)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (comparer == null)
+            if (comparer is null)
             {
                 throw new ArgumentNullException("comparer");
             }
@@ -800,11 +800,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this List<T> array, IComparer<T> comparer)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (comparer == null)
+            if (comparer is null)
             {
                 throw new ArgumentNullException("comparer");
             }
@@ -833,7 +833,7 @@ namespace System.Linq
         private static bool TryInternalTimSort<T>(IList<T> list, int start, int length)
         {
             var array = GetInternalMember(list);
-            if (array == null)
+            if (array is null)
             {
                 return false;
             }
@@ -851,7 +851,7 @@ namespace System.Linq
         private static bool TryInternalTimSort<T>(IList<T> list, int start, int length, Comparison<T> compare)
         {
             var array = GetInternalMember(list);
-            if (array == null)
+            if (array is null)
             {
                 return false;
             }
@@ -864,7 +864,7 @@ namespace System.Linq
         /// <param name="array">The array.</param>
         public static void TimSort<T>(this IList<T> array)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
@@ -892,7 +892,7 @@ namespace System.Linq
         /// <param name="length">The length.</param>
         public static void TimSort<T>(this IList<T> array, int start, int length)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
@@ -924,11 +924,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this IList<T> array, int start, int length, Comparison<T> compare)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (compare == null)
+            if (compare is null)
             {
                 throw new ArgumentNullException("compare");
             }
@@ -953,11 +953,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this IList<T> array, Comparison<T> compare)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (compare == null)
+            if (compare is null)
             {
                 throw new ArgumentNullException("compare");
             }
@@ -983,11 +983,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this IList<T> array, int start, int length, IComparer<T> comparer)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (comparer == null)
+            if (comparer is null)
             {
                 throw new ArgumentNullException("comparer");
             }
@@ -1013,11 +1013,11 @@ namespace System.Linq
         /// <exception cref="System.ArgumentNullException">array or compare</exception>
         public static void TimSort<T>(this IList<T> array, IComparer<T> comparer)
         {
-            if (array == null)
+            if (array is null)
             {
                 throw new ArgumentNullException("array");
             }
-            if (comparer == null)
+            if (comparer is null)
             {
                 throw new ArgumentNullException("comparer");
             }
