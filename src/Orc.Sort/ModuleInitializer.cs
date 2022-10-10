@@ -12,7 +12,7 @@ public static class ModuleInitializer
 
         // TODO: register services here
 
-        //var languageService = serviceLocator.ResolveType<ILanguageService>();
+        //var languageService = serviceLocator.ResolveRequiredType<ILanguageService>();
         //languageService.RegisterLanguageSource(new LanguageResourceSource("Orc.DependencyGraph", "Orc.DependencyGraph.Properties", "Resources"));
     }
 }

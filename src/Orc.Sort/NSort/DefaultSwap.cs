@@ -1,12 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultSwap.cs" company="WildGums">
-//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Sort.NSort
+﻿namespace Orc.Sort.NSort
 {
+    using System;
     using System.Collections;
 
     /// <summary>
@@ -14,9 +8,10 @@ namespace Orc.Sort.NSort
     /// </summary>
     public class DefaultSwap : ISwap
     {
-        #region ISwap Members
         public void Swap(IList array, int left, int right)
         {
+            ArgumentNullException.ThrowIfNull(array);
+
             var swap = array[left];
             array[left] = array[right];
             array[right] = swap;
@@ -24,13 +19,16 @@ namespace Orc.Sort.NSort
 
         public void Set(IList array, int left, int right)
         {
+            ArgumentNullException.ThrowIfNull(array);
+
             array[left] = array[right];
         }
 
-        public void Set(IList array, int left, object obj)
+        public void Set(IList array, int left, object? obj)
         {
+            ArgumentNullException.ThrowIfNull(array);
+
             array[left] = obj;
         }
-        #endregion
     }
 }

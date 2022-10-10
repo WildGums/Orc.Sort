@@ -1,14 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TopologicalSort.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Sort.TopologicalSort
+﻿namespace Orc.Sort.TopologicalSort
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Catel;
 
     /// <summary>
     /// Standard topological sort.
@@ -17,6 +12,7 @@ namespace Orc.Sort.TopologicalSort
     /// <typeparam name="T">
     /// </typeparam>
     public class TopologicalSort<T>
+        where T : notnull
     {
         #region Fields
         /// <summary>
@@ -32,7 +28,7 @@ namespace Orc.Sort.TopologicalSort
         /// <summary>
         /// First conflicting sequence.
         /// </summary>
-        protected IEnumerable<T> firstConflict;
+        protected IEnumerable<T>? firstConflict;
 
         /// <summary>
         /// The nodes dictionary. Maps nodes to IDs.
@@ -47,24 +43,24 @@ namespace Orc.Sort.TopologicalSort
         /// <summary>
         /// List of nodes in the sort order.
         /// </summary>
-        protected List<T> nodesSort;
+        protected List<T>? nodesSort;
 
         /// <summary>
         /// The edges from each node - transitive closure.
         /// </summary>
-        protected List<HashSet<int>> transFrom;
+        protected List<HashSet<int>>? transFrom;
 
         /// <summary>
         /// The edges into each node - transitive closure.
         /// </summary>
-        protected List<HashSet<int>> transInto;
+        protected List<HashSet<int>>? transInto;
         #endregion
 
         #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="PriorityTopologicalSort{T}"/> class.
         /// </summary>
-        public TopologicalSort(bool usesPriority = false, bool usesTracking = false, IEnumerable<IEnumerable<T>> sequences = null)
+        public TopologicalSort(bool usesPriority = false, bool usesTracking = false, IEnumerable<IEnumerable<T>>? sequences = null)
         {
             nodesDict = new Dictionary<T, int>();
             nodesList = new List<T>();
@@ -102,8 +98,15 @@ namespace Orc.Sort.TopologicalSort
 
             if (UsesTracking)
             {
-                transInto = new List<HashSet<int>>(baseSort.transInto.Select(hash => new HashSet<int>(hash)));
-                transFrom = new List<HashSet<int>>(baseSort.transFrom.Select(hash => new HashSet<int>(hash)));
+                if (baseSort.transInto is not null)
+                {
+                    transInto = new List<HashSet<int>>(baseSort.transInto.Select(hash => new HashSet<int>(hash)));
+                }
+
+                if (baseSort.transFrom is not null)
+                {
+                    transFrom = new List<HashSet<int>>(baseSort.transFrom.Select(hash => new HashSet<int>(hash)));
+                }
             }
 
             Sequences = baseSort.Sequences.ToList();
@@ -138,7 +141,9 @@ namespace Orc.Sort.TopologicalSort
         /// </param>
         public virtual void Add(IEnumerable<T> sequence)
         {
-            (Sequences as IList<IEnumerable<T>>).Add(sequence);
+            ArgumentNullException.ThrowIfNull(sequence);
+
+            ((IList<IEnumerable<T>>)Sequences).Add(sequence);
 
             if (!sequence.Any())
             {
@@ -155,7 +160,9 @@ namespace Orc.Sort.TopologicalSort
                 edgesInto[next].Add(prev);
                 edgesFrom[prev].Add(next);
 
-                if (UsesTracking)
+                if (UsesTracking && 
+                    transInto is not null &&
+                    transFrom is not null)
                 {
                     foreach (int temp in transInto[prev])
                     {
@@ -213,23 +220,26 @@ namespace Orc.Sort.TopologicalSort
                 var tempSeen = new HashSet<int>();
                 var tempDict = new Dictionary<T, int>(nodesDict);
 
-                foreach (var node in sequence.Reverse())
+                if (transInto is not null)
                 {
-                    var key = NodeKeySafe(node, tempDict);
+                    foreach (var node in sequence.Reverse())
+                    {
+                        var key = NodeKeySafe(node, tempDict);
 
-                    if (tempSeen.Contains(key))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        tempSeen.Add(key);
-                    }
+                        if (tempSeen.Contains(key))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            tempSeen.Add(key);
+                        }
 
-                    if (key < transInto.Count)
-                    {
-                        tempInto.UnionWith(transInto[key]);
-                        tempInto.Remove(key);
+                        if (key < transInto.Count)
+                        {
+                            tempInto.UnionWith(transInto[key]);
+                            tempInto.Remove(key);
+                        }
                     }
                 }
 
@@ -252,7 +262,7 @@ namespace Orc.Sort.TopologicalSort
         /// <returns>
         /// The <see cref="List{T}"/>.
         /// </returns>
-        public IList<T> Sort()
+        public IList<T>? Sort()
         {
             if (nodesSort is not null)
             {
@@ -336,7 +346,7 @@ namespace Orc.Sort.TopologicalSort
             {
                 var newSort = new TopologicalSort<T>();
 
-                var sequences = (Sequences as IList<IEnumerable<T>>);
+                var sequences = (IList<IEnumerable<T>>)Sequences;
 
                 for (var i = 0; i < sequences.Count; i++)
                 {
@@ -389,10 +399,12 @@ namespace Orc.Sort.TopologicalSort
                 edgesInto.Add(new HashSet<int>());
                 edgesFrom.Add(new HashSet<int>());
 
-                if (UsesTracking)
+                if (UsesTracking &&
+                    transInto is not null &&
+                    transFrom is not null)
                 {
-                    transInto.Add(new HashSet<int>(new int[] {key}));
-                    transFrom.Add(new HashSet<int>(new int[] {key}));
+                    transInto.Add(new HashSet<int>(new int[] { key }));
+                    transFrom.Add(new HashSet<int>(new int[] { key }));
                 }
             }
 
@@ -444,7 +456,7 @@ namespace Orc.Sort.TopologicalSort
         /// <summary>
         /// Returns the list of all nodes that are related to the given node.
         /// </summary>
-        protected IEnumerable<int> GetRelated(int node, bool immediate, bool terminating, List<HashSet<int>> edgesData, List<HashSet<int>> transData = null, bool lazy = false)
+        protected IEnumerable<int> GetRelated(int node, bool immediate, bool terminating, List<HashSet<int>> edgesData, List<HashSet<int>>? transData = null, bool lazy = false)
         {
             IEnumerable<int> nodesData;
 
@@ -452,7 +464,7 @@ namespace Orc.Sort.TopologicalSort
             {
                 nodesData = edgesData[node];
             }
-            else if (UsesTracking)
+            else if (UsesTracking && transData is not null)
             {
                 nodesData = transData[node];
             }

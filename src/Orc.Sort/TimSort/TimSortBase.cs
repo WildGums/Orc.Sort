@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TimSortBase.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-#region Notes
+﻿#region Notes
 //------------------------------------------------------------------------------
 // Java implementation:
 //
@@ -54,7 +47,6 @@ namespace TimSort
     using System;
     using System.Diagnostics;
 
-    #region class TimSortBase<TList, TItem>
     /// <summary>
     /// TimSortBase is base class for all TimSort specific classes. It contains common methods.
     /// Should not be used directly.
@@ -95,7 +87,6 @@ namespace TimSort
             _runLength = new int[stackLength];
         }
 
-        #region consts
         /// <summary>
         /// This is the minimum sized sequence that will be merged.  Shorter
         /// sequences will be lengthened by calling BinarySort.  If the entire
@@ -126,9 +117,7 @@ namespace TimSort
         /// when sorting smaller arrays. This change was required for performance.
         /// </summary>
         protected const int INITIAL_TMP_STORAGE_LENGTH = 256;
-        #endregion
 
-        #region fields
         /// <summary>The array being sorted.</summary>
         protected readonly TList _array;
 
@@ -159,9 +148,7 @@ namespace TimSort
 
         protected int[] _runBase;
         protected int[] _runLength;
-        #endregion
 
-        #region protected interface
         /// <summary>
         /// Returns the minimum acceptable run length for an array of the specified length. Natural runs shorter than this 
         /// will be extended with BinarySort.
@@ -334,7 +321,5 @@ namespace TimSort
         {
             Array.Copy(source, sourceIndex, target, targetIndex, length);
         }
-        #endregion
     }
-    #endregion
 }

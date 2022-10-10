@@ -1,21 +1,10 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SorterTest.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Sort.Tests.NSort
+﻿namespace Orc.Sort.Tests.NSort
 {
     using System;
     using System.Collections;
     
     using NUnit.Framework;
     using Sort.NSort;
-
-#if (SILVERLIGHT)
-    using C5;
-#endif
 
     /// <summary>
     /// Summary description for SorterTest.
@@ -46,11 +35,7 @@ namespace Orc.Sort.Tests.NSort
             }
 
             // create sorted list
-#if (SILVERLIGHT)
-            var sortedList = new TreeDictionary<int, object>();
-#else
             var sortedList = new SortedList();
-#endif
 
             foreach (var key in list)
             {
@@ -191,7 +176,6 @@ namespace Orc.Sort.Tests.NSort
     [TestFixture]
     public class FastQuickSorterTest : SorterTest
     {
-        #region Methods
         [SetUp]
         public void SetUp()
         {
@@ -203,7 +187,6 @@ namespace Orc.Sort.Tests.NSort
         {
             this.SortTest();
         }
-        #endregion
     }
 
     [TestFixture]

@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TemplateSort.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Sort.TemplateSort
+﻿namespace Orc.Sort.TemplateSort
 {
     using System;
     using System.Collections.Generic;
@@ -52,7 +45,9 @@ namespace Orc.Sort.TemplateSort
         /// <exception cref="ArgumentException">
         ///     Thrown when the template collection contains duplicates.
         /// </exception>
-        public static IEnumerable<T> SortAccordingTo<T>(this IEnumerable<T> sourceCollection, IEnumerable<T> templateCollection, bool includeNoMatches = true, IEqualityComparer<T> comparer = null)
+        public static IEnumerable<T> SortAccordingTo<T>(this IEnumerable<T> sourceCollection, IEnumerable<T> templateCollection, 
+            bool includeNoMatches = true, IEqualityComparer<T>? comparer = null)
+            where T : notnull
         {
             return SortAccordingTo(sourceCollection, templateCollection, x => x, includeNoMatches, comparer);
         }
@@ -98,7 +93,11 @@ namespace Orc.Sort.TemplateSort
         /// <exception cref="ArgumentException">
         ///     Thrown when the template collection contains duplicates.
         /// </exception>
-        public static IEnumerable<TSource> SortAccordingTo<TSource, TKey>(this IEnumerable<TSource> sourceCollection, IEnumerable<TKey> templateCollection, Func<TSource, TKey> keySelector, bool includeNoMatches = true, IEqualityComparer<TKey> comparer = null)
+        public static IEnumerable<TSource> SortAccordingTo<TSource, TKey>(this IEnumerable<TSource> sourceCollection, 
+            IEnumerable<TKey> templateCollection, Func<TSource, TKey> keySelector, bool includeNoMatches = true, 
+            IEqualityComparer<TKey>? comparer = null)
+            where TSource : notnull
+            where TKey : notnull
         {
             if (sourceCollection is null)
             {

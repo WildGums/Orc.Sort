@@ -140,6 +140,11 @@ namespace Orc.Sort
             while (sortedKeySet.Count > 1)
             {
                 var minItem = sortedKeySet.Min;
+                if (minItem is null)
+                {
+                    continue;
+                }
+
                 var hasNext = true;
                 sortedKeySet.Remove(minItem);
 
@@ -161,13 +166,16 @@ namespace Orc.Sort
             }
 
             var min = sortedKeySet.Min;
-            var has = true;
-            sortedKeySet.Remove(min);
-
-            while (has)
+            if (min is not null)
             {
-                yield return min.Current;
-                has = min.MoveNext();
+                var has = true;
+                sortedKeySet.Remove(min);
+
+                while (has)
+                {
+                    yield return min.Current;
+                    has = min.MoveNext();
+                }
             }
         }
         #endregion
@@ -187,7 +195,7 @@ namespace Orc.Sort
         #region Properties
         public T Current => Enumerator.Current;
 
-        object IEnumerator.Current => Enumerator.Current;
+        object? IEnumerator.Current => Enumerator.Current;
 
         public IEnumerator<T> Enumerator { get; }
         public IComparer<T> ItemComparer { get; }
@@ -195,13 +203,17 @@ namespace Orc.Sort
         #endregion
 
         #region Methods
-        public int CompareTo(KeyedEnumerator<T> other)
+        public int CompareTo(KeyedEnumerator<T>? other)
         {
-            var result = ItemComparer.Compare(Current, other.Current);
+            if (other is null)
+            {
+                return -1;
+            }
 
+            var result = ItemComparer.Compare(Current, other.Current);
             if (result == 0)
             {
-                result = SecondaryKey.CompareTo(other.SecondaryKey);
+                result = SecondaryKey.CompareTo(other?.SecondaryKey);
             }
 
             return result;

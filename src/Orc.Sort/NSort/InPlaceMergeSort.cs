@@ -7,11 +7,11 @@
 
 namespace Orc.Sort.NSort
 {
+    using System;
     using System.Collections;
 
     public class InPlaceMergeSort : SwapSorter
     {
-        #region Constructors
         public InPlaceMergeSort()
         {
         }
@@ -20,16 +20,18 @@ namespace Orc.Sort.NSort
             : base(comparer, swapper)
         {
         }
-        #endregion
 
-        #region Methods
         public override void Sort(IList list)
         {
+            ArgumentNullException.ThrowIfNull(list);
+
             Sort(list, 0, list.Count - 1);
         }
 
         private void Sort(IList list, int fromPos, int toPos)
         {
+            ArgumentNullException.ThrowIfNull(list);
+
             if (fromPos >= toPos)
             {
                 return;
@@ -65,6 +67,5 @@ namespace Orc.Sort.NSort
                 }
             }
         }
-        #endregion
     }
 }

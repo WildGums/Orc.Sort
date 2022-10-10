@@ -1,17 +1,10 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DoubleStorageMergeSort.cs" company="WildGums">
-//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Sort.NSort
+﻿namespace Orc.Sort.NSort
 {
+    using System;
     using System.Collections;
 
     public class DoubleStorageMergeSort : SwapSorter
     {
-        #region Constructors
         public DoubleStorageMergeSort()
         {
         }
@@ -20,17 +13,19 @@ namespace Orc.Sort.NSort
             : base(comparer, swapper)
         {
         }
-        #endregion
 
-        #region Methods
         public override void Sort(IList list)
         {
+            ArgumentNullException.ThrowIfNull(list);
+
             var scratch = new object[list.Count];
             Sort(list, 0, list.Count - 1, scratch);
         }
 
-        private void Sort(IList list, int fromPos, int toPos, object[] scratch)
+        private void Sort(IList list, int fromPos, int toPos, object?[] scratch)
         {
+            ArgumentNullException.ThrowIfNull(list);
+
             if (fromPos >= toPos)
             {
                 return;
@@ -78,6 +73,5 @@ namespace Orc.Sort.NSort
                 Swapper.Set(list, i, scratch[i]);
             }
         }
-        #endregion
     }
 }
