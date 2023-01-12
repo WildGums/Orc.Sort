@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OddEvenTransportSorter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Sort.NSort.Generic
+﻿namespace Orc.Sort.NSort.Generic
 {
     using System.Collections.Generic;
 

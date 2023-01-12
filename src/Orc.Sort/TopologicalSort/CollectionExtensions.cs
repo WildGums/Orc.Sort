@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CollectionExtensions.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Sort.TopologicalSort
+﻿namespace Orc.Sort.TopologicalSort
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

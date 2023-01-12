@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SwapSorter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Sort.NSort.Generic
+﻿namespace Orc.Sort.NSort.Generic
 {
     using System;
     using System.Collections;
@@ -36,8 +29,8 @@ namespace Orc.Sort.NSort.Generic
 
         public SwapSorter(IComparer<T> comparer, ISwap<T> swapper)
         {
-            Argument.IsNotNull(() => comparer);
-            Argument.IsNotNull(() => swapper);
+            ArgumentNullException.ThrowIfNull(comparer);
+            ArgumentNullException.ThrowIfNull(swapper);
 
             _comparer = comparer;
             _swapper = swapper;

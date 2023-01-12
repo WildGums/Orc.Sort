@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TopologicalSortTests.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Sort.Tests.TopologicalSort
+﻿namespace Orc.Sort.Tests.TopologicalSort
 {
     using System;
     using System.Collections.Generic;
@@ -870,7 +863,7 @@ namespace Orc.Sort.Tests.TopologicalSort
 
             var error_flag = false;
             var error_item = default(T);
-            var param_name = "";
+            var param_name = string.Empty;
 
             if (index2 == -1)
             {

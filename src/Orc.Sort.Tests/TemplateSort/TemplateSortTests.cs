@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TemplateSortTests.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-namespace Orc.Sort.Tests.TemplateSort
+﻿namespace Orc.Sort.Tests.TemplateSort
 {
     using System;
     using System.Collections.Generic;
