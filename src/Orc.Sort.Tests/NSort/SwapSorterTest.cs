@@ -1,42 +1,37 @@
-namespace Orc.Sort.Tests.NSort
+﻿namespace Orc.Sort.Tests.NSort;
+
+using System;
+using NUnit.Framework;
+using Sort.NSort;
+
+/// <summary>
+/// Summary description for SwapSorterTest.
+/// </summary>
+[TestFixture]
+public class SwapSorterTest
 {
-    using System;
-    using NUnit.Framework;
-    using Sort.NSort;
-
-    /// <summary>
-    /// Summary description for SwapSorterTest.
-    /// </summary>
-    [TestFixture]
-    public class SwapSorterTest
+    public SwapSorter Sorter
     {
-        #region Properties
-        public SwapSorter Sorter
-        {
-            get { return new BubbleSorter(); }
-        }
-        #endregion
+        get { return new BubbleSorter(); }
+    }
 
-        #region Methods
-        [Test]
-        public void NullSwapper()
+    [Test]
+    public void NullSwapper()
+    {
+        Assert.Throws<ArgumentNullException>(() =>
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var sorter = this.Sorter;
-                sorter.Swapper = null;
-            });
-        }
+            var sorter = Sorter;
+            sorter.Swapper = null;
+        });
+    }
 
-        [Test]
-        public void NullComparer()
+    [Test]
+    public void NullComparer()
+    {
+        Assert.Throws<ArgumentNullException>(() =>
         {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var sorter = this.Sorter;
-                sorter.Comparer = null;
-            });
-        }
-        #endregion
+            var sorter = Sorter;
+            sorter.Comparer = null;
+        });
     }
 }

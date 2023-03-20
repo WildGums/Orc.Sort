@@ -1,40 +1,35 @@
-﻿namespace Orc.Sort.NSort.Generic
+﻿namespace Orc.Sort.NSort.Generic;
+
+using System.Collections.Generic;
+
+public class SelectionSort<T> : SwapSorter<T>
 {
-    using System.Collections.Generic;
-
-    public class SelectionSort<T> : SwapSorter<T>
+    public SelectionSort()
     {
-        #region Constructors
-        public SelectionSort()
-        {
-        }
+    }
 
-        public SelectionSort(IComparer<T> comparer, ISwap<T> swapper)
-            : base(comparer, swapper)
-        {
-        }
-        #endregion
+    public SelectionSort(IComparer<T> comparer, ISwap<T> swapper)
+        : base(comparer, swapper)
+    {
+    }
 
-        #region Methods
-        public override void Sort(IList<T> list)
-        {
-            int i;
+    public override void Sort(IList<T> list)
+    {
+        int i;
 
-            for (i = 0; i < list.Count; i++)
+        for (i = 0; i < list.Count; i++)
+        {
+            var min = i;
+            int j;
+            for (j = i + 1; j < list.Count; j++)
             {
-                var min = i;
-                int j;
-                for (j = i + 1; j < list.Count; j++)
+                if (Comparer.Compare(list[j], list[min]) < 0)
                 {
-                    if (Comparer.Compare(list[j], list[min]) < 0)
-                    {
-                        min = j;
-                    }
+                    min = j;
                 }
-
-                Swapper.Swap(list, min, i);
             }
+
+            Swapper.Swap(list, min, i);
         }
-        #endregion
     }
 }

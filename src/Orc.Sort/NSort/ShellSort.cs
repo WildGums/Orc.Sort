@@ -1,63 +1,58 @@
-﻿namespace Orc.Sort.NSort
+﻿namespace Orc.Sort.NSort;
+
+using System.Collections;
+
+public class ShellSort : SwapSorter
 {
-    using System.Collections;
-
-    public class ShellSort : SwapSorter
+    public ShellSort()
     {
-        #region Constructors
-        public ShellSort()
+    }
+
+    public ShellSort(IComparer comparer, ISwap swapper)
+        : base(comparer, swapper)
+    {
+    }
+
+    public override void Sort(IList list)
+    {
+        var h = 1;
+        while (h * 3 + 1 <= list.Count)
         {
+            h = 3 * h + 1;
         }
 
-        public ShellSort(IComparer comparer, ISwap swapper)
-            : base(comparer, swapper)
+        while (h > 0)
         {
-        }
-        #endregion
-
-        #region Methods
-        public override void Sort(IList list)
-        {
-            var h = 1;
-            while (h * 3 + 1 <= list.Count)
+            int i;
+            for (i = h - 1; i < list.Count; i++)
             {
-                h = 3 * h + 1;
-            }
-
-            while (h > 0)
-            {
-                int i;
-                for (i = h - 1; i < list.Count; i++)
+                var b = list[i];
+                var j = i;
+                var loop = true;
+                while (loop)
                 {
-                    var b = list[i];
-                    var j = i;
-                    var loop = true;
-                    while (loop)
+                    if (j >= h)
                     {
-                        if (j >= h)
+                        if (Comparer.Compare(list[j - h], b) > 0)
                         {
-                            if (Comparer.Compare(list[j - h], b) > 0)
-                            {
-                                Swapper.Set(list, j, j - h);
-                                j = j - h;
-                            }
-                            else
-                            {
-                                loop = false;
-                            }
+                            Swapper.Set(list, j, j - h);
+                            j = j - h;
                         }
                         else
                         {
                             loop = false;
                         }
                     }
-
-                    Swapper.Set(list, j, b);
+                    else
+                    {
+                        loop = false;
+                    }
                 }
 
-                h = h / 3;
+                Swapper.Set(list, j, b);
             }
+
+            h = h / 3;
         }
-        #endregion
     }
 }

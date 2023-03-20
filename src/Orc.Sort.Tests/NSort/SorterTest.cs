@@ -1,317 +1,269 @@
-﻿namespace Orc.Sort.Tests.NSort
-{
-    using System;
-    using System.Collections;
+﻿namespace Orc.Sort.Tests.NSort;
+
+using System;
+using System.Collections;
     
-    using NUnit.Framework;
-    using Sort.NSort;
+using NUnit.Framework;
+using Sort.NSort;
 
-    /// <summary>
-    /// Summary description for SorterTest.
-    /// </summary>
-    public class SorterTest
+/// <summary>
+/// Summary description for SorterTest.
+/// </summary>
+public class SorterTest
+{
+    public SorterTest()
     {
-        #region Constructors
-        public SorterTest()
-        {
-            Sorter = null;
-        }
-        #endregion
-
-        #region Properties
-        public ISorter Sorter { get; set; }
-        #endregion
-
-        #region Methods
-        public void SortTest()
-        {
-            var rnd = new Random();
-            var list = new int[1000];
-            int i;
-
-            for (i = 0; i < list.Length; ++i)
-            {
-                list[i] = rnd.Next();
-            }
-
-            // create sorted list
-            var sortedList = new SortedList();
-
-            foreach (var key in list)
-            {
-                sortedList.Add(key, null);
-            }
-
-            // sort table
-            Sorter.Sort(list);
-
-            Assert.AreEqual(sortedList.Keys, list);
-        }
-        #endregion
+        Sorter = null;
     }
 
-    [TestFixture]
-    public class QuickSorterTest : SorterTest
+    public ISorter Sorter { get; set; }
+
+    public void SortTest()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
+        var rnd = new Random();
+        var list = new int[1000];
+        int i;
+
+        for (i = 0; i < list.Length; ++i)
         {
-            this.Sorter = new QuickSorter();
+            list[i] = rnd.Next();
         }
 
-        [Test]
-        public void Test()
+        // create sorted list
+        var sortedList = new SortedList();
+
+        foreach (var key in list)
         {
-            this.SortTest();
+            sortedList.Add(key, null);
         }
-        #endregion
+
+        // sort table
+        Sorter.Sort(list);
+
+        Assert.AreEqual(sortedList.Keys, list);
+    }
+}
+
+[TestFixture]
+public class QuickSorterTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new QuickSorter();
     }
 
-    [TestFixture]
-    public class BubbleSorterTest : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new BubbleSorter();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class BubbleSorterTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new BubbleSorter();
     }
 
-    [TestFixture]
-    public class BiDirectionalBubbleSortTest : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new BiDirectionalBubbleSort();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class BiDirectionalBubbleSortTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new BiDirectionalBubbleSort();
     }
 
-    [TestFixture]
-    public class ComboSort11Test : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new ComboSort11();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class ComboSort11Test : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new ComboSort11();
     }
 
-    [TestFixture]
-    public class HeapSortTest : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new HeapSort();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class HeapSortTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new HeapSort();
     }
 
-    [TestFixture]
-    //public class ShearSorterTest : SorterTest
-    //{
-    //    [SetUp]
-    //    public void SetUp()
-    //    {
-    //        this.Sorter = new ShearSorter();
-    //    }
-
-    //    [Test]
-    //    public void Test()
-    //    {
-    //        this.SortTest();
-    //    }
-    //}
-    [TestFixture]
-    public class OddEvenTransportSorterTest : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new OddEvenTransportSorter();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class OddEvenTransportSorterTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new OddEvenTransportSorter();
     }
 
-    [TestFixture]
-    public class FastQuickSorterTest : SorterTest
+    [Test]
+    public void Test()
     {
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new FastQuickSorter();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
+[TestFixture]
+public class FastQuickSorterTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new FastQuickSorter();
     }
 
-    [TestFixture]
-    public class SelectionSortTest : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new SelectionSort();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class SelectionSortTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new SelectionSort();
     }
 
-    [TestFixture]
-    public class ShakerTest : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new ShakerSort();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class ShakerTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new ShakerSort();
     }
 
-    [TestFixture]
-    public class DoubleStorageMergeSortTest : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new DoubleStorageMergeSort();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class DoubleStorageMergeSortTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new DoubleStorageMergeSort();
     }
 
-    [TestFixture]
-    public class InPlaceMergeSortTest : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new InPlaceMergeSort();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class InPlaceMergeSortTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new InPlaceMergeSort();
     }
 
-    [TestFixture]
-    public class InsertionSortTest : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new InsertionSort();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class InsertionSortTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new InsertionSort();
     }
 
-    [TestFixture]
-    public class ShellSortTest : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new ShellSort();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class ShellSortTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new ShellSort();
     }
 
-    [TestFixture]
-    public class QuickSortWithBubbleSortTest : SorterTest
+    [Test]
+    public void Test()
     {
-        #region Methods
-        [SetUp]
-        public void SetUp()
-        {
-            this.Sorter = new QuickSortWithBubbleSort();
-        }
+        SortTest();
+    }
+}
 
-        [Test]
-        public void Test()
-        {
-            this.SortTest();
-        }
-        #endregion
+[TestFixture]
+public class QuickSortWithBubbleSortTest : SorterTest
+{
+    [SetUp]
+    public void SetUp()
+    {
+        Sorter = new QuickSortWithBubbleSort();
+    }
+
+    [Test]
+    public void Test()
+    {
+        SortTest();
     }
 }
