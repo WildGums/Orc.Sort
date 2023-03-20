@@ -1,49 +1,44 @@
-﻿namespace Orc.Sort.NSort
+﻿namespace Orc.Sort.NSort;
+
+using System.Collections;
+
+public class ShakerSort : SwapSorter
 {
-    using System.Collections;
-
-    public class ShakerSort : SwapSorter
+    public ShakerSort()
     {
-        #region Constructors
-        public ShakerSort()
-        {
-        }
+    }
 
-        public ShakerSort(IComparer comparer, ISwap swapper)
-            : base(comparer, swapper)
-        {
-        }
-        #endregion
+    public ShakerSort(IComparer comparer, ISwap swapper)
+        : base(comparer, swapper)
+    {
+    }
 
-        #region Methods
-        public override void Sort(IList list)
+    public override void Sort(IList list)
+    {
+        var i = 0;
+        var k = list.Count - 1;
+        while (i < k)
         {
-            var i = 0;
-            var k = list.Count - 1;
-            while (i < k)
+            var min = i;
+            var max = i;
+            int j;
+            for (j = i + 1; j <= k; j++)
             {
-                var min = i;
-                var max = i;
-                int j;
-                for (j = i + 1; j <= k; j++)
+                if (Comparer.Compare(list[j], list[min]) < 0)
                 {
-                    if (Comparer.Compare(list[j], list[min]) < 0)
-                    {
-                        min = j;
-                    }
-
-                    if (Comparer.Compare(list[j], list[max]) > 0)
-                    {
-                        max = j;
-                    }
+                    min = j;
                 }
 
-                Swapper.Swap(list, min, i);
-                Swapper.Swap(list, max == i ? min : max, k);
-                i++;
-                k--;
+                if (Comparer.Compare(list[j], list[max]) > 0)
+                {
+                    max = j;
+                }
             }
+
+            Swapper.Swap(list, min, i);
+            Swapper.Swap(list, max == i ? min : max, k);
+            i++;
+            k--;
         }
-        #endregion
     }
 }

@@ -317,7 +317,3 @@ namespace Orc.Sort.TopologicalSort
         public System.Collections.Generic.IList<T>? Sort() { }
     }
 }
-namespace System.Linq
-{
-    public static class TimSortExtender { }
-}

@@ -1,78 +1,71 @@
-namespace Orc.Sort.NSort.Generic
-{
-    using System.Collections.Generic;
+﻿namespace Orc.Sort.NSort.Generic;
+
+using System.Collections.Generic;
     
 
-    public class DoubleStorageMergeSort<T> : SwapSorter<T>
+public class DoubleStorageMergeSort<T> : SwapSorter<T>
+{
+    public DoubleStorageMergeSort()
     {
-        #region Constructors
-        public DoubleStorageMergeSort() : base()
+    }
+
+    public DoubleStorageMergeSort(IComparer<T> comparer, ISwap<T> swapper)
+        : base(comparer, swapper)
+    {
+    }
+
+    public override void Sort(IList<T> list)
+    {
+        var scratch = new T[list.Count];
+        Sort(list, 0, list.Count - 1, scratch);
+    }
+
+    private void Sort(IList<T> list, int fromPos, int toPos, IList<T> scratch)
+    {
+        if (fromPos >= toPos)
         {
+            return;
         }
 
-        public DoubleStorageMergeSort(IComparer<T> comparer, ISwap<T> swapper)
-            : base(comparer, swapper)
-        {
-        }
-        #endregion
+        var mid = (fromPos + toPos)/2;
+        Sort(list, fromPos, mid, scratch);
+        Sort(list, mid + 1, toPos, scratch);
 
-        #region Methods
-        public override void Sort(IList<T> list)
+        var tLow = fromPos;
+        var tHigh = mid + 1;
+        int i;
+        for (i = fromPos; i <= toPos; i++)
         {
-            var scratch = new T[list.Count];
-            this.Sort(list, 0, list.Count - 1, scratch);
-        }
-
-        private void Sort(IList<T> list, int fromPos, int toPos, T[] scratch)
-        {
-            int mid = 0;
-            int i;
-            int t_low;
-            int t_high;
-
-            if (fromPos < toPos)
+            if (tLow <= mid)
             {
-                mid = (fromPos + toPos)/2;
-                this.Sort(list, fromPos, mid, scratch);
-                this.Sort(list, mid + 1, toPos, scratch);
-
-                t_low = fromPos;
-                t_high = mid + 1;
-                for (i = fromPos; i <= toPos; i++)
+                if (tHigh > toPos)
                 {
-                    if (t_low <= mid)
+                    scratch[i] = list[tLow];
+                    tLow++;
+                }
+                else
+                {
+                    if (Comparer.Compare(list[tLow], list[tHigh]) < 0)
                     {
-                        if (t_high > toPos)
-                        {
-                            scratch[i] = list[t_low];
-                            t_low++;
-                        }
-                        else
-                        {
-                            if (this.Comparer.Compare(list[t_low], list[t_high]) < 0)
-                            {
-                                scratch[i] = list[t_low];
-                                t_low++;
-                            }
-                            else
-                            {
-                                scratch[i] = list[t_high];
-                                t_high++;
-                            }
-                        }
+                        scratch[i] = list[tLow];
+                        tLow++;
                     }
                     else
                     {
-                        scratch[i] = list[t_high];
-                        t_high++;
+                        scratch[i] = list[tHigh];
+                        tHigh++;
                     }
                 }
-                for (i = fromPos; i <= toPos; i++)
-                {
-                    this.Swapper.Set(list, i, scratch[i]);
-                }
+            }
+            else
+            {
+                scratch[i] = list[tHigh];
+                tHigh++;
             }
         }
-        #endregion
+        for (i = fromPos; i <= toPos; i++)
+        {
+            Swapper.Set(list, i, scratch[i]);
+        }
     }
 }

@@ -1,34 +1,31 @@
-﻿namespace Orc.Sort.NSort
+﻿namespace Orc.Sort.NSort;
+
+using System;
+using System.Collections;
+
+/// <summary>
+/// Default swap class
+/// </summary>
+public class DefaultSwap : ISwap
 {
-    using System;
-    using System.Collections;
-
-    /// <summary>
-    /// Default swap class
-    /// </summary>
-    public class DefaultSwap : ISwap
+    public void Swap(IList array, int left, int right)
     {
-        public void Swap(IList array, int left, int right)
-        {
-            ArgumentNullException.ThrowIfNull(array);
+        ArgumentNullException.ThrowIfNull(array);
 
-            var swap = array[left];
-            array[left] = array[right];
-            array[right] = swap;
-        }
+        (array[left], array[right]) = (array[right], array[left]);
+    }
 
-        public void Set(IList array, int left, int right)
-        {
-            ArgumentNullException.ThrowIfNull(array);
+    public void Set(IList array, int left, int right)
+    {
+        ArgumentNullException.ThrowIfNull(array);
 
-            array[left] = array[right];
-        }
+        array[left] = array[right];
+    }
 
-        public void Set(IList array, int left, object? obj)
-        {
-            ArgumentNullException.ThrowIfNull(array);
+    public void Set(IList array, int left, object? obj)
+    {
+        ArgumentNullException.ThrowIfNull(array);
 
-            array[left] = obj;
-        }
+        array[left] = obj;
     }
 }
