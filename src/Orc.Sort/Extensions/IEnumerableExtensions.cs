@@ -92,7 +92,7 @@ public static class IEnumerableExtensions
 
         while (enumerators.Count > 0)
         {
-            var nextEnum = MoreLinq.MoreEnumerable.MinBy(enumerators, e => e.Current, itemComparer);
+            var nextEnum = MoreLinq.MoreEnumerable.Minima(enumerators, e => e.Current, itemComparer);
             var enumerator = nextEnum.First();
             var nextItem = enumerator.Current;
 

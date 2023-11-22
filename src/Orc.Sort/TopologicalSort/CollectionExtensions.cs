@@ -6,11 +6,6 @@ using System.Linq;
 
 public static class CollectionExtensions
 {
-    public static ReadOnlyCollection<T> AsReadOnly<T>(this IList<T> list)
-    {
-        return new ReadOnlyCollection<T>(list);
-    }
-
     public static IEnumerable<T> ConcatItem<T>(this IEnumerable<T> collection, T item)
     {
         return collection.Concat(new[] {item});

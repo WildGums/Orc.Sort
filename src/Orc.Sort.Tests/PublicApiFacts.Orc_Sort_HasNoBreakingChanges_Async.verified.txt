@@ -1,5 +1,5 @@
 ﻿[assembly: System.Resources.NeutralResourcesLanguage("en-US")]
-[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v6.0", FrameworkDisplayName=".NET 6.0")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v8.0", FrameworkDisplayName=".NET 8.0")]
 public static class LoadAssembliesOnStartup { }
 public static class ModuleInitializer
 {
@@ -276,7 +276,6 @@ namespace Orc.Sort.TopologicalSort
 {
     public static class CollectionExtensions
     {
-        public static System.Collections.ObjectModel.ReadOnlyCollection<T> AsReadOnly<T>(this System.Collections.Generic.IList<T> list) { }
         public static System.Collections.Generic.IEnumerable<T> ConcatItem<T>(this System.Collections.Generic.IEnumerable<T> collection, T item) { }
         public static System.Collections.Generic.IEnumerable<T> ExceptItem<T>(this System.Collections.Generic.IEnumerable<T> collection, T item) { }
     }
