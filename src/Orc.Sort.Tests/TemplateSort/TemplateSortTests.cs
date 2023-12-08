@@ -17,7 +17,7 @@ public class TemplateSortTests
 
         var result = sourceCollection.SortAccordingTo(templateCollection);
 
-        Assert.AreEqual(sourceCollection, result);
+        Assert.That(result, Is.EqualTo(sourceCollection));
     }
 
     [Test]
@@ -28,7 +28,7 @@ public class TemplateSortTests
 
         var result = sourceCollection.SortAccordingTo(templateCollection);
 
-        Assert.AreEqual(sourceCollection, result);
+        Assert.That(result, Is.EqualTo(sourceCollection));
     }
 
     [Test]
@@ -48,7 +48,7 @@ public class TemplateSortTests
 
         var result = sourceCollection.SortAccordingTo(templateCollection);
 
-        Assert.AreEqual(sourceCollection, result);
+        Assert.That(result, Is.EqualTo(sourceCollection));
     }
 
     [Test]
@@ -86,7 +86,7 @@ public class TemplateSortTests
 
         var expected = new[] {"B", "B", "A", "A", "D", "D", "C", "C"};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -100,7 +100,7 @@ public class TemplateSortTests
         // Since "A" does not exist int he template collection they are placed at the end of the sequence
         var expected = new[] {"B", "B", "D", "D", "C", "C", "A", "A"};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -113,7 +113,7 @@ public class TemplateSortTests
 
         var expected = new[] {"A", "A", "B", "B", "C", "C", "D", "D"};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -128,7 +128,7 @@ public class TemplateSortTests
         // NOTE: no matches get sorted amongst themselves in the order they appear in the list.
         var expected = new[] {"B", "B", "D", "D", "C", "C", "X", "A", "A", "Y", "Z"};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -142,7 +142,7 @@ public class TemplateSortTests
         // Since "A" does not exist in the template collection they are placed at the end of the sequence
         var expected = new[] {"B", "B", "D", "D", "C", "C"};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -155,7 +155,7 @@ public class TemplateSortTests
 
         var expected = new[] {"B", "B", "A", "A", "D", "D", "C", "C"};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -168,7 +168,7 @@ public class TemplateSortTests
 
         var expected = new[] {"b", "B", "B", "c", "C", "A", "a", "a", "D", "E"};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -181,7 +181,7 @@ public class TemplateSortTests
 
         var expected = new[] {1, 2, 3, 4, 6, 9};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -194,7 +194,7 @@ public class TemplateSortTests
 
         var expected = new[] {"1A", "1A", "2B", "2B", "3C"};
 
-        Assert.AreEqual(expected, result.Select(x => x.Name));
+        Assert.That(result.Select(x => x.Name), Is.EqualTo(expected));
     }
 
     [Test]
@@ -207,7 +207,7 @@ public class TemplateSortTests
 
         var expected = new[] {"3C", "1A", "1A", "2B", "2B"};
 
-        Assert.AreEqual(expected, result.Select(x => x.Name));
+        Assert.That(result.Select(x => x.Name), Is.EqualTo(expected));
     }
 }
 

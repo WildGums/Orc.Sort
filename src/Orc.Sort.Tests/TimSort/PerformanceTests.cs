@@ -41,7 +41,7 @@ public class PerformanceTests
         Console.WriteLine("Testing...");
         for (int i = 0; i < maxSize; i++)
         {
-            Assert.AreEqual(a[i], b[i]);
+            Assert.That(b[i], Is.EqualTo(a[i]));
         }
     }
 
@@ -68,7 +68,7 @@ public class PerformanceTests
         Console.WriteLine("Testing...");
         for (int i = 0; i < length; i++)
         {
-            Assert.AreEqual(a[i], b[i]);
+            Assert.That(b[i], Is.EqualTo(a[i]));
         }
     }
 
@@ -94,7 +94,7 @@ public class PerformanceTests
         Console.WriteLine("Testing...");
         for (int i = 0; i < maxSize; i++)
         {
-            Assert.AreEqual(a[i], b[i]);
+            Assert.That(b[i], Is.EqualTo(a[i]));
         }
     }
 
@@ -125,7 +125,7 @@ public class PerformanceTests
         Console.WriteLine("Testing...");
         for (int i = 0; i < maxSize; i++)
         {
-            Assert.AreEqual(a[i], b[i]);
+            Assert.That(b[i], Is.EqualTo(a[i]));
         }
     }
 
@@ -156,7 +156,7 @@ public class PerformanceTests
         Console.WriteLine("Testing...");
         for (int i = 0; i < maxSize; i++)
         {
-            Assert.AreEqual(a[i], b[i]);
+            Assert.That(b[i], Is.EqualTo(a[i]));
         }
     }
 
@@ -183,7 +183,7 @@ public class PerformanceTests
         Console.WriteLine("Testing...");
         for (int i = 0; i < maxSize; i++)
         {
-            Assert.AreEqual(a[i], b[i]);
+            Assert.That(b[i], Is.EqualTo(a[i]));
         }
     }
 
@@ -215,7 +215,7 @@ public class PerformanceTests
         Console.WriteLine("Testing...");
         for (int i = 0; i < maxSize; i++)
         {
-            Assert.AreEqual(a[i], b[i]);
+            Assert.That(b[i], Is.EqualTo(a[i]));
         }
     }
 
@@ -247,7 +247,7 @@ public class PerformanceTests
         Console.WriteLine("Testing...");
         for (int i = 0; i < maxSize; i++)
         {
-            Assert.AreEqual(a[i], b[i]);
+            Assert.That(b[i], Is.EqualTo(a[i]));
         }
     }
 }

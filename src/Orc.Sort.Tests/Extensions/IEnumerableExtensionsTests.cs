@@ -36,7 +36,7 @@ public class IEnumerableExtensionsTests
 
         var result = (new List<IEnumerable<Item>> {list_1, list_2, list_3}).MergeSorted().ToList();
 
-        Assert.AreEqual(sorted, result);
+        Assert.That(result, Is.EqualTo(sorted));
     }
 
     [Test]
@@ -67,7 +67,7 @@ public class IEnumerableExtensionsTests
 
         var result = (new List<IEnumerable<Item>> {list_1, list_2, list_3}).MergeSorted(true).ToList();
 
-        Assert.AreEqual(sorted, result);
+        Assert.That(result, Is.EqualTo(sorted));
     }
 
     [Test]
@@ -99,7 +99,7 @@ public class IEnumerableExtensionsTests
         var comparer = Comparer<Item>.Default;
         var result = (new List<IEnumerable<Item>> {list_1, list_2, list_3}).MergeSortedMany(comparer).ToList();
 
-        Assert.AreEqual(sorted, result);
+        Assert.That(result, Is.EqualTo(sorted));
     }
 }
 

@@ -40,7 +40,7 @@ public class SorterTest
         // sort table
         Sorter.Sort(list);
 
-        Assert.AreEqual(sortedList.Keys, list);
+        Assert.That(list, Is.EqualTo(sortedList.Keys));
     }
 }
 

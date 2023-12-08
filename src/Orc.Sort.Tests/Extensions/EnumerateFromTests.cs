@@ -17,7 +17,7 @@ public class EnumerateFrom
 
         var expected = new List<string> {"A", "B", "C", "D", "E", "F", "G"};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -29,7 +29,7 @@ public class EnumerateFrom
 
         var expected = new List<string> {"C", "D", "E", "F", "G", "A", "B"};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -41,7 +41,7 @@ public class EnumerateFrom
 
         var expected = new List<string> {"C", "D", "E", "F", "G"};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]
@@ -53,7 +53,7 @@ public class EnumerateFrom
 
         var expected = new List<string> {"G"};
 
-        Assert.AreEqual(expected, result);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
     [Test]

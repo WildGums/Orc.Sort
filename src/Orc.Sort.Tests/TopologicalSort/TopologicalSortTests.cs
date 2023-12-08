@@ -29,7 +29,7 @@ public class TopologicalSortTests
 
         bool result = sorter.CanSort(seq_11);
 
-        Assert.True(result);
+        Assert.That(result, Is.True);
     }
 
     [Test]
@@ -40,7 +40,7 @@ public class TopologicalSortTests
 
         var result = sorter.Sort();
 
-        Assert.AreEqual(seq_11, result);
+        Assert.That(result, Is.EqualTo(seq_11));
     }
 
     [Test]
@@ -55,7 +55,7 @@ public class TopologicalSortTests
 
         bool result = sorter.CanSort(seq_21);
 
-        Assert.True(result);
+        Assert.That(result, Is.True);
     }
 
     [Test]
@@ -69,7 +69,7 @@ public class TopologicalSortTests
 
         bool result = sorter.CanSort(null);
 
-        Assert.False(result);
+        Assert.That(result, Is.False);
     }
 
     [Test]
@@ -81,7 +81,7 @@ public class TopologicalSortTests
 
         bool result = sorter.CanSort(seq_11);
 
-        Assert.False(result);
+        Assert.That(result, Is.False);
     }
 
     [Test]
@@ -96,7 +96,7 @@ public class TopologicalSortTests
 
         bool result = sorter.CanSort(seq_12);
 
-        Assert.True(result);
+        Assert.That(result, Is.True);
     }
 
     [Test]
@@ -111,7 +111,7 @@ public class TopologicalSortTests
 
         bool result = sorter.CanSort(seq_12);
 
-        Assert.False(result);
+        Assert.That(result, Is.False);
     }
 
     [Test]
@@ -128,7 +128,7 @@ public class TopologicalSortTests
 
         bool result = sorter.CanSort(seq_13);
 
-        Assert.False(result);
+        Assert.That(result, Is.False);
     }
 
     [Test]
@@ -148,7 +148,7 @@ public class TopologicalSortTests
         // Due to seq_11 and seq_12, C is before B (C <- A <- B).
         // Therefore, seq_13 introduces a conflict (C -> B).
 
-        Assert.False(result);
+        Assert.That(result, Is.False);
     }
 
     [Test]
@@ -176,8 +176,8 @@ public class TopologicalSortTests
 
         AssertOrdering(sorted, result, sorter.Sequences);
 
-        Assert.True("F".ComesBefore(sorted.Skip(1), result));
-        Assert.True("B".ComesAfter(sorted.Take(sorted.Count - 1), result));
+        Assert.That("F".ComesBefore(sorted.Skip(1), result), Is.True);
+        Assert.That("B".ComesAfter(sorted.Take(sorted.Count - 1), result), Is.True);
 
 //          Assert.AreEqual(1, sorter.components.Distinct().Count());
     }
@@ -201,25 +201,25 @@ public class TopologicalSortTests
 
         var result = sorter.Sort();
 
-        Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"A", "B", "E",}, sorter.GetPrecedents("F").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"A", "B", "E", "F",}, sorter.GetPrecedents("D").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"A", "B", "E", "F", "D",}, sorter.GetPrecedents("C").SortAccordingTo(sorted));
+        Assert.That(sorter.GetPrecedents("B").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A",}));
+        Assert.That(sorter.GetPrecedents("F").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A", "B", "E",}));
+        Assert.That(sorter.GetPrecedents("D").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A", "B", "E", "F",}));
+        Assert.That(sorter.GetPrecedents("C").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A", "B", "E", "F", "D",}));
 
-        Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"E",}, sorter.GetPrecedents("F", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"B", "E", "F",}, sorter.GetPrecedents("D", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"B", "D",}, sorter.GetPrecedents("C", true, false).SortAccordingTo(sorted));
+        Assert.That(sorter.GetPrecedents("B", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A",}));
+        Assert.That(sorter.GetPrecedents("F", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"E",}));
+        Assert.That(sorter.GetPrecedents("D", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"B", "E", "F",}));
+        Assert.That(sorter.GetPrecedents("C", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"B", "D",}));
 
-        Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("F", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("D", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("C", false, true).SortAccordingTo(sorted));
+        Assert.That(sorter.GetPrecedents("B", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A",}));
+        Assert.That(sorter.GetPrecedents("F", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A",}));
+        Assert.That(sorter.GetPrecedents("D", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A",}));
+        Assert.That(sorter.GetPrecedents("C", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A",}));
 
-        Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("F", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("D", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("C", true, true).SortAccordingTo(sorted));
+        Assert.That(sorter.GetPrecedents("B", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A",}));
+        Assert.That(sorter.GetPrecedents("F", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
+        Assert.That(sorter.GetPrecedents("D", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
+        Assert.That(sorter.GetPrecedents("C", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
     }
 
     [Test]
@@ -241,25 +241,25 @@ public class TopologicalSortTests
 
         var result = sorter.Sort();
 
-        Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("F").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"A", "B", "E", "F",}, sorter.GetPrecedents("D").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"A", "B", "E", "F", "D",}, sorter.GetPrecedents("C").SortAccordingTo(sorted));
+        Assert.That(sorter.GetPrecedents("B").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A",}));
+        Assert.That(sorter.GetPrecedents("F").SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
+        Assert.That(sorter.GetPrecedents("D").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A", "B", "E", "F",}));
+        Assert.That(sorter.GetPrecedents("C").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A", "B", "E", "F", "D",}));
 
-        Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("F", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"E", "F",}, sorter.GetPrecedents("D", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"B", "D",}, sorter.GetPrecedents("C", true, false).SortAccordingTo(sorted));
+        Assert.That(sorter.GetPrecedents("B", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A",}));
+        Assert.That(sorter.GetPrecedents("F", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
+        Assert.That(sorter.GetPrecedents("D", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"E", "F",}));
+        Assert.That(sorter.GetPrecedents("C", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"B", "D",}));
 
-        Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("F", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"A", "F",}, sorter.GetPrecedents("D", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"A", "F",}, sorter.GetPrecedents("C", false, true).SortAccordingTo(sorted));
+        Assert.That(sorter.GetPrecedents("B", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A",}));
+        Assert.That(sorter.GetPrecedents("F", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
+        Assert.That(sorter.GetPrecedents("D", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A", "F",}));
+        Assert.That(sorter.GetPrecedents("C", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A", "F",}));
 
-        Assert.AreEqual(new List<string> {"A",}, sorter.GetPrecedents("B", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("F", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"F",}, sorter.GetPrecedents("D", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetPrecedents("C", true, true).SortAccordingTo(sorted));
+        Assert.That(sorter.GetPrecedents("B", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"A",}));
+        Assert.That(sorter.GetPrecedents("F", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
+        Assert.That(sorter.GetPrecedents("D", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"F",}));
+        Assert.That(sorter.GetPrecedents("C", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
     }
 
     [Test]
@@ -281,25 +281,25 @@ public class TopologicalSortTests
 
         var result = sorter.Sort();
 
-        Assert.AreEqual(new List<string> {"B", "E", "F", "D", "C",}, sorter.GetDependents("A").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"E", "F", "D", "C",}, sorter.GetDependents("B").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"F", "D", "C",}, sorter.GetDependents("E").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetDependents("C").SortAccordingTo(sorted));
+        Assert.That(sorter.GetDependents("A").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"B", "E", "F", "D", "C",}));
+        Assert.That(sorter.GetDependents("B").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"E", "F", "D", "C",}));
+        Assert.That(sorter.GetDependents("E").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"F", "D", "C",}));
+        Assert.That(sorter.GetDependents("C").SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
 
-        Assert.AreEqual(new List<string> {"B",}, sorter.GetDependents("A", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"E", "D", "C",}, sorter.GetDependents("B", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"F", "D",}, sorter.GetDependents("E", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetDependents("C", true, false).SortAccordingTo(sorted));
+        Assert.That(sorter.GetDependents("A", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"B",}));
+        Assert.That(sorter.GetDependents("B", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"E", "D", "C",}));
+        Assert.That(sorter.GetDependents("E", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"F", "D",}));
+        Assert.That(sorter.GetDependents("C", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
 
-        Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("A", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("B", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("E", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetDependents("C", false, true).SortAccordingTo(sorted));
+        Assert.That(sorter.GetDependents("A", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C",}));
+        Assert.That(sorter.GetDependents("B", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C",}));
+        Assert.That(sorter.GetDependents("E", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C",}));
+        Assert.That(sorter.GetDependents("C", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
 
-        Assert.AreEqual(new List<string> {}, sorter.GetDependents("A", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("B", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetDependents("E", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetDependents("C", true, true).SortAccordingTo(sorted));
+        Assert.That(sorter.GetDependents("A", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
+        Assert.That(sorter.GetDependents("B", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C",}));
+        Assert.That(sorter.GetDependents("E", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
+        Assert.That(sorter.GetDependents("C", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
     }
 
     [Test]
@@ -321,25 +321,25 @@ public class TopologicalSortTests
 
         var result = sorter.Sort();
 
-        Assert.AreEqual(new List<string> {"B", "E", "D", "C", "G", "H",}, sorter.GetDependents("A").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"E", "D", "C", "G", "H",}, sorter.GetDependents("B").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"D", "C", "G", "H",}, sorter.GetDependents("E").SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"C", "G", "H",}, sorter.GetDependents("D").SortAccordingTo(sorted));
+        Assert.That(sorter.GetDependents("A").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"B", "E", "D", "C", "G", "H",}));
+        Assert.That(sorter.GetDependents("B").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"E", "D", "C", "G", "H",}));
+        Assert.That(sorter.GetDependents("E").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"D", "C", "G", "H",}));
+        Assert.That(sorter.GetDependents("D").SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C", "G", "H",}));
 
-        Assert.AreEqual(new List<string> {"B",}, sorter.GetDependents("A", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"E", "C",}, sorter.GetDependents("B", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"D",}, sorter.GetDependents("E", true, false).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"C", "G",}, sorter.GetDependents("D", true, false).SortAccordingTo(sorted));
+        Assert.That(sorter.GetDependents("A", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"B",}));
+        Assert.That(sorter.GetDependents("B", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"E", "C",}));
+        Assert.That(sorter.GetDependents("E", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"D",}));
+        Assert.That(sorter.GetDependents("D", true, false).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C", "G",}));
 
-        Assert.AreEqual(new List<string> {"C", "H",}, sorter.GetDependents("A", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"C", "H",}, sorter.GetDependents("B", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"C", "H",}, sorter.GetDependents("E", false, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"C", "H",}, sorter.GetDependents("D", false, true).SortAccordingTo(sorted));
+        Assert.That(sorter.GetDependents("A", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C", "H",}));
+        Assert.That(sorter.GetDependents("B", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C", "H",}));
+        Assert.That(sorter.GetDependents("E", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C", "H",}));
+        Assert.That(sorter.GetDependents("D", false, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C", "H",}));
 
-        Assert.AreEqual(new List<string> {}, sorter.GetDependents("A", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("B", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {}, sorter.GetDependents("E", true, true).SortAccordingTo(sorted));
-        Assert.AreEqual(new List<string> {"C",}, sorter.GetDependents("D", true, true).SortAccordingTo(sorted));
+        Assert.That(sorter.GetDependents("A", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
+        Assert.That(sorter.GetDependents("B", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C",}));
+        Assert.That(sorter.GetDependents("E", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {}));
+        Assert.That(sorter.GetDependents("D", true, true).SortAccordingTo(sorted), Is.EqualTo(new List<string> {"C",}));
     }
 
     [Test]
@@ -363,8 +363,8 @@ public class TopologicalSortTests
 
         AssertOrdering(sorted, result, sorter.Sequences);
 
-        Assert.True("A".ComesBefore(sorted.Skip(1), result));
-        Assert.True("C".ComesAfter(sorted.Take(sorted.Count - 1), result));
+        Assert.That("A".ComesBefore(sorted.Skip(1), result), Is.True);
+        Assert.That("C".ComesAfter(sorted.Take(sorted.Count - 1), result), Is.True);
 
 //          Assert.AreEqual(1, sorter.components.Distinct().Count());
     }
@@ -393,8 +393,8 @@ public class TopologicalSortTests
 
         AssertOrdering(sorted, result, sorter.Sequences);
 
-        Assert.True("A".ComesBefore(sorted.Skip(1), result));
-        Assert.True("C".ComesAfter(sorted.Take(sorted.Count - 1), result));
+        Assert.That("A".ComesBefore(sorted.Skip(1), result), Is.True);
+        Assert.That("C".ComesAfter(sorted.Take(sorted.Count - 1), result), Is.True);
 
 //          Assert.AreEqual(1, sorter.components.Distinct().Count());
     }
@@ -415,7 +415,7 @@ public class TopologicalSortTests
         var result = sorter.Sort();
 
         AssertOrdering(sorted, result, sorter.Sequences);
-        Assert.True("B".ComesBefore(new List<string>() {"C", "D", "E"}, result));
+        Assert.That("B".ComesBefore(new List<string>() {"C", "D", "E"}, result), Is.True);
 
 //          Assert.AreEqual(1, sorter.components.Distinct().Count());
     }
@@ -578,7 +578,7 @@ public class TopologicalSortTests
         var result = sorter.Sort();
 
         AssertOrdering(sorted, result, sorter.Sequences);
-        Assert.True("A".ComesAfter(new List<string>() {"C", "D", "E"}, result));
+        Assert.That("A".ComesAfter(new List<string>() {"C", "D", "E"}, result), Is.True);
 
 //          Assert.AreEqual(2, sorter.components.Distinct().Count());
     }
@@ -603,7 +603,7 @@ public class TopologicalSortTests
         var result = sorter.Sort();
 
         AssertOrdering(sorted, result, sorter.Sequences);
-        Assert.True("E".ComesAfter(new List<string>() {"A", "B", "C", "D"}, result));
+        Assert.That("E".ComesAfter(new List<string>() {"A", "B", "C", "D"}, result), Is.True);
 
 //          Assert.AreEqual(1, sorter.components.Distinct().Count());
     }
@@ -766,8 +766,8 @@ public class TopologicalSortTests
 
         var result = sorter.GetConflicts();
 
-        Assert.AreEqual(seq_11, result.First());
-        Assert.AreEqual(seq_21, result.Last());
+        Assert.That(result.First(), Is.EqualTo(seq_11));
+        Assert.That(result.Last(), Is.EqualTo(seq_21));
     }
 
     [Test]
@@ -785,8 +785,8 @@ public class TopologicalSortTests
 
         var result = sorter.GetConflicts();
 
-        Assert.AreEqual(seq_11, result.First());
-        Assert.AreEqual(seq_21, result.Last());
+        Assert.That(result.First(), Is.EqualTo(seq_11));
+        Assert.That(result.Last(), Is.EqualTo(seq_21));
     }
 
     [Test]
@@ -806,8 +806,8 @@ public class TopologicalSortTests
 
         var result = sorter.GetConflicts();
 
-        Assert.AreEqual(seq_11, result.First());
-        Assert.AreEqual(seq_21, result.Last());
+        Assert.That(result.First(), Is.EqualTo(seq_11));
+        Assert.That(result.Last(), Is.EqualTo(seq_21));
     }
 
     [Test]
@@ -829,22 +829,22 @@ public class TopologicalSortTests
 
         var result = sorter.GetConflicts();
 
-        Assert.AreEqual(seq_11, result.First());
-        Assert.AreEqual(seq_21, result.Last());
+        Assert.That(result.First(), Is.EqualTo(seq_11));
+        Assert.That(result.Last(), Is.EqualTo(seq_21));
     }
 
     public void AssertOrdering<T>(IEnumerable<T> sorted, IEnumerable<T> result, IEnumerable<IEnumerable<T>> sequences)
     {
         if (UsesPriority)
         {
-            Assert.AreEqual(sorted, result);
+            Assert.That(result, Is.EqualTo(sorted));
         }
         else
         {
             var pairs = sequences.SelectMany(s => s.Zip(s.Skip(1), (i1, i2) => new Tuple<T, T>(i1, i2)));
             foreach (var pair in pairs)
             {
-                Assert.True(AreInOrder(result, pair.Item1, pair.Item2));
+                Assert.That(AreInOrder(result, pair.Item1, pair.Item2), Is.True);
             }
         }
     }
