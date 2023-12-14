@@ -1,32 +1,35 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ComparableComparer.cs" company="WildGums">
-//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.Sort.NSort;
 
+using System;
+using System.Collections;
 
-namespace Orc.Sort.NSort
+/// <summary>
+///     Default <see cref="IComparable" /> object comparer.
+/// </summary>
+public class ComparableComparer : IComparer
 {
-    using System;
-    using System.Collections;
-
-    /// <summary>
-    ///     Default <see cref="IComparable" /> object comparer.
-    /// </summary>
-    public class ComparableComparer : IComparer
+    int IComparer.Compare(object? x, object? y)
     {
-        #region IComparer Members
-        int IComparer.Compare(object x, object y)
+        return Compare((IComparable?)x, y);
+    }
+        
+    public int Compare(IComparable? x, object? y)
+    {
+        if (x is null && y is null)
         {
-            return Compare((IComparable)x, y);
+            return 0;
         }
-        #endregion
 
-        #region Methods
-        public int Compare(IComparable x, object y)
+        if (x is null)
         {
-            return x.CompareTo(y);
+            return -1;
         }
-        #endregion
+
+        if (y is null)
+        {
+            return 1;
+        }
+
+        return x.CompareTo(y);
     }
 }

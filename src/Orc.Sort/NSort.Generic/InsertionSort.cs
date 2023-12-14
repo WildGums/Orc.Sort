@@ -1,47 +1,31 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InsertionSort.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.Sort.NSort.Generic;
 
-
-namespace Orc.Sort.NSort.Generic
-{
-    using System.Collections.Generic;
+using System.Collections.Generic;
     
 
-    public class InsertionSort<T> : SwapSorter<T>
+public class InsertionSort<T> : SwapSorter<T>
+{
+    public InsertionSort()
     {
-        #region Constructors
-        public InsertionSort() : base()
-        {
-        }
+    }
 
-        public InsertionSort(IComparer<T> comparer, ISwap<T> swapper)
-            : base(comparer, swapper)
-        {
-        }
-        #endregion
+    public InsertionSort(IComparer<T> comparer, ISwap<T> swapper)
+        : base(comparer, swapper)
+    {
+    }
 
-        #region Methods
-        public override void Sort(IList<T> list)
+    public override void Sort(IList<T> list)
+    {
+        for (var i = 1; i < list.Count; i++)
         {
-            int i;
-            int j;
-            T b;
-
-            for (i = 1; i < list.Count; i++)
+            var j = i;
+            var b = list[i];
+            while (j > 0 && Comparer.Compare(list[j - 1], b) > 0)
             {
-                j = i;
-                b = list[i];
-                while ((j > 0) && (this.Comparer.Compare(list[j - 1], b) > 0))
-                {
-                    this.Swapper.Set(list, j, list[j - 1]);
-                    --j;
-                }
-                this.Swapper.Set(list, j, b);
+                Swapper.Set(list, j, list[j - 1]);
+                --j;
             }
+            Swapper.Set(list, j, b);
         }
-        #endregion
     }
 }

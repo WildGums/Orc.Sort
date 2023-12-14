@@ -1,12 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TimSort.cs" company="WildGums">
-//   Copyright (c) 2008 - 2017 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-#region Licence
-/*
+﻿/*
  * Copyright (C) 2008 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#endregion
 
-#region Notes
 //------------------------------------------------------------------------------
 // Java implementation:
 //
@@ -65,7 +55,6 @@
 // 
 // author: Milosz Krajewski
 //------------------------------------------------------------------------------
-#endregion
 
 // ReSharper disable CheckNamespace
 
@@ -76,10 +65,8 @@ namespace System.Linq
     using Collections.Generic;
     using TimSort;
 
-    #region partial class TimSortExtender
     public static partial class TimSortExtender
     {
-        #region TryNativeTimSort
         /// <summary>Tries to use native sorting on given array.</summary>
         /// <typeparam name="T">Any type.</typeparam>
         /// <param name="array">The array.</param>
@@ -450,9 +437,7 @@ namespace System.Linq
             }
             return false;
         }
-        #endregion
 
-        #region Array
         /// <summary>Sorts the specified array.</summary>
         /// <typeparam name="T">Type of item.</typeparam>
         /// <param name="array">The array.</param>
@@ -608,9 +593,7 @@ namespace System.Linq
 
             AnyArrayTimSort<T>.Sort(array, compare);
         }
-        #endregion
 
-        #region List
         /// <summary>Tries to extract internal representation and sort it (it should be much faster).</summary>
         /// <typeparam name="T">Any type.</typeparam>
         /// <param name="list">The list.</param>
@@ -821,9 +804,7 @@ namespace System.Linq
 
             AnyListTimSort<T>.Sort(array, compare);
         }
-        #endregion
 
-        #region IList
         /// <summary>Tries to extract internal representation and sort it (it should be much faster).</summary>
         /// <typeparam name="T">Any type.</typeparam>
         /// <param name="list">The list.</param>
@@ -1034,9 +1015,7 @@ namespace System.Linq
 
             AnyIListTimSort<T>.Sort(array, compare);
         }
-        #endregion
     }
-    #endregion
 }
 
 namespace TimSort
@@ -1045,7 +1024,6 @@ namespace TimSort
     using System.Collections.Generic;
     using System.Diagnostics;
 
-    #region class ByteArrayTimSort
     /// <summary>TimSort implementation for ByteArray.</summary>
     internal class ByteArrayTimSort : TimSortBase<Byte[], Byte>
     {
@@ -1902,9 +1880,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class SByteArrayTimSort
     /// <summary>TimSort implementation for SByteArray.</summary>
     internal class SByteArrayTimSort : TimSortBase<SByte[], SByte>
     {
@@ -2761,9 +2737,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class Int16ArrayTimSort
     /// <summary>TimSort implementation for Int16Array.</summary>
     internal class Int16ArrayTimSort : TimSortBase<Int16[], Int16>
     {
@@ -3620,9 +3594,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class UInt16ArrayTimSort
     /// <summary>TimSort implementation for UInt16Array.</summary>
     internal class UInt16ArrayTimSort : TimSortBase<UInt16[], UInt16>
     {
@@ -4479,9 +4451,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class Int32ArrayTimSort
     /// <summary>TimSort implementation for Int32Array.</summary>
     internal class Int32ArrayTimSort : TimSortBase<Int32[], Int32>
     {
@@ -5338,9 +5308,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class UInt32ArrayTimSort
     /// <summary>TimSort implementation for UInt32Array.</summary>
     internal class UInt32ArrayTimSort : TimSortBase<UInt32[], UInt32>
     {
@@ -6197,9 +6165,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class Int64ArrayTimSort
     /// <summary>TimSort implementation for Int64Array.</summary>
     internal class Int64ArrayTimSort : TimSortBase<Int64[], Int64>
     {
@@ -7056,9 +7022,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class UInt64ArrayTimSort
     /// <summary>TimSort implementation for UInt64Array.</summary>
     internal class UInt64ArrayTimSort : TimSortBase<UInt64[], UInt64>
     {
@@ -7915,9 +7879,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class SingleArrayTimSort
     /// <summary>TimSort implementation for SingleArray.</summary>
     internal class SingleArrayTimSort : TimSortBase<Single[], Single>
     {
@@ -8774,9 +8736,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class DoubleArrayTimSort
     /// <summary>TimSort implementation for DoubleArray.</summary>
     internal class DoubleArrayTimSort : TimSortBase<Double[], Double>
     {
@@ -9633,9 +9593,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class DecimalArrayTimSort
     /// <summary>TimSort implementation for DecimalArray.</summary>
     internal class DecimalArrayTimSort : TimSortBase<Decimal[], Decimal>
     {
@@ -10492,9 +10450,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class CharArrayTimSort
     /// <summary>TimSort implementation for CharArray.</summary>
     internal class CharArrayTimSort : TimSortBase<Char[], Char>
     {
@@ -11351,9 +11307,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class DateTimeArrayTimSort
     /// <summary>TimSort implementation for DateTimeArray.</summary>
     internal class DateTimeArrayTimSort : TimSortBase<DateTime[], DateTime>
     {
@@ -12210,9 +12164,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class TimeSpanArrayTimSort
     /// <summary>TimSort implementation for TimeSpanArray.</summary>
     internal class TimeSpanArrayTimSort : TimSortBase<TimeSpan[], TimeSpan>
     {
@@ -13069,9 +13021,7 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class GuidArrayTimSort
     /// <summary>TimSort implementation for GuidArray.</summary>
     internal class GuidArrayTimSort : TimSortBase<Guid[], Guid>
     {
@@ -13928,19 +13878,14 @@ namespace TimSort
             } // fixed (...)
         }
     }
-    #endregion
 
-    #region class AnyArrayTimSort<T>
     /// <summary>TimSort implementation for AnyArray.</summary>
     /// <typeparam name="T">Type of item.</typeparam>
     internal class AnyArrayTimSort<T> : TimSortBase<T[], T>
     {
-        #region Fields
         /// <summary>The comparator for this sort.</summary>
         private readonly Comparison<T> _comparer;
-        #endregion
 
-        #region Constructors
         /// <summary>
         /// Prevents a default instance of the AnyArrayTimSort&lt;T&gt; class from being created.
         /// Creates a TimSort instance to maintain the state of an ongoing sort.
@@ -13952,9 +13897,7 @@ namespace TimSort
         {
             _comparer = comparer;
         }
-        #endregion
 
-        #region Methods
         /// <summary>Sorts the specified array.</summary>
         /// <param name="array">Array to be sorted.</param>
         /// <param name="comparer">Comparer.</param>
@@ -14696,21 +14639,15 @@ namespace TimSort
                 }
             } // fixed (...)
         }
-        #endregion
     }
-    #endregion
 
-    #region class AnyListTimSort<T>
     /// <summary>TimSort implementation for AnyList.</summary>
     /// <typeparam name="T">Type of item.</typeparam>
     internal class AnyListTimSort<T> : TimSortBase<List<T>, T>
     {
-        #region Fields
         /// <summary>The comparator for this sort.</summary>
         private readonly Comparison<T> _comparer;
-        #endregion
 
-        #region Constructors
         /// <summary>
         /// Prevents a default instance of the AnyListTimSort&lt;T&gt; class from being created.
         /// Creates a TimSort instance to maintain the state of an ongoing sort.
@@ -14722,9 +14659,7 @@ namespace TimSort
         {
             _comparer = comparer;
         }
-        #endregion
 
-        #region Methods
         /// <summary>Sorts the specified array.</summary>
         /// <param name="array">Array to be sorted.</param>
         /// <param name="comparer">Comparer.</param>
@@ -15542,21 +15477,15 @@ namespace TimSort
                 }
             } // fixed (...)
         }
-        #endregion
     }
-    #endregion
 
-    #region class AnyIListTimSort<T>
     /// <summary>TimSort implementation for AnyIList.</summary>
     /// <typeparam name="T">Type of item.</typeparam>
     internal class AnyIListTimSort<T> : TimSortBase<IList<T>, T>
     {
-        #region Fields
         /// <summary>The comparator for this sort.</summary>
         private readonly Comparison<T> _comparer;
-        #endregion
 
-        #region Constructors
         /// <summary>
         /// Prevents a default instance of the AnyIListTimSort&lt;T&gt; class from being created.
         /// Creates a TimSort instance to maintain the state of an ongoing sort.
@@ -15568,9 +15497,7 @@ namespace TimSort
         {
             _comparer = comparer;
         }
-        #endregion
 
-        #region Methods
         /// <summary>Sorts the specified array.</summary>
         /// <param name="array">Array to be sorted.</param>
         /// <param name="comparer">Comparer.</param>
@@ -16388,16 +16315,12 @@ namespace TimSort
                 }
             } // fixed (...)
         }
-        #endregion
     }
-    #endregion
 
-    #region class ComparableArrayTimSort<T>
     /// <summary>TimSort implementation for ComparableArray.</summary>
     /// <typeparam name="T">Type of item.</typeparam>
     internal class ComparableArrayTimSort<T> : TimSortBase<T[], T> where T : IComparable<T>
     {
-        #region Constructors
         /// <summary>
         /// Prevents a default instance of the ComparableArrayTimSort&lt;T&gt; class from being created.
         /// Creates a TimSort instance to maintain the state of an ongoing sort.
@@ -16407,9 +16330,7 @@ namespace TimSort
             : base(array, array.Length)
         {
         }
-        #endregion
 
-        #region Methods
         /// <summary>Sorts the specified array.</summary>
         /// <param name="array">Array to be sorted.</param>
         public static void Sort(T[] array)
@@ -17154,16 +17075,12 @@ namespace TimSort
                 }
             } // fixed (...)
         }
-        #endregion
     }
-    #endregion
 
-    #region class ComparableListTimSort<T>
     /// <summary>TimSort implementation for ComparableList.</summary>
     /// <typeparam name="T">Type of item.</typeparam>
     internal class ComparableListTimSort<T> : TimSortBase<List<T>, T> where T : IComparable<T>
     {
-        #region Constructors
         /// <summary>
         /// Prevents a default instance of the ComparableListTimSort&lt;T&gt; class from being created.
         /// Creates a TimSort instance to maintain the state of an ongoing sort.
@@ -17173,9 +17090,7 @@ namespace TimSort
             : base(array, array.Count)
         {
         }
-        #endregion
 
-        #region Methods
         /// <summary>Sorts the specified array.</summary>
         /// <param name="array">Array to be sorted.</param>
         public static void Sort(List<T> array)
@@ -17996,16 +17911,12 @@ namespace TimSort
                 }
             } // fixed (...)
         }
-        #endregion
     }
-    #endregion
 
-    #region class ComparableIListTimSort<T>
     /// <summary>TimSort implementation for ComparableIList.</summary>
     /// <typeparam name="T">Type of item.</typeparam>
     internal class ComparableIListTimSort<T> : TimSortBase<IList<T>, T> where T : IComparable<T>
     {
-        #region Constructors
         /// <summary>
         /// Prevents a default instance of the ComparableIListTimSort&lt;T&gt; class from being created.
         /// Creates a TimSort instance to maintain the state of an ongoing sort.
@@ -18015,9 +17926,7 @@ namespace TimSort
             : base(array, array.Count)
         {
         }
-        #endregion
 
-        #region Methods
         /// <summary>Sorts the specified array.</summary>
         /// <param name="array">Array to be sorted.</param>
         public static void Sort(IList<T> array)
@@ -18838,9 +18747,7 @@ namespace TimSort
                 }
             } // fixed (...)
         }
-        #endregion
     }
-    #endregion
 }
 
 // ReSharper restore CheckNamespace

@@ -1,56 +1,44 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ShakerSort.cs" company="WildGums">
-//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.Sort.NSort.Generic;
 
+using System.Collections.Generic;
 
-namespace Orc.Sort.NSort.Generic
+public class ShakerSort<T> : SwapSorter<T>
 {
-    using System.Collections.Generic;
-
-    public class ShakerSort<T> : SwapSorter<T>
+    public ShakerSort()
     {
-        #region Constructors
-        public ShakerSort() : base()
-        {
-        }
+    }
 
-        public ShakerSort(IComparer<T> comparer, ISwap<T> swapper)
-            : base(comparer, swapper)
-        {
-        }
-        #endregion
+    public ShakerSort(IComparer<T> comparer, ISwap<T> swapper)
+        : base(comparer, swapper)
+    {
+    }
 
-        #region Methods
-        public override void Sort(IList<T> list)
+    public override void Sort(IList<T> list)
+    {
+        var i = 0;
+        var k = list.Count - 1;
+        while (i < k)
         {
-            var i = 0;
-            var k = list.Count - 1;
-            while (i < k)
+            var min = i;
+            var max = i;
+            int j;
+            for (j = i + 1; j <= k; j++)
             {
-                var min = i;
-                var max = i;
-                int j;
-                for (j = i + 1; j <= k; j++)
+                if (Comparer.Compare(list[j], list[min]) < 0)
                 {
-                    if (Comparer.Compare(list[j], list[min]) < 0)
-                    {
-                        min = j;
-                    }
-
-                    if (Comparer.Compare(list[j], list[max]) > 0)
-                    {
-                        max = j;
-                    }
+                    min = j;
                 }
 
-                Swapper.Swap(list, min, i);
-                Swapper.Swap(list, max == i ? min : max, k);
-                i++;
-                k--;
+                if (Comparer.Compare(list[j], list[max]) > 0)
+                {
+                    max = j;
+                }
             }
+
+            Swapper.Swap(list, min, i);
+            Swapper.Swap(list, max == i ? min : max, k);
+            i++;
+            k--;
         }
-        #endregion
     }
 }

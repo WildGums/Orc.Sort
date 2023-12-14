@@ -1,28 +1,17 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ISorter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.Sort;
 
-namespace Orc.Sort
+using System.Collections;
+using System.Collections.Generic;
+
+/// <summary>
+///     Summary description for ISorter.
+/// </summary>
+public interface ISorter
 {
-    using System.Collections;
-    using System.Collections.Generic;
+    void Sort(IList list);
+}
 
-    /// <summary>
-    ///     Summary description for ISorter.
-    /// </summary>
-    public interface ISorter
-    {
-        #region Methods
-        void Sort(IList list);
-        #endregion
-    }
-
-    public interface ISorter<T>
-    {
-        #region Methods
-        void Sort(IList<T> list);
-        #endregion
-    }
+public interface ISorter<T>
+{
+    void Sort(IList<T> list);
 }

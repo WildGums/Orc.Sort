@@ -1,22 +1,14 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ShearSorter.cs" company="WildGums">
-//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.Sort.NSort.Generic;
 
-
-namespace Orc.Sort.NSort.Generic
+/// <summary>
+/// Shear sort parralel algorithm
+/// </summary>
+/// <remarks>
+/// <para>
+/// Source: <a href="http://www.cs.rit.edu/~atk/Java/Sorting/sorting.html">
+/// http://www.cs.rit.edu/~atk/Java/Sorting/sorting.html</a>
+/// </para>
+/// </remarks>
+public class ShearSorter<T> // : SwapSorter<T>
 {
-    /// <summary>
-    /// Shear sort parralel algorithm
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// Source: <a href="http://www.cs.rit.edu/~atk/Java/Sorting/sorting.html">
-    /// http://www.cs.rit.edu/~atk/Java/Sorting/sorting.html</a>
-    /// </para>
-    /// </remarks>
-    public class ShearSorter<T> // : SwapSorter<T>
-    {
-    }
 }

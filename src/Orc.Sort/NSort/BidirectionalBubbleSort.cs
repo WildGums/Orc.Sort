@@ -1,64 +1,52 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BidirectionalBubbleSort.cs" company="WildGums">
-//   Copyright (c) 2008 - 2018 WildGums. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿namespace Orc.Sort.NSort;
 
+using System.Collections;
 
-namespace Orc.Sort.NSort
+public class BiDirectionalBubbleSort : SwapSorter
 {
-    using System.Collections;
-
-    public class BiDirectionalBubbleSort : SwapSorter
+    public BiDirectionalBubbleSort()
     {
-        #region Constructors
-        public BiDirectionalBubbleSort()
-        {
-        }
+    }
 
-        public BiDirectionalBubbleSort(IComparer comparer, ISwap swapper)
-            : base(comparer, swapper)
-        {
-        }
-        #endregion
+    public BiDirectionalBubbleSort(IComparer comparer, ISwap swapper)
+        : base(comparer, swapper)
+    {
+    }
 
-        #region Methods
-        public override void Sort(IList list)
+    public override void Sort(IList list)
+    {
+        var st = -1;
+        var limit = list.Count;
+        var flipped = true;
+        while (st < limit & flipped)
         {
-            var st = -1;
-            var limit = list.Count;
-            var flipped = true;
-            while (st < limit & flipped)
+            flipped = false;
+            st++;
+            limit--;
+            int j;
+            for (j = st; j < limit; j++)
             {
-                flipped = false;
-                st++;
-                limit--;
-                int j;
-                for (j = st; j < limit; j++)
-                {
-                    if (Comparer.Compare(list[j], list[j + 1]) <= 0)
-                    {
-                        continue;
-                    }
-
-                    Swapper.Swap(list, j, j + 1);
-                    flipped = true;
-                }
-
-                if (!flipped)
+                if (Comparer.Compare(list[j], list[j + 1]) <= 0)
                 {
                     continue;
                 }
 
-                for (j = limit - 1; j >= st; j--)
+                Swapper.Swap(list, j, j + 1);
+                flipped = true;
+            }
+
+            if (!flipped)
+            {
+                continue;
+            }
+
+            for (j = limit - 1; j >= st; j--)
+            {
+                if (Comparer.Compare(list[j], list[j + 1]) > 0)
                 {
-                    if (Comparer.Compare(list[j], list[j + 1]) > 0)
-                    {
-                        Swapper.Swap(list, j, j + 1);
-                    }
+                    Swapper.Swap(list, j, j + 1);
                 }
             }
         }
-        #endregion
     }
 }
