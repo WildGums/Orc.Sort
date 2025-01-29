@@ -297,9 +297,9 @@ namespace Orc.Sort.TopologicalSort
         protected System.Collections.Generic.List<System.Collections.Generic.HashSet<int>>? transInto;
         public TopologicalSort(Orc.Sort.TopologicalSort.TopologicalSort<T> baseSort, bool? usesPriority = default, bool? usesTracking = default) { }
         public TopologicalSort(bool usesPriority = false, bool usesTracking = false, System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>>? sequences = null) { }
-        public System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Sequences { get; set; }
-        public bool UsesPriority { get; set; }
-        public bool UsesTracking { get; set; }
+        public System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Sequences { get; protected set; }
+        public bool UsesPriority { get; protected set; }
+        public bool UsesTracking { get; protected set; }
         public virtual void Add(System.Collections.Generic.IEnumerable<T> sequence) { }
         public virtual void AddRange(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> newSequences) { }
         public bool CanSort(System.Collections.Generic.IEnumerable<T> sequence) { }
