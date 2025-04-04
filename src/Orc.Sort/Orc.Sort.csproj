@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras">
+<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <AssemblyName>Orc.Sort</AssemblyName>
@@ -21,7 +21,7 @@
     <PackageReference Include="Fody" Version="6.9.2" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="4.6.0" PrivateAssets="all" />
+    <PackageReference Include="LoadAssembliesOnStartup.Fody" Version="4.7.0" PrivateAssets="all" />
     <PackageReference Include="MethodTimer.Fody" Version="3.2.3" PrivateAssets="all" />
     <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" />
     <PackageReference Include="morelinq" Version="4.4.0" />
