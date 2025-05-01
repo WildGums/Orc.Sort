@@ -32,8 +32,8 @@ namespace Orc.Sort
     }
     public interface ISwap<T>
     {
-        void Set(System.Collections.Generic.IList<T> array, int left, int right);
         void Set(System.Collections.Generic.IList<T> array, int left, T obj);
+        void Set(System.Collections.Generic.IList<T> array, int left, int right);
         void Swap(System.Collections.Generic.IList<T> array, int left, int right);
     }
 }
@@ -177,8 +177,8 @@ namespace Orc.Sort.NSort.Generic
     public class DefaultSwap<T> : Orc.Sort.ISwap<T>
     {
         public DefaultSwap() { }
-        public void Set(System.Collections.Generic.IList<T> array, int left, int right) { }
         public void Set(System.Collections.Generic.IList<T> array, int left, T obj) { }
+        public void Set(System.Collections.Generic.IList<T> array, int left, int right) { }
         public void Swap(System.Collections.Generic.IList<T> array, int left, int right) { }
     }
     public class DoubleStorageMergeSort<T> : Orc.Sort.NSort.Generic.SwapSorter<T>
@@ -306,10 +306,10 @@ namespace Orc.Sort.TopologicalSort
         protected System.Collections.Generic.HashSet<int> EdgesWalk(int node, System.Collections.Generic.List<System.Collections.Generic.HashSet<int>> edgesWalk) { }
         protected System.Collections.Generic.IEnumerable<int> EdgesWalkLazy(int node, System.Collections.Generic.List<System.Collections.Generic.HashSet<int>> edgesWalk) { }
         public System.Collections.Generic.IList<System.Collections.Generic.IEnumerable<T>> GetConflicts() { }
-        protected System.Collections.Generic.IEnumerable<int> GetDependents(int node, bool immediate, bool terminating) { }
         public System.Collections.Generic.IEnumerable<T> GetDependents(T node, bool immediate = false, bool terminating = false) { }
-        protected System.Collections.Generic.IEnumerable<int> GetPrecedents(int node, bool immediate, bool terminating) { }
+        protected System.Collections.Generic.IEnumerable<int> GetDependents(int node, bool immediate, bool terminating) { }
         public System.Collections.Generic.IEnumerable<T> GetPrecedents(T node, bool immediate = false, bool terminating = false) { }
+        protected System.Collections.Generic.IEnumerable<int> GetPrecedents(int node, bool immediate, bool terminating) { }
         protected System.Collections.Generic.IEnumerable<int> GetRelated(int node, bool immediate, bool terminating, System.Collections.Generic.List<System.Collections.Generic.HashSet<int>> edgesData, System.Collections.Generic.List<System.Collections.Generic.HashSet<int>>? transData = null, bool lazy = false) { }
         protected virtual int NodeKey(T node) { }
         protected int NodeKeySafe(T node, System.Collections.Generic.Dictionary<T, int> tempDict) { }
