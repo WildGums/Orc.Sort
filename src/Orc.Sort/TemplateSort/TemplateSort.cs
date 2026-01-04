@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Catel.Logging;
+using Microsoft.Extensions.Logging;
 
 /// <summary>
 /// The template sort.
 /// </summary>
 public static class TemplateSort
 {
-    private static readonly ILog Log = LogManager.GetCurrentClassLogger();
+    private static readonly ILogger Logger = LogManager.GetLogger(typeof(TemplateSort));
 
     /// <summary>
     ///     Sorts the elements of a sequence based on the order of the items in the specified template collection, using the
@@ -103,17 +104,17 @@ public static class TemplateSort
     {
         if (sourceCollection is null)
         {
-            throw Log.ErrorAndCreateException<ArgumentNullException>("sourceCollection cannot be null.");
+            throw Logger.LogErrorAndCreateException<ArgumentNullException>("sourceCollection cannot be null.");
         }
 
         if (keySelector is null)
         {
-            throw Log.ErrorAndCreateException<ArgumentNullException>("keySelector cannot be null.");
+            throw Logger.LogErrorAndCreateException<ArgumentNullException>("keySelector cannot be null.");
         }
 
         if (templateCollection is null)
         {
-            throw Log.ErrorAndCreateException<ArgumentNullException>("templateCollection cannot be null.");
+            throw Logger.LogErrorAndCreateException<ArgumentNullException>("templateCollection cannot be null.");
         }
 
         // Stores items that do not have a match in the template collection
@@ -130,7 +131,7 @@ public static class TemplateSort
             }
             else
             {
-                throw Log.ErrorAndCreateException<ArgumentNullException>("templateCollection cannot have duplicates.");
+                throw Logger.LogErrorAndCreateException<ArgumentNullException>("templateCollection cannot have duplicates.");
             }
         }
 

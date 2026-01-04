@@ -37,6 +37,10 @@ namespace Orc.Sort
         void Set(System.Collections.Generic.IList<T> array, int left, int right);
         void Swap(System.Collections.Generic.IList<T> array, int left, int right);
     }
+    public static class OrcSortModule
+    {
+        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddOrcSort(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection) { }
+    }
 }
 namespace Orc.Sort.NSort
 {
