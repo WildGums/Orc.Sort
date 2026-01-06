@@ -1,4 +1,4 @@
-﻿namespace Orc.Sort
+﻿namespace Orc
 {
     using Catel.Services;
     using Catel.ThirdPartyNotices;
