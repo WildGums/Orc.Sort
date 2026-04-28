@@ -6,6 +6,13 @@ public static class ModuleInitializer
     [System.Runtime.CompilerServices.ModuleInitializer]
     public static void Initialize() { }
 }
+namespace Orc
+{
+    public static class OrcSortModule
+    {
+        public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddOrcSort(this Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection) { }
+    }
+}
 namespace Orc.Sort
 {
     public static class IEnumerableExtensions
