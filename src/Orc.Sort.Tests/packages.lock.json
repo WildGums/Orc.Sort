@@ -115,15 +115,15 @@
       },
       "Verify.NUnit": {
         "type": "Direct",
-        "requested": "[33.7.0, )",
-        "resolved": "33.7.0",
-        "contentHash": "WmiC+LOctwejXnQOBd2DbB6QEJpx2KaAQROmLo/H+C+Ht2HqB3kc1X5THeV01HrVPCpAPWXoVEpLcERQ+3LPbg==",
+        "requested": "[33.7.2, )",
+        "resolved": "33.7.2",
+        "contentHash": "k/+7SP+hTvYItxCYLZHcqx6cxMht8L3gFQyjL+ySvsv1CtcW+awIEIo4wJC7XSzDvemB90KrBe4h0BtUgmP/pA==",
         "dependencies": {
           "Argon": "0.38.2",
           "DiffEngine": "21.2.0",
           "NUnit": "5.0.0",
           "SimpleInfoName": "3.2.1",
-          "Verify": "33.7.0"
+          "Verify": "33.7.2"
         }
       },
       "WpfAnalyzers": {
@@ -331,8 +331,8 @@
       },
       "Verify": {
         "type": "Transitive",
-        "resolved": "33.7.0",
-        "contentHash": "eS7vWCD1dMPVCUIDyFrxTFiiAUFfFGvlfkZHpBFuA+JDit3BSi8ukfBUWzlRP0JnZIJwq5ZXjQt2NUr1hX3X4Q==",
+        "resolved": "33.7.2",
+        "contentHash": "WCZeOSBbZX9QovIu5EQEvYuQjmoJQhlxpLteTWxhuvo9bbgNvRsZeSOShC5kGV9jr+Vmf6Sk7SGQKtaTxgeyFw==",
         "dependencies": {
           "Argon": "0.38.2",
           "DiffEngine": "21.2.0",
